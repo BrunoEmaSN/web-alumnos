@@ -1,9 +1,3 @@
-import {
-    //alumnoAdd,
-    alumnosLoad,
-    alumnoUpdate,
-    alumnoDelete
-} from "../../../Context/Alumnos";
 import { types } from "../../../Types";
 
 
@@ -14,32 +8,34 @@ export const startNewAlumno = ( alumno ) => {
 };
 
 export const activeAlumno = ( alumno ) => ({
-    type: types.alumnosGetOne,
+    type: types.alumnos + types.getOne,
     payload: alumno
+});
+
+export const cleanActiveAlumno = () => ({
+    type: types.alumnos + types.cleanActive
 });
 
 export const addNewAlumno = ( alumno ) => ({
-    type: types.alumnosAdd,
+    type: types.alumnos + types.add,
     payload: alumno
 });
 
-export const startLoadingAlumnos = ( documento ) => {
-    return async ( dispatch ) => {
-        const alumnos = await alumnosLoad( documento );
-        dispatch( setAlumnos( alumnos ) );
-    };
+export const startLoadingAlumnos = () => {
+    /*return async ( dispatch ) => {
+        //dispatch( getAlumnos(  ) );
+    };*/
 };
 
-export const setAlumnos = ( alumnos ) => ({
-    type: types.alumnosGetAll,
+export const getAlumnos = ( alumnos ) => ({
+    type: types.alumnos + types.getAll,
     payload: alumnos
 });
 
-export const startUpdateAlumno = () => {
-    return async ( dispatch, getState ) => {
+export const startUpdateAlumno = ( alumno ) => {
+    return async ( dispatch ) => {
+        // eslint-disable-next-line no-useless-catch
         try{
-            const alumno = getState().active;
-            await alumnoUpdate( alumno );
             dispatch( refreshAlumno( alumno ) );
         }
         catch( e ) {
@@ -49,17 +45,16 @@ export const startUpdateAlumno = () => {
 };
 
 export const refreshAlumno = ( alumno ) => ({
-    type: types.alumnosUpdate,
+    type: types.alumnos + types.update,
     payload: {
         alumno
     }
 });
 
-export const startDeletingAlumno = () => {
-    return async ( dispatch, getState ) => {
+export const startDeletingAlumno = ( documento ) => {
+    return async ( dispatch ) => {
+        // eslint-disable-next-line no-useless-catch
         try{
-            const { documento } = getState().active;
-            await alumnoDelete( documento );
             dispatch( deleteAlumno( documento ) );
         }
         catch( e ){
@@ -69,6 +64,6 @@ export const startDeletingAlumno = () => {
 };
 
 export const deleteAlumno = ( documento ) => ({
-    type: types.alumnosRemove,
+    type: types.alumnos + types.remove,
     payload: documento
 });

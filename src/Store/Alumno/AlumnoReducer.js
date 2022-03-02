@@ -1,45 +1,49 @@
 import { types } from "../../Types";
-import { alumnoModel } from "../../Utils/alumnoModel";
 
-const inicialState = {
+const initialState = {
     alumnos: [],
-    active: alumnoModel
+    active: {}
 };
 
-export const AlumnoReducer = ( state = inicialState, actions ) => {
+export const AlumnoReducer = ( state = initialState, actions ) => {
     switch ( actions.type ) {
-        case types.alumnosGetAll:
+        case types.alumnos + types.getAll:
             return {
                 ...state,
-                alumnos: [ ...actions.payload ]
+                alumnos: [ { ...actions.payload } ]
             };
         
-        case types.alumnosGetOne:
+        case types.alumnos + types.getOne:
             return {
                 ...state,
-                active: state.alumnos.find( a => a.documento === actions.payload )
+                active: actions.payload
+            };
+        
+        case types.alumnos + types.cleanActive:
+            return {
+                ...state,
+                active: initialState.active
             };
 
-        case types.alumnosAdd:
+        case types.alumnos + types.add:
             return {
                 ...state,
                 alumnos: [ ...state.alumnos, actions.payload ]
             };
         
-        case types.alumnosUpdate:
+        case types.alumnos + types.update:
             return {
                 ...state,
                 alumnos: state.alumnos.map(
-                    a => a.documento === actions.payload.documento
+                    a => a.documento === actions.payload.alumno.documento
                     ? actions.payload.alumno
                     : a
                 )
             };
         
-        case types.alumnosRemove:
+        case types.alumnos + types.remove:
             return {
                 ...state,
-                active: null,
                 alumnos: state.alumnos.filter( a => a.documento !== actions.payload )
             };
         default:
