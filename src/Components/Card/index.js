@@ -1,3 +1,6 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+
 const Card = ({ titulo, descripcion, removeCard, id }) => {
     return(
         <div className="card">
@@ -19,3 +22,10 @@ const Card = ({ titulo, descripcion, removeCard, id }) => {
 }
 
 export default Card;
+
+Card.propTypes = {
+    titulo: PropTypes.string,
+    descripcion: PropTypes.string,
+    removeCard: PropTypes.func,
+    id: PropTypes.any,
+}
