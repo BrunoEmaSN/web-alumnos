@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from "react";
 
 
 export const useForm = ( initialState = {} ) => {
@@ -10,10 +10,10 @@ export const useForm = ( initialState = {} ) => {
     }
 
     const handleInputChange = ({ target }) => {
-        setValues({
-            ...values,
-            [ target.name ]: typeof target.value === 'object' ? JSON.parse(target.value) : target.value
-        });
+        const value = target.value;
+        const name = target.name;
+
+        setValues({ ...values, [ name ]: value });
     }
 
     const handleCheckboxChange = ({ target }) => {
@@ -30,7 +30,7 @@ export const useForm = ( initialState = {} ) => {
           ...values,
           [target.name]: JSON.parse(target.value)
         });
-      }
+    }
 
     return [ values, handleInputChange, handleCheckboxChange, handleObjectChange, reset, setValues ];
 
