@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getMaterias } from "../../Store/Materia/Actions/Materia";
-import { Materia1 } from "../../Utils/materiaModel";
+import { startLoadingMaterias } from "../../Store/Materia/Actions/Materia";
 import { MateriasList } from "./MateriasList";
 import { MateriasSave } from "./MateriasSave";
 
@@ -10,7 +9,7 @@ export const MateriasScreen = () => {
 
     const { active } = useSelector( state => state.materia );
     useEffect(() => {
-        dispatch( getMaterias( Materia1 ) );
+        dispatch( startLoadingMaterias() );
     }, []);
     return (
         <div>
