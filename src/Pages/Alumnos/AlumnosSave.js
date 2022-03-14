@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { cleanActiveAlumno, startNewAlumno, startUpdateAlumno } from '../../Store/Alumno/Actions/Alumno';
 import { DatosAcademicos } from '../../Template/DatosAcademicos';
@@ -7,13 +7,24 @@ import { DatosAlumnoMateria } from '../../Template/DatosAlumnoMateria';
 import { DatosAlumnoTutores } from '../../Template/DatosAlumnoTutores';
 import { useForm } from '../../Hooks/useForm';
 import { alumnoModel } from '../../Utils/alumnoModel';
+import { cursosGetAll } from '../../Services/restCallCursos';
 
 export const AlumnosSave = () => {
     const dispatch = useDispatch();
 
     const { active } = useSelector( state => state.alumno );
 
-    const [ formValues, handleInputChange, handleCheckboxChange ] = useForm( active );
+    const [ formValues, handleInputChange, handleCheckboxChange, handleObjectChange ] = useForm( active );
+
+    const [ cursosList, setCursosList ] = useState([]);
+
+    const handleCursosGet = async () => {
+        setCursosList( await cursosGetAll() );
+    }
+
+    useEffect(() => {
+        handleCursosGet();
+    }, []);
 
     const handleAddAlumno = ( e ) => {
         e.preventDefault();
@@ -41,8 +52,10 @@ export const AlumnosSave = () => {
                 />
                 <DatosAcademicos
                     { ...formValues }
+                    cursosList={ cursosList }
                     handleInputChange={ handleInputChange }
                     handleCheckboxChange={ handleCheckboxChange }
+                    handleObjectChange={ handleObjectChange }
                 />
                 <DatosAlumnoTutores
                     { ...formValues }

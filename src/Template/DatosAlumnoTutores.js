@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-modal/lib/components/Modal';
 import Card from '../Components/Card';
+import { tutoresGetOne } from '../Services/restCallTutores';
+import { tutorFormatter } from '../Utils/tutorModel';
 
 const customStyles = {
     content: {
@@ -13,21 +15,6 @@ const customStyles = {
         transform: 'translate(-50%, -50%)',
     },
 };
-
-const tutores1 = [
-    {
-        documento: 1,
-        nombre: 'Jorge',
-        apellido: 'Joestar',
-        tipoDocumento: 'DNI'
-    },
-    {
-        documento: 2,
-        nombre: 'Jonathan',
-        apellido: 'Joestar',
-        tipoDocumento: 'DNI'
-    }
-];
 
 export const DatosAlumnoTutores = ({ tutores, handleInputChange }) => {
 
@@ -51,17 +38,17 @@ export const DatosAlumnoTutores = ({ tutores, handleInputChange }) => {
         setDocumentoTutor( target.value );
     }
 
-    const findTutor = () => {
-        setTutor( tutores1.find( t => t.documento === parseInt( documentoTutor ) ) );
+    const findTutor = async () => {
+        const result = await tutoresGetOne( parseInt( documentoTutor ) );
+        setTutor( tutorFormatter( result ) );
     }
 
     const handleParentesco = ({ target }) => {
         setParentesco( target.value );
     }
 
-    const handleAddTutor = () => {
-        const newTutor = tutores1.find( t => t.documento === parseInt(documentoTutor) );
-        const isExist = tutores.find( t => t.documento === parseInt( newTutor.documento ) );
+    const handleAddTutor = async () => {
+        const isExist = tutores.find( t => t.documento === parseInt( tutor.documento ) );
         setParentesco('');
         setDocumentoTutor('');
 
@@ -73,7 +60,7 @@ export const DatosAlumnoTutores = ({ tutores, handleInputChange }) => {
         handleInputChange({
             target: {
                 name: 'tutores',
-                value: [...tutores, {...newTutor, parentesco }]
+                value: [...tutores, {...tutor, parentesco }]
             }
         });
         

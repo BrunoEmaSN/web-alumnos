@@ -1,18 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-modal/lib/components/Modal';
 import Card from '../Components/Card';
-
-const materias1 = [
-    {
-        id: 1,
-        descripcion: 'matematica'
-    },
-    {
-        id: 2,
-        descripcion: 'lengua'
-    }
-];
+import { materiasGetAll } from '../Services/restCallMaterias';
 
 const customStyles = {
     content: {
@@ -27,11 +17,21 @@ const customStyles = {
 
 export const DatosAlumnoMateria = ({ materias, handleInputChange }) => {
 
-    const [ materiaId, setMateriaId ] = useState(1);
+    const [ materia, setMateria ] = useState('');
 
-    const [ estado, setEstado ] = useState('regular');
+    const [materiasList, setMateriasList] = useState([]);
+
+    const [ estado, setEstado ] = useState('');
 
     const [ modalMateriaIsOpen, setmodalMateriaIsOpen ] = useState(false);
+
+    const handleMateriasGetAll = async () => {
+        setMateriasList( await materiasGetAll() );
+    }
+
+    useEffect(() => {
+        handleMateriasGetAll();
+    }, []);
 
     const openModalMateria = () => {
         setmodalMateriaIsOpen( true );
@@ -42,7 +42,7 @@ export const DatosAlumnoMateria = ({ materias, handleInputChange }) => {
     }
 
     const handleChageMateria = ({ target }) => {
-        setMateriaId( target.value );
+        setMateria( JSON.parse( target.value ) );
     }
 
     const handleEstado = ({ target }) => {
@@ -50,10 +50,8 @@ export const DatosAlumnoMateria = ({ materias, handleInputChange }) => {
     }
 
     const handleAddMateria = () => {
-        const newMateria = materias1.find( m => m.id === parseInt( materiaId ) );
-        const isExist = materias.find( m => m.id === parseInt( materiaId ) );
-        newMateria.estado = estado;
-        setMateriaId('');
+        const isExist = materias.find( m => m.id === parseInt( materia.id ) );
+        setMateria('');
         setEstado('');
 
         if( isExist ){
@@ -64,7 +62,7 @@ export const DatosAlumnoMateria = ({ materias, handleInputChange }) => {
         handleInputChange({
             target: {
                 name: 'materias',
-                value: [ ...materias, { ...newMateria } ]
+                value: [ ...materias, { ...materia, estado } ]
             }
         });
 
@@ -108,18 +106,20 @@ export const DatosAlumnoMateria = ({ materias, handleInputChange }) => {
             >
                 <h2>Materias</h2>
                 <div>
-                    <label htmlFor="materias">Selecione una Materia</label>
-                    <select id="materias" onChange={ handleChageMateria }>
+                    <label htmlFor="materias">Materia</label>
+                    <select id="materias" value={ materia !== '' ? JSON.stringify(materia) : '' } onChange={ handleChageMateria }>
+                        <option value="" disabled>Selecione una Materia</option>
                         {
-                            materias1.map( m => (
-                                <option key={ m.id } value={ m.id } >{ m.descripcion }</option>
+                            materiasList.map( m => (
+                                <option key={ m.id } value={ JSON.stringify( m ) } >{ m.descripcion }</option>
                             ))
                         }
                     </select>
                 </div>
                 <div>
                     <label htmlFor="estado">Estado</label>
-                    <select id="estado" onChange={ handleEstado }>
+                    <select id="estado" value={ estado } onChange={ handleEstado }>
+                        <option value="" disabled>Selecione un Estado</option>
                         <option value="regular">Regular</option>
                         <option value="libre">Libre</option>
                         <option value="promocional">Promocional</option>

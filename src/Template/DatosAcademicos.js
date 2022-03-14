@@ -1,36 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-const cursos = [
-    {
-        id: 1,
-        descripcion: '1° "A"',
-        aula: {
-            id: 1,
-            descripcion: 'Aula 1'
-        },
-        nivel: 'primaria'
-    },
-    {
-        id: 2,
-        descripcion: '1° "B"',
-        aula: {
-            id: 1,
-            descripcion: 'Aula 1'
-        },
-        nivel: 'primaria'
-    },
-    {
-        id: 3,
-        descripcion: '1° "A"',
-        aula: {
-            id: 1,
-            descripcion: 'Aula 2'
-        },
-        nivel: 'secundaria'
-    }
-];
-
 export const DatosAcademicos = ({
     partidaNacimiento = false,
     fotocopiaDNI = false,
@@ -39,14 +9,24 @@ export const DatosAcademicos = ({
     contrato = false,
     observaciones = '',
     cursoId = '',
+    cursoNivel = '',
+    condicion = '',
+    cursosList = [],
     handleInputChange,
-    handleCheckboxChange
+    handleCheckboxChange,
+    handleObjectChange
 }) => {
-
-    const [ nivel, setNivel ] = useState('primaria');
-
+    
+    
+    const [ nivel, setNivel ] = useState( cursoNivel );
     const handleNivel = ({ target }) => {
         setNivel( target.value );
+        handleInputChange({
+            target: {
+                name: 'cursoId',
+                value: '' 
+            }
+        });
     }
 
     return (
@@ -120,22 +100,33 @@ export const DatosAcademicos = ({
             <div>
                 <label htmlFor="nivel">Nivel</label>
                 <select id="nivel" onChange={ handleNivel } value={ nivel }>
-                    <option value="primaria">Primaria</option>
-                    <option value="secundaria">Secundaria</option>
-                    <option value="terciaria">Terciaria</option>
-                    <option value="universidad">Universidad</option>
+                    <option value="" disabled>Selecione un nivel</option>
+                    <option value="P">Primaria</option>
+                    <option value="S">Secundaria</option>
+                    <option value="T">Terciaria</option>
+                    <option value="U">Universidad</option>
+                </select>
+            </div>
+            <div>
+                <label htmlFor="condicion">Condicion</label>
+                <select id="condicion" name="condicion" value={ condicion } onChange={ handleInputChange }>
+                    <option value="" disabled>seleccione una condicion</option>
+                    <option value="Regular">Regular</option>
+                    <option value="Promocional">Promocional</option>
+                    <option value="Libre">Libre</option>
                 </select>
             </div>
             <div>
                 <label htmlFor="cursoId">Cursos</label>
-                <select id="cursoId" name="cursoId" value={ cursoId } onChange={ handleInputChange }>
-                    { cursos.map( c => {
+                <select id="cursoId" name="cursoId" value={ cursoId } onChange={ handleObjectChange }>
+                    <option value="" disabled>Selecione un curso</option>
+                    { cursosList.map( c => {
                         return (
-                            c.nivel === nivel ?
-                            <option key={ c.id } value={c.id}>
-                                {`${ c.aula.descripcion }: ${ c.descripcion }`}
-                            </option>:
-                            ''
+                            c.nivel === nivel && (
+                                <option key={ c.id } value={c.id}>
+                                    {`${ c.turno } ${ c.grado_ano } ${ c.division }: ${ c.aula_descripcion }`}
+                                </option>
+                            )
                         );
                     } ) }
                 </select>
@@ -150,8 +141,12 @@ DatosAcademicos.propTypes = {
     fotocopiaCUIL: PropTypes.bool.isRequired,
     foto4x4: PropTypes.bool.isRequired,
     contrato: PropTypes.bool.isRequired,
-    observaciones: PropTypes.string.isRequired,
-    cursoId: PropTypes.number.isRequired,
+    observaciones: PropTypes.string,
+    cursoId: PropTypes.any.isRequired,
+    cursoNivel: PropTypes.any.isRequired,
+    condicion: PropTypes.any.isRequired,
+    cursosList: PropTypes.array.isRequired,
     handleInputChange: PropTypes.func.isRequired,
     handleCheckboxChange: PropTypes.func.isRequired,
+    handleObjectChange: PropTypes.func.isRequired
 }

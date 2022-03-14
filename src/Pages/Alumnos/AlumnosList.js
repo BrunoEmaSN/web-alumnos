@@ -1,8 +1,9 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-	activeAlumno,
+	startSetActive,
 	startDeletingAlumno,
+	activeAlumno,
 } from '../../Store/Alumno/Actions/Alumno';
 import { alumnoModel } from '../../Utils/alumnoModel';
 
@@ -15,8 +16,8 @@ export const AlumnosList = () => {
 		dispatch(activeAlumno(alumnoModel));
 	};
 
-	const handleEdit = (a) => {
-		dispatch(activeAlumno(a));
+	const handleEdit = (documento) => {
+		dispatch(startSetActive(documento));
 	};
 
 	const handleDelete = (documento) => {
@@ -28,23 +29,25 @@ export const AlumnosList = () => {
 			<h1>AlumnosList</h1>
 			<button onClick={handleCreate}>Save</button>
 			{alumnos.map((a) => (
-				<div key={a.documento}>
-					{`${a.nombre} ${a.apellido}`}
-					<button
-						onClick={() => {
-							handleEdit(a);
-						}}
-					>
-						Edit
-					</button>
-					<button
-						onClick={() => {
-							handleDelete(a.documento);
-						}}
-					>
-						Delete
-					</button>
-				</div>
+				a.estado !== 0 && (
+					<div key={a.documento}>
+						{`${ a.documento } ${a.nombre} ${a.apellido}`}
+						<button
+							onClick={() => {
+								handleEdit(a.documento);
+							}}
+						>
+							Edit
+						</button>
+						<button
+							onClick={() => {
+								handleDelete(a.documento);
+							}}
+						>
+							Delete
+						</button>
+					</div>
+				)
 			))}
 		</div>
 	);

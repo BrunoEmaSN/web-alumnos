@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const alumnoModel = {
     nombre: '',
     apellido: '',
@@ -12,6 +14,7 @@ export const alumnoModel = {
     numero: '',
     departamento: '',
     piso: '',
+    fechaAgregado: moment().format('yyyy-MM-DD'),
     partidaNacimiento: false,
     fotocopiaDNI: false,
     fotocopiaCUIL: false,
@@ -19,84 +22,43 @@ export const alumnoModel = {
     contrato: false,
     observaciones: '',
     cursoId: '',
+    cursoNivel: '',
+    condicion: '',
     materias: [],
     tutores: []
 }
 
-export const Alumno1 = {
-    nombre: 'Joseph',
-    apellido: 'Joestar',
-    tipoDocumento: 'DNI',
-    documento: '2',
-    fechaNacimiento: '1920-02-20',
-    sexo: 'Masculino',
-    lugarNacimiento: 'Inglaterra',
-    telefonoFijo: '1',
-    telefonoMovil: '1',
-    domicilio: 'usa',
-    numero: '0',
-    departamento: '',
-    piso: '0',
-    partidaNacimiento: true,
-    fotocopiaDNI: false,
-    fotocopiaCUIL: true,
-    foto4x4: false,
-    contrato: false,
-    observaciones: 'nada',
-    cursoId: 1,
-    materias: [
-        {
-            id: 1,
-            descripcion: "matematica",
-            estado: "regular"
-        }
-    ],
-    tutores: [
-        {
-            documento: 2,
-            nombre: "Jonathan",
-            apellido: "Joestar",
-            tipoDocumento: "DNI",
-            parentesco: "Abuelo"
-        }
-    ]
-}
+export const alumnoFormater = ( alumno, tutores, materias ) =>{
+    return {
+        nombre: alumno.nombre || '',
+        apellido: alumno.apellido || '',
+        tipoDocumento: alumno.tipo_documento || '',
+        documento: alumno.documento || '',
 
-export const Alumno2 = [{
-    nombre: 'Joseph',
-    apellido: 'Joestar',
-    tipoDocumento: 'DNI',
-    documento: '2',
-    fechaNacimiento: '1920-02-20',
-    sexo: 'Masculino',
-    lugarNacimiento: 'Inglaterra',
-    telefonoFijo: '1',
-    telefonoMovil: '1',
-    domicilio: 'usa',
-    numero: '0',
-    departamento: '',
-    piso: '0',
-    partidaNacimiento: true,
-    fotocopiaDNI: false,
-    fotocopiaCUIL: true,
-    foto4x4: false,
-    contrato: false,
-    observaciones: 'nada',
-    cursoId: 1,
-    materias: [
-        {
-            id: 1,
-            descripcion: "matematica",
-            estado: "regular"
-        }
-    ],
-    tutores: [
-        {
-            documento: 2,
-            nombre: "Jonathan",
-            apellido: "Joestar",
-            tipoDocumento: "DNI",
-            parentesco: "Abuelo"
-        }
-    ]
-}];
+        fechaNacimiento: moment(alumno.fecha_nacimiento)
+            .format('yyyy-MM-DD') || '',
+        
+        sexo: alumno.sexo || '',
+        lugarNacimiento: alumno.lugar_nacimiento || '',
+        telefonoFijo: parseInt(alumno.telefono_fijo) || '',
+        telefonoMovil: parseInt(alumno.telefono_movil) || '',
+        domicilio: alumno.domicilio || '',
+        numero: alumno.numero || '',
+        departamento: alumno.departamento || '',
+        piso: alumno.piso || '',
+        
+        fechaAgregado: moment(alumno.fecha_agregado).format('yyyy-MM-DD'),
+        partidaNacimiento: alumno.partida_nacimiento ? true : false,
+        fotocopiaDNI: alumno.fotocopia_dni ? true : false,
+        fotocopiaCUIL: alumno.fotocopia_cuil ? true : false,
+        foto4x4: alumno.foto_4x4 ? true : false,
+        contrato: alumno.contrato ? true : false,
+        observaciones: alumno.observaciones || '',
+        cursoId: alumno.curso_id || '',
+        cursoNivel: alumno.curso_nivel || '',
+        condicion: alumno.condicion || '',
+
+        tutores: tutores,
+        materias: materias
+    };
+}

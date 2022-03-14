@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getAlumnos } from '../../Store/Alumno/Actions/Alumno';
-import { Alumno1 } from '../../Utils/alumnoModel';
+import { startLoadingAlumnos } from '../../Store/Alumno/Actions/Alumno';
 import { AlumnosList } from './AlumnosList';
 import { AlumnosSave } from './AlumnosSave';
 
@@ -9,7 +8,7 @@ export const AlumnosScreen = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch( getAlumnos( Alumno1 ) );
+        dispatch( startLoadingAlumnos() );
     }, []);
     
 
