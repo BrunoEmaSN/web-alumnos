@@ -29,7 +29,8 @@ export const AulasModal = ({ isOpenModal, closeModal, action }) => {
     const [ formValues, handleInputChange ] = useForm( active );
 
     const {
-        descripcion
+        descripcion,
+        capacidad
     } = formValues;
     
 
@@ -61,6 +62,15 @@ export const AulasModal = ({ isOpenModal, closeModal, action }) => {
                         type="text"
                         name="descripcion"
                         value={ descripcion }
+                        onChange={ handleInputChange }
+                    />
+                </div>
+                <div>
+                    <label htmlFor="capacidad">Capacidad</label>
+                    <input
+                        type="number"
+                        name="capacidad"
+                        value={ capacidad }
                         onChange={ handleInputChange }
                     />
                 </div>

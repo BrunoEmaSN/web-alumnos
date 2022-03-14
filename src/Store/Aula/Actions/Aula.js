@@ -1,13 +1,27 @@
+import { aulasAdd, aulasDelete, aulasGetAll, aulasGetOne, aulasUpdate } from "../../../Services/restCallAulas";
 import { types } from "../../../Types";
 
-export const startNewAula = ( aula ) => {
+export const startLoadingAulas = () => {
     return async ( dispatch ) => {
-        dispatch( addNewAula( aula ) );
+        const aulas = await aulasGetAll();
+        dispatch( loadingAulas( aulas ) );
     };
 };
 
+const loadingAulas = ( aulas ) => ({
+    type: types.aulas + types.getAll,
+    payload: aulas
+});
+
+export const startSetActive = ( id ) => {
+    return async ( dispatch ) => {
+        const aula = await aulasGetOne( id );
+        dispatch( activeAula( aula ) );
+    }
+}
+
 export const activeAula = ( aula ) => ({
-    type: types.aulas + types.getOne,
+    type: types.aulas + types.active,
     payload: aula
 });
 
@@ -15,49 +29,36 @@ export const cleanActiveAula = () => ({
     type: types.aulas + types.cleanActive
 });
 
+export const startNewAula = ( aula ) => {
+    return async ( dispatch ) => {
+        const result = await aulasAdd( aula );
+
+        dispatch( addNewAula({ id: result.last_id, ...aula }) );
+    };
+};
+
 export const addNewAula = ( aula ) => ({
     type: types.aulas + types.add,
     payload: aula
 });
 
-export const startLoadingAulas = () => {
-    /*return async ( dispatch ) => {
-    };*/
-};
-
-export const getAulas = ( aulas ) => ({
-    type: types.aulas + types.getAll,
-    payload: aulas
-});
-
 export const startUpdateAula = ( aula ) => {
     return async ( dispatch ) => {
-        // eslint-disable-next-line no-useless-catch
-        try{
-            dispatch( refreshAula( aula ) );
-        }
-        catch( e ) {
-            throw e;
-        }
+        const { id } = aula;
+        await aulasUpdate( id, aula );
+        dispatch( refreshAula( aula ) );
     };
 };
 
 export const refreshAula = ( aula ) => ({
     type: types.aulas + types.update,
-    payload: {
-        aula
-    }
+    payload: aula
 });
 
 export const startDeletingAula = ( id ) => {
     return async ( dispatch ) => {
-        // eslint-disable-next-line no-useless-catch
-        try{
-            dispatch( deleteAula( id ) );
-        }
-        catch( e ){
-            throw e;
-        }
+        await aulasDelete( id );
+        dispatch( deleteAula( id ) );
     };
 };
 
