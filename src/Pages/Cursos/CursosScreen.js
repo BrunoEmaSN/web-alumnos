@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { useModal } from '../../Hooks/useModal';
 import { CursoModal } from './CursosModal';
-import { activeCurso, getCursos, startDeletingCurso } from '../../Store/Curso/Actions/Curso';
-import { Curso1, cursoModel } from '../../Utils/cursoModel';
+import { activeCurso, startDeletingCurso, startLoadingCursos, startSetActive } from '../../Store/Curso/Actions/Curso';
+import { cursoModel } from '../../Utils/cursoModel';
 
 const actions = {
     create: 'Create',
@@ -19,17 +19,14 @@ export const CursosScreen = () => {
     const [ action, setAction ] = useState('');
 
     const handleCreate = () => {
-        const lastIndex = cursos.length - 1;
-        const lastId = cursos[lastIndex].id;
-        cursoModel.id = lastId + 1;
         setAction( actions.create );
         dispatch( activeCurso( cursoModel ) );
         openModal();
     }
 
-    const handleUpdate = ( a ) => {
+    const handleUpdate = ( c ) => {
         setAction( actions.edit );
-        dispatch( activeCurso( a ) );
+        dispatch( startSetActive( c ) );
         openModal();
     }
 
@@ -38,7 +35,7 @@ export const CursosScreen = () => {
     }
 
     useEffect(() => {
-        dispatch( getCursos( Curso1 ) );
+        dispatch( startLoadingCursos() );
     }, [dispatch]);
     
     return (
@@ -46,11 +43,15 @@ export const CursosScreen = () => {
             <h1>CursosList</h1>
             <button onClick={ handleCreate }>Save</button>
             {
-                cursos.map( c => <div key={ c.id }>
-                    { `${ c.id } ${ c.descripcion } : ${ c.aula.descripcion }` }
-                    <button onClick={  () => { handleUpdate( c ) }  }>Edit</button>
-                    <button onClick={  () => { handleDelete( c.id ) }  }>Delete</button>
-                </div>)
+                cursos.map( c => 
+                    c.estado !== 0 && (
+                        <div key={ c.id }>
+                            { `${ c.id } ${ c.nivel } ${ c.turno } ${ c.division } : ${ c.aula_descripcion }` }
+                            <button onClick={  () => { handleUpdate( c ) }  }>Edit</button>
+                            <button onClick={  () => { handleDelete( c.id ) }  }>Delete</button>
+                        </div>
+                    )
+                )
             }
             {
                 isOpenModal && <CursoModal

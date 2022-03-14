@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import Modal from 'react-modal/lib/components/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from '../../Hooks/useForm';
 import { cleanActiveCurso, startNewCurso, startUpdateCurso } from '../../Store/Curso/Actions/Curso';
-import { Aula2 } from '../../Utils/aulaModel';
+import { aulasGetAll } from '../../Services/restCallAulas';
 
 const customStyles = {
     content: {
@@ -27,24 +27,38 @@ export const CursoModal = ({ isOpenModal, closeModal, action }) => {
 
     const { active } = useSelector( state => state.curso );
 
-    const [ formValues, handleInputChange ] = useForm( active );
+    const [ formValues, handleInputChange, , handleObjectChange ] = useForm( active );
 
     const {
-        descripcion,
+        nivel,
+        turno,
+        division,
+        gradoAno,
         aula
     } = formValues;
 
-    const handleAddAula = () => {
+    const [ aulas, setAulas ] = useState([]);
+
+    const handleAddCurso = () => {
         dispatch( startNewCurso( formValues ) );
         dispatch( cleanActiveCurso() );
         closeModal()
     }
 
-    const handleEditAula = () => {
+    const handleEditCurso = () => {
         dispatch( startUpdateCurso( formValues ) );
         dispatch( cleanActiveCurso() );
         closeModal();
     }
+
+    const handleAulasGetAll = async () => {
+        setAulas( await aulasGetAll() );
+    }
+
+    useEffect(() => {
+        handleAulasGetAll();
+    }, []);
+    
     
     return (
         <div>
@@ -57,11 +71,39 @@ export const CursoModal = ({ isOpenModal, closeModal, action }) => {
                 <h2>{ action === actions.create ? 'Crear Nuevo Curso' : 'Editar Curso' }</h2>
                 
                 <div>
-                    <label htmlFor="descripcion">Descripcion</label>
+                    <label htmlFor="nivel">Nivel</label>
+                    <select id="nivel" name="nivel" value={ nivel } onChange={ handleInputChange }>
+                        <option value="" disabled>Selecione un nivel</option>
+                        <option value="P">Primaria</option>
+                        <option value="S">Secundaria</option>
+                        <option value="T">Terciario</option>
+                        <option value="U">Universidad</option>
+                    </select>
+                </div>
+                <div>
+                    <label htmlFor="turno">Turno</label>
+                    <select id="turno" name="turno" value={ turno } onChange={ handleInputChange }>
+                        <option value="" disabled>Selecione un turno</option>
+                        <option value="Mañana">Mañana</option>
+                        <option value="Tarde">Tarde</option>
+                        <option value="Noche">Noche</option>
+                    </select>
+                </div>
+                <div>
+                    <label htmlFor="division">Division</label>
                     <input
                         type="text"
-                        name="descripcion"
-                        value={ descripcion }
+                        name="division"
+                        value={ division }
+                        onChange={ handleInputChange }
+                    />
+                </div>
+                <div>
+                    <label htmlFor="gradoAno">Grado/Año</label>
+                    <input
+                        type="number"
+                        name="gradoAno"
+                        value={ gradoAno }
                         onChange={ handleInputChange }
                     />
                 </div>
@@ -69,20 +111,22 @@ export const CursoModal = ({ isOpenModal, closeModal, action }) => {
                     <label htmlFor="aulas">Aulas</label>
                     <select
                         id="aulas"
-                        name="aulas"
-                        value={ aula }
-                        onChange={ handleInputChange }
+                        name="aula"
+                        value={ aula !== '' ? JSON.stringify( aula ) : '' }
+                        onChange={ handleObjectChange }
                     >
                         <option value="" disabled>selecione un aula</option>
-                        { Aula2.map((a) => (
-                            <option key={ a.id } value={ a }>
-                                { a.descripcion }
-                            </option>
+                        { aulas.map((a) => (
+                            a.estado !== 0 && (
+                                <option key={ a.id } value={ JSON.stringify( a ) }>
+                                    { a.descripcion }
+                                </option>
+                            )
                         )) }                        
                     </select>
                 </div>
                 <div>
-                    <button onClick={ action === actions.create ? handleAddAula : handleEditAula } >
+                    <button onClick={ action === actions.create ? handleAddCurso : handleEditCurso } >
                         Save
                     </button>
                 </div>

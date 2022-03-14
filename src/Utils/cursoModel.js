@@ -1,19 +1,22 @@
-import { Aula1 } from "./aulaModel"
-
 export const cursoModel = {
-    id: 0,
-    descripcion: '',
+    nivel: '',
+    turno: '',
+    gradoAno: '',
+    division: '',
     aula: ''
 }
 
-export const Curso1 = {
-    id: 1,
-    descripcion: 'Curso 1',
-    aula: Aula1
+export const cursoFormatter = ( curso ) => {
+    return {
+        id: curso.id,
+        nivel: curso.nivel,
+        turno: curso.turno,
+        gradoAno: curso.grado_ano,
+        division: curso.division,
+        aula: {
+            id: curso.aula_id,
+            descripcion: curso.aula_descripcion,
+            capacidad: curso.aula_capacidad
+        }
+    };
 }
-
-export const Curso2 = [{
-    id: 1,
-    descripcion: 'Curso 1',
-    aula: Aula1
-}]
