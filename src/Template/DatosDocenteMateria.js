@@ -1,18 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-modal/lib/components/Modal';
 import Card from '../Components/Card';
-
-const materias1 = [
-    {
-        id: 1,
-        descripcion: 'matematica'
-    },
-    {
-        id: 2,
-        descripcion: 'lengua'
-    }
-];
+import { materiasGetAll } from '../Services/restCallMaterias';
 
 const customStyles = {
     content: {
@@ -26,34 +16,33 @@ const customStyles = {
 };
 
 export const DatosDocenteMateria = ({ materias, handleInputChange }) => {
-    const [ materiaId, setMateriaId ] = useState(1);
-
-    const [ estado, setEstado ] = useState('titular');
-
+    const [ materiasList, setMateriasList ] = useState([]);
+    const [ materia, setMateria ] = useState('');
     const [ modalMateriaIsOpen, setmodalMateriaIsOpen ] = useState(false);
+
+    const handleMateriasGetAll = async () => {
+        setMateriasList( await materiasGetAll() );
+    }
+
+    useEffect(() => {
+        handleMateriasGetAll();
+    }, [])
+    
 
     const openModalMateria = () => {
         setmodalMateriaIsOpen( true );
     }
-
     const closeModalMateria = () => {
         setmodalMateriaIsOpen( false );
     }
 
     const handleChageMateria = ({ target }) => {
-        setMateriaId( target.value );
-    }
-
-    const handleEstado = ({ target }) => {
-        setEstado( target.value );
+        setMateria( JSON.parse( target.value ) );
     }
 
     const handleAddMateria = () => {
-        const newMateria = materias1.find( m => m.id === parseInt( materiaId ) );
-        const isExist = materias.find( m => m.id === parseInt( materiaId ) );
-        newMateria.estado = estado;
-        setMateriaId('');
-        setEstado('');
+        const isExist = materias.find( m => m.id === parseInt( materia.id ) );
+        setMateria('');
 
         if( isExist ){
             closeModalMateria();
@@ -63,7 +52,7 @@ export const DatosDocenteMateria = ({ materias, handleInputChange }) => {
         handleInputChange({
             target: {
                 name: 'materias',
-                value: [ ...materias, { ...newMateria } ]
+                value: [ ...materias, materia ]
             }
         });
 
@@ -90,7 +79,7 @@ export const DatosDocenteMateria = ({ materias, handleInputChange }) => {
                             <Card
                                 key={ m.id }
                                 titulo={ m.descripcion }
-                                descripcion={ m.estado }
+                                descripcion={ '' }
                                 id={ m.id }
                                 removeCard={ removeMateria }
                             />
@@ -107,19 +96,13 @@ export const DatosDocenteMateria = ({ materias, handleInputChange }) => {
                 <h2>Materias</h2>
                 <div>
                     <label htmlFor="materias">Selecione una Materia</label>
-                    <select id="materias" onChange={ handleChageMateria }>
+                    <select id="materias" value={ materia !== '' ? JSON.stringify(materia) : '' } onChange={ handleChageMateria }>
+                        <option value="" disabled>Selecione una materia</option>
                         {
-                            materias1.map( m => (
-                                <option key={ m.id } value={ m.id } >{ m.descripcion }</option>
+                            materiasList.map( m => (
+                                <option key={ m.id } value={ JSON.stringify(m) } >{ m.descripcion }</option>
                             ))
                         }
-                    </select>
-                </div>
-                <div>
-                    <label htmlFor="estado">Estado</label>
-                    <select id="estado" onChange={ handleEstado }>
-                        <option value="titular">Titular</option>
-                        <option value="suplente">Suplente</option>
                     </select>
                 </div>
                 <div>

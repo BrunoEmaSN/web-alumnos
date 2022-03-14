@@ -95,7 +95,7 @@ export const DatosDocente = ({
 };
 
 DatosDocente.propTypes = {
-    cuit: PropTypes.number.isRequired,
+    cuit: PropTypes.any.isRequired,
     titulo: PropTypes.string.isRequired,
     sede: PropTypes.string.isRequired,
     subencionado: PropTypes.bool.isRequired,
