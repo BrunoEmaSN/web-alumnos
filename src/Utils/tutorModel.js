@@ -1,3 +1,5 @@
+import moment from "moment"
+
 export const tutorModel = {
     nombre: '',
     apellido: '',
@@ -13,29 +15,56 @@ export const tutorModel = {
     departamento: '',
     piso: '',
     tienePareja: false,
-    pareja: {}
+    nivelAcademico: '',
+    situacionAcademica: '',
+    profesion: '',
+    ocupacion: '',
+    telefonoLaboral: '',
+    pareja: {
+        nombrePareja: '',
+        apellidoPareja: '',
+        dniPareja: '',
+        telefonoFijoPareja: '',
+        telefonoMovilPareja: ''
+    }
 }
 
-export const Tutor1 = {
-    nombre: 'Joseph',
-    apellido: 'Joestar',
-    tipoDocumento: 'DNI',
-    documento: '2',
-    fechaNacimiento: '1920-02-20',
-    sexo: 'Masculino',
-    lugarNacimiento: 'Inglaterra',
-    telefonoFijo: '1',
-    telefonoMovil: '1',
-    domicilio: 'usa',
-    numero: '0',
-    departamento: '',
-    piso: '0',
-    tienePareja: true,
-    pareja: {
-        nombrePareja: 'Suize',
-        apellidoPareja: 'Q',
-        dniPareja: 42084809,
-        telefonoFijoPareja: 1232132132,
-        telefonoMovilPareja: 12335654632
+export const tutorFormatter = ( tutor ) => {
+    return {
+        nombre: tutor.nombre,
+        apellido: tutor.apellido,
+        tipoDocumento: tutor.tipo_documento,
+        documento: tutor.documento,
+        fechaNacimiento: moment(tutor.fecha_nacimiento)
+            .format('yyyy-MM-DD') || '',
+        sexo: tutor.sexo,
+        lugarNacimiento: tutor.lugar_nacimiento,
+        telefonoFijo: tutor.telefono_fijo,
+        telefonoMovil: tutor.telefono_movil,
+        domicilio: tutor.domicilio,
+        numero: tutor.numero,
+        departamento: tutor.departamento,
+        piso: tutor.piso,
+        tienePareja: tutor.tiene_pareja ? true : false,
+        nivelAcademico: tutor.nivel_academico,
+        situacionAcademica: tutor.situacion_academica,
+        profesion: tutor.profesion,
+        ocupacion: tutor.ocupacion,
+        telefonoLaboral: tutor.telefono_laboral,
+        pareja: tutor.tiene_pareja
+            ? {
+                nombrePareja: tutor.pareja_nombre,
+                apellidoPareja: tutor.pareja_apellido,
+                dniPareja: tutor.pareja_dni,
+                telefonoFijoPareja: tutor.pareja_telefono_fijo,
+                telefonoMovilPareja: tutor.pareja_telefono_movil
+            }
+            : {
+                nombrePareja: '',
+                apellidoPareja: '',
+                dniPareja: '',
+                telefonoFijoPareja: '',
+                telefonoMovilPareja: ''
+            }
     }
 }

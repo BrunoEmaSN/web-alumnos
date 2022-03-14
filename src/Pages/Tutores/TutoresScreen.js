@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTutores } from '../../Store/Tutor/Actions/Tutor';
-import { Tutor1 } from '../../Utils/tutorModel';
+import { startLoadingTutores } from '../../Store/Tutor/Actions/Tutor';
 import { TutoresList } from './TutoresList';
 import { TutoresSave } from './TutoresSave';
 
@@ -11,7 +10,7 @@ export const TutoresScreen = () => {
     const { active } = useSelector( state => state.tutor );
 
     useEffect(() => {
-        dispatch( getTutores( Tutor1 ) );
+        dispatch( startLoadingTutores() );
     }, []);
 
     return (

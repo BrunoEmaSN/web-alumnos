@@ -5,6 +5,7 @@ import { cleanActiveTutor, startNewTutor, startUpdateTutor } from '../../Store/T
 import { DatosPersonales } from '../../Template/DatosPersonales';
 import { DatosPareja } from '../../Template/DatosPareja';
 import { tutorModel } from '../../Utils/tutorModel';
+import { DatosTutor } from '../../Template/DatosTutor';
 
 export const TutoresSave = () => {
     const dispatch = useDispatch();
@@ -36,11 +37,15 @@ export const TutoresSave = () => {
                     { ...formValues }
                     handleInputChange={ handleInputChange }
                 />
-
+                <DatosTutor
+                    { ...formValues }
+                    handleInputChange={ handleInputChange }
+                />
                 <DatosPareja
                     { ...formValues }
                     handleInputChange={ handleInputChange }
                 />
+
                 <div>
                     <button onClick={ active === tutorModel ? handleAddTutor : handleEditTutor } >
                         Save

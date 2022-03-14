@@ -29,6 +29,18 @@ export const DatosPareja = ({
         setchecked( !checked );
     }
 
+    const handleParejaChange = ({ target }) => {
+        handleInputChange({
+            target: {
+                name: 'pareja',
+                value: {
+                    ...pareja,
+                    [target.name]: target.value
+                }
+            } 
+        });
+    }
+
     return (
         <div>
             <fieldset>
@@ -45,7 +57,7 @@ export const DatosPareja = ({
                             id="nombrePareja"
                             name="nombrePareja"
                             value={ nombrePareja }
-                            onChange={ handleInputChange }
+                            onChange={ handleParejaChange }
                         />
                     </div>
                     <div>
@@ -55,7 +67,7 @@ export const DatosPareja = ({
                             id="apellidoPareja"
                             name="apellidoPareja"
                             value={ apellidoPareja }
-                            onChange={ handleInputChange }
+                            onChange={ handleParejaChange }
                         />
                     </div>
                     <div>
@@ -65,7 +77,7 @@ export const DatosPareja = ({
                             id="dniPareja"
                             name="dniPareja"
                             value={ dniPareja }
-                            onChange={ handleInputChange }
+                            onChange={ handleParejaChange }
                         />
                     </div>
                     <div>
@@ -74,7 +86,7 @@ export const DatosPareja = ({
                             type="number"
                             name="telefonoFijoPareja"
                             value={ telefonoFijoPareja }
-                            onChange={ handleInputChange }
+                            onChange={ handleParejaChange }
                         />
                     </div>
                     <div>
@@ -84,7 +96,7 @@ export const DatosPareja = ({
                             id="telefonoMovilPareja"
                             name="telefonoMovilPareja"
                             value={ telefonoMovilPareja }
-                            onChange={ handleInputChange }
+                            onChange={ handleParejaChange }
                         />
                     </div>
                 </div>

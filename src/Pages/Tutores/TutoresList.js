@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { activeTutor, startDeletingTutor } from '../../Store/Tutor/Actions/Tutor';
+import { activeTutor, startDeletingTutor, startSetActive } from '../../Store/Tutor/Actions/Tutor';
 import { tutorModel } from '../../Utils/tutorModel';
 
 export const TutoresList = () => {
@@ -12,8 +12,8 @@ export const TutoresList = () => {
         dispatch( activeTutor( tutorModel ) );
     }
 
-    const handleEdit = ( t ) => {
-        dispatch( activeTutor( t ) );
+    const handleEdit = ( documento ) => {
+        dispatch( startSetActive( documento ) );
     }
 
     const handleDelete = ( documento ) => {
@@ -24,11 +24,15 @@ export const TutoresList = () => {
             <h1>Tutor List</h1>
             <button onClick={ handleCreate }>Save</button>
             {
-                tutores.map( t => <div key={ t.documento }>
-                    { `${ t.nombre } ${ t.apellido }` }
-                    <button onClick={  () => { handleEdit( t ) }  }>Edit</button>
-                    <button onClick={  () => { handleDelete( t.documento ) }  }>Delete</button>
-                </div>)
+                tutores.map( t => 
+                    t.estado !== 0 && (
+                        <div key={ t.documento }>
+                            { `${ t.nombre } ${ t.apellido }` }
+                            <button onClick={  () => { handleEdit( t.documento ) }  }>Edit</button>
+                            <button onClick={  () => { handleDelete( t.documento ) }  }>Delete</button>
+                        </div>
+                    )
+                )
             }
         </div>
     );
