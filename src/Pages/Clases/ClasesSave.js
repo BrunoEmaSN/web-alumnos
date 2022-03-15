@@ -1,19 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from '../../Hooks/useForm';
+import { cursosGetAll } from '../../Services/restCallCursos';
+import { docentesGetAll } from '../../Services/restCallDocentes';
+import { materiasGetAll } from '../../Services/restCallMaterias';
+import { periodosGetAll } from '../../Services/restCallPeriodos';
 import { cleanActiveClase, startNewClase, startUpdateClase } from '../../Store/Clase/Actions/Clase';
 import { claseModel } from '../../Utils/claseModel';
-import { Curso2 } from '../../Utils/cursoModel';
-import { Docente2 } from '../../Utils/docenteModel';
-import { Materia2 } from '../../Utils/materiaModel';
-import { Periodo1 } from '../../Utils/periodoModel';
 
 export const ClasesSave = () => {
     const dispatch = useDispatch();
 
     const { active } = useSelector( state => state.clase );
 
-    const [ formValues, handleInputChange ] = useForm( active );
+    const [ formValues, handleInputChange, , handleObjectChange ] = useForm( active );
+
+    const [ cursosList, setCursosList ] = useState([]);
+    const [ docentesList, setDocentesList ] = useState([]);
+    const [ materiasList, setMateriasList ] = useState([]);
+    const [ periodosList, setPeriodosList ] = useState([]);
+
+    const handleListGetAll = async () => {
+        setCursosList( await cursosGetAll() );
+        setDocentesList( await docentesGetAll() );
+        setMateriasList( await materiasGetAll() );
+        setPeriodosList( await periodosGetAll('CicloLectivo') );
+    }
+
+    useEffect(() => {
+        handleListGetAll();
+    }, [])
+    
 
     const {
         docente,
@@ -48,13 +65,13 @@ export const ClasesSave = () => {
                 <label htmlFor="dias">Dias</label>
                 <select id="dias" name="dias" value={ dias } onChange={ handleInputChange }>
                     <option value="">Selecione un Dia</option>
-                    <option value="domingo">Domingo</option>
-                    <option value="lunes">Lunes</option>
-                    <option value="martes">Martes</option>
-                    <option value="miercoles">Miercoles</option>
-                    <option value="jueves">Jueves</option>
-                    <option value="viernes">Viernes</option>
-                    <option value="sabado">Sabado</option>
+                    <option value="Domingo">Domingo</option>
+                    <option value="Lunes">Lunes</option>
+                    <option value="Martes">Martes</option>
+                    <option value="Miercoles">Miercoles</option>
+                    <option value="Jueves">Jueves</option>
+                    <option value="Viernes">Viernes</option>
+                    <option value="Sabado">Sabado</option>
                 </select>
             </div>
             <div>
@@ -67,37 +84,37 @@ export const ClasesSave = () => {
             </div>
             <div>
                 <label htmlFor="periodo">Periodo</label>
-                <select id="periodo" name="periodo" onChange={ handleInputChange } value={ periodo }>
+                <select id="periodo" name="periodo" value={ periodo } onChange={ handleObjectChange }>
                     <option value="">Selecione un periodo</option>
-                    { Periodo1.map(( p ) => (
-                        <option key={ p.id } value={ p.descripcion }>{ `${ p.descripcion }` }</option>
+                    { periodosList.map(( p ) => (
+                        <option key={ p.id } value={ p.id }>{ `${ p.descripcion }` }</option>
                     )) }
                 </select>
             </div>
             <div>
                 <label htmlFor="curso">Curso</label>
-                <select id="curso" name="curso" onChange={ handleInputChange } value={ curso }>
+                <select id="curso" name="curso" value={ curso } onChange={ handleObjectChange }>
                     <option value="">Selecione un curso</option>
-                    { Curso2.map((c) => (
-                        <option key={ c.id } value={ c.descripcion }>{ `${ c.descripcion }` }</option>
+                    { cursosList.map((c) => (
+                        <option key={ c.id } value={ c.id }>{ `${ c.aula_descripcion }` }</option>
                     )) }
                 </select>
             </div>
             <div>
                 <label htmlFor="docentes">Docente</label>
-                <select id="docentes" name="docente" value={ docente } onChange={handleInputChange}>
+                <select id="docentes" name="docente" value={ docente } onChange={ handleObjectChange }>
                     <option value="" disabled>selecione un docente</option>
-                    {Docente2.map((d) => (
-                        <option key={d.documento} value={ d.nombre }>{ `${ d.nombre } ${ d.apellido }` }</option>
+                    {docentesList.map((d) => (
+                        <option key={ d.documento } value={ d.documento }>{ `${ d.nombre } ${ d.apellido }` }</option>
                     ))}
                 </select>
             </div>
             <div>
                 <label htmlFor="materias">Materias</label>
-                <select id="materias" name="materia" value={ materia } onChange={handleInputChange}>
+                <select id="materias" name="materia" value={ materia } onChange={ handleObjectChange }>
                     <option value="" disabled>selecione una materia</option>
-                    {Materia2.map((m) => (
-                        <option key={m.id} value={ m.descripcion }>{ `${ m.descripcion }` }</option>
+                    {materiasList.map((m) => (
+                        <option key={ m.id } value={ m.id }>{ `${ m.descripcion }` }</option>
                     ))}
                 </select>
             </div>
