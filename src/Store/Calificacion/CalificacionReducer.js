@@ -10,10 +10,10 @@ export const CalificacionReducer = ( state = initialState, actions ) => {
         case types.calificaciones + types.getAll:
             return {
                 ...state,
-                calificaciones: [ { ...actions.payload } ]
+                calificaciones: [ ...actions.payload ]
             };
         
-        case types.calificaciones + types.getOne:
+        case types.calificaciones + types.active:
             return {
                 ...state,
                 active: actions.payload
@@ -35,8 +35,8 @@ export const CalificacionReducer = ( state = initialState, actions ) => {
             return {
                 ...state,
                 calificaciones: state.calificaciones.map(
-                    c => c.id === actions.payload.calificacion.id
-                    ? actions.payload.calificacion
+                    c => c.id === actions.payload.id
+                    ? actions.payload
                     : c
                 )
             };

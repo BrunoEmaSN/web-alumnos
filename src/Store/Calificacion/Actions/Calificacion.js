@@ -1,13 +1,20 @@
+import { calificacionesGetAll, calificacionesUpdate } from "../../../Services/restCallCalificaciones";
 import { types } from "../../../Types";
 
-export const startNewCalificacion = ( calificacion ) => {
+export const startLoadingCalificaciones = () => {
     return async ( dispatch ) => {
-        dispatch( addNewCalificacion( calificacion ) );
+        const calificaciones = await calificacionesGetAll();
+        dispatch( loadingCalificaciones( calificaciones ) );
     };
 };
 
+export const loadingCalificaciones = ( calificaciones ) => ({
+    type: types.calificaciones + types.getAll,
+    payload: calificaciones
+});
+
 export const activeCalificacion = ( calificacion ) => ({
-    type: types.calificaciones + types.getOne,
+    type: types.calificaciones + types.active,
     payload: calificacion
 });
 
@@ -15,53 +22,15 @@ export const cleanActiveCalificacion = () => ({
     type: types.calificaciones + types.cleanActive
 });
 
-export const addNewCalificacion = ( calificacion ) => ({
-    type: types.calificaciones + types.add,
-    payload: calificacion
-});
-
-export const startLoadingCalificaciones = () => {
-    /*return async ( dispatch ) => {
-    };*/
-};
-
-export const getCalificaciones = ( calificaciones ) => ({
-    type: types.calificaciones + types.getAll,
-    payload: calificaciones
-});
-
 export const startUpdateCalificacion = ( calificacion ) => {
     return async ( dispatch ) => {
-        // eslint-disable-next-line no-useless-catch
-        try{
-            dispatch( refreshCalificacion( calificacion ) );
-        }
-        catch( e ) {
-            throw e;
-        }
+        const { id } = calificacion;
+        await calificacionesUpdate( id, calificacion );
+        dispatch( refreshCalificacion( calificacion ) );
     };
 };
 
 export const refreshCalificacion = ( calificacion ) => ({
     type: types.calificaciones + types.update,
-    payload: {
-        calificacion
-    }
-});
-
-export const startDeletingCalificacion = ( id ) => {
-    return async ( dispatch ) => {
-        // eslint-disable-next-line no-useless-catch
-        try{
-            dispatch( deletecalificacion( id ) );
-        }
-        catch( e ){
-            throw e;
-        }
-    };
-};
-
-export const deletecalificacion = ( id ) => ({
-    type: types.calificaciones + types.remove,
-    payload: id
+    payload: calificacion
 });

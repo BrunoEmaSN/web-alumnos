@@ -1,16 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from '../../Hooks/useForm';
-import { cleanActiveCalificacion, startNewCalificacion, startUpdateCalificacion } from '../../Store/Calificacion/Actions/Calificacion';
-import { Alumno2 } from '../../Utils/alumnoModel';
-import { calificacionModel } from '../../Utils/calificacionModel';
-import { Docente2 } from '../../Utils/docenteModel';
-import { Materia2, regimenes } from '../../Utils/materiaModel';
+import { alumnosGetAll } from '../../Services/restCallAlumnos';
+import { docentesGetAll } from '../../Services/restCallDocentes';
+import { materiasGetAll } from '../../Services/restCallMaterias';
+import { cleanActiveCalificacion, startUpdateCalificacion } from '../../Store/Calificacion/Actions/Calificacion';
+import { regimenes } from '../../Utils/materiaModel';
 
 export const CalificacionesSave = () => {
     const dispatch = useDispatch();
 
     const { active } = useSelector( state => state.calificacion );
+    const [ alumnosList, setAlumnosList ] = useState([]);
+    const [ materiasList, setMateriasList ] = useState([]);
+    const [ docentesList, setDocentesList ] = useState([]);
+
+    const handleListGetAll = async () => {
+        setAlumnosList(await alumnosGetAll());
+        setMateriasList(await materiasGetAll());
+        setDocentesList(await docentesGetAll());
+    }
+
+    useEffect(() => {
+        handleListGetAll();
+    }, [])
+    
 
     const [ formValues, handleInputChange ] = useForm( active );
 
@@ -19,16 +33,10 @@ export const CalificacionesSave = () => {
         etapa,
         nota,
         descripcion,
-        alumno,
-        docente,
-        materia,
+        alumno_id,
+        docente_id,
+        materia_id,
     } = formValues;
-
-    const handleAddCalificacion = ( e ) => {
-        e.preventDefault();
-        dispatch( startNewCalificacion( formValues ) );
-        dispatch( cleanActiveCalificacion() );
-    }
 
     const handleEditCalificacion = ( e ) => {
         e.preventDefault();
@@ -72,33 +80,33 @@ export const CalificacionesSave = () => {
             </div>
             <div>
                 <label htmlFor="alumnos">Alumnos</label>
-                <select id="alumnos" name="alumno" value={ alumno } onChange={handleInputChange}>
+                <select id="alumnos" name="alumno_id" value={ alumno_id } onChange={handleInputChange}>
                     <option value="" disabled>selecione un alumno</option>
-                    {Alumno2.map((a) => (
-                        <option key={a.documento} value={ a }>{ `${ a.nombre } ${ a.apellido }` }</option>
+                    {alumnosList.map((a) => (
+                        <option key={a.documento} value={ a.documento }>{ `${ a.nombre } ${ a.apellido }` }</option>
                     ))}
                 </select>
             </div>
             <div>
                 <label htmlFor="docentes">Docente</label>
-                <select id="docentes" name="docente" value={ docente } onChange={handleInputChange}>
+                <select id="docentes" name="docente_id" value={ docente_id } onChange={handleInputChange}>
                     <option value="" disabled>selecione un docente</option>
-                    {Docente2.map((d) => (
-                        <option key={d.documento} value={ d }>{ `${ d.nombre } ${ d.apellido }` }</option>
+                    {docentesList.map((d) => (
+                        <option key={d.documento} value={ d.documento }>{ `${ d.nombre } ${ d.apellido }` }</option>
                     ))}
                 </select>
             </div>
             <div>
                 <label htmlFor="materias">Materias</label>
-                <select id="materias" name="materia" value={ materia } onChange={handleInputChange}>
+                <select id="materias" name="materia_id" value={ materia_id } onChange={handleInputChange}>
                     <option value="" disabled>selecione una materia</option>
-                    {Materia2.map((m) => (
-                        <option key={m.id} value={ m }>{ `${ m.descripcion }` }</option>
+                    {materiasList.map((m) => (
+                        <option key={m.id} value={ m.id }>{ `${ m.descripcion }` }</option>
                     ))}
                 </select>
             </div>
             <div>
-                <button onClick={ active === calificacionModel ? handleAddCalificacion :  handleEditCalificacion }>
+                <button onClick={ handleEditCalificacion }>
                     Guardar
                 </button>
             </div>
