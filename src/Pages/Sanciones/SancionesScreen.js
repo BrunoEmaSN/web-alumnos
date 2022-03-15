@@ -1,35 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import moment from 'moment';
 import { useModal } from '../../Hooks/useModal';
 import { SancionModal } from './SancionesModal';
-import { activeSancion, getSanciones, startDeletingSancion } from '../../Store/Sancion/Actions/Sancion';
-import { Sancion1 } from '../../Utils/sancionModel';
-
-const actions = {
-    create: 'Create',
-    edit: 'Edit'
-};
+import { startLoadingSanciones, startSetActive } from '../../Store/Sancion/Actions/Sancion';
 
 export const SancionesScreen = () => {
     const dispatch = useDispatch();
 
     const { sanciones } = useSelector( state => state.sancion );
     const [ isOpenModal, openModal, closeModal ] = useModal( false );
-    const [ action, setAction ] = useState('');
 
-    const handleUpdate = ( a ) => {
-        setAction( actions.edit );
-        dispatch( activeSancion( a ) );
+    const handleUpdate = ( sancion ) => {
+        dispatch( startSetActive( sancion ) );
         openModal();
     }
 
-    const handleDelete = ( id ) => {
-        dispatch( startDeletingSancion( id ) );
-    }
-
     useEffect(() => {
-        dispatch( getSanciones( Sancion1 ) );
+        dispatch( startLoadingSanciones() );
     }, [dispatch]);
     
     return (
@@ -37,16 +26,14 @@ export const SancionesScreen = () => {
             <h1>sancionesList</h1>
             {
                 sanciones.map( s => <div key={ s.id }>
-                    { `${ s.id } ${ s.descripcion } : ${ s.fecha }` }
+                    { `${ s.id } ${ s.descripcion } : ${ moment(s.fecha).format('yyyy-MM-DD') }` }
                     <button onClick={  () => { handleUpdate( s ) }  }>Edit</button>
-                    <button onClick={  () => { handleDelete( s.id ) }  }>Delete</button>
                 </div>)
             }
             {
                 isOpenModal && <SancionModal
                     isOpenModal={ isOpenModal }
                     closeModal={ closeModal }
-                    action={ action }
                 />
             }
         </div>

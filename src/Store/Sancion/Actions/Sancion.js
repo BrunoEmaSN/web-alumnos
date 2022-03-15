@@ -1,14 +1,28 @@
-/* eslint-disable no-useless-catch */
+import { sancionesGetAll, sancionesUpdate } from "../../../Services/restCallSanciones";
 import { types } from "../../../Types";
+import { sancionFormatter } from "../../../Utils/sancionModel";
 
-export const startNewSancion = ( sancion ) => {
+export const startLoadingSanciones = () => {
     return async ( dispatch ) => {
-        dispatch( addNewSancion( sancion ) );
+        const sanciones = await sancionesGetAll();
+        dispatch( loadingSaciones( sanciones ) );
     };
 };
 
+export const loadingSaciones = ( sanciones ) => ({
+    type: types.sanciones + types.getAll,
+    payload: sanciones
+});
+
+export const startSetActive = (datosSancion) => {
+    return async (dispatch) => {
+        const sancion = sancionFormatter( datosSancion );
+        dispatch( activeSancion( sancion ) );
+    }
+}
+
 export const activeSancion = ( sancion ) => ({
-    type: types.sanciones + types.getOne,
+    type: types.sanciones + types.active,
     payload: sancion
 });
 
@@ -16,52 +30,22 @@ export const cleanActiveSancion = () => ({
     type: types.sanciones + types.cleanActive
 });
 
-export const addNewSancion = ( sancion ) => ({
-    type: types.sanciones + types.add,
-    payload: sancion
-});
-
-export const startLoadingSanciones = () => {
-    /*return async ( dispatch ) => {
-        //dispatch( getAlumnos(  ) );
-    };*/
-};
-
-export const getSanciones = ( sanciones ) => ({
-    type: types.sanciones + types.getAll,
-    payload: sanciones
-});
-
 export const startUpdateSancion = ( sancion ) => {
     return async ( dispatch ) => {
-        try{
-            dispatch( refreshSancion( sancion ) );
-        }
-        catch( e ) {
-            throw e;
-        }
+        const { id } = sancion;
+        await sancionesUpdate( id, sancion );
+        dispatch( refreshSancion({
+            id: sancion.id,
+            alumno_id: sancion.alumno,
+            docente_id: sancion.docente,
+            tipo_sancion: sancion.tipoSancion,
+            descripcion: sancion.descripcion,
+            fecha: sancion.fecha
+        }) );
     };
 };
 
 export const refreshSancion = ( sancion ) => ({
     type: types.sanciones + types.update,
-    payload: {
-        sancion
-    }
-});
-
-export const startDeletingSancion = ( id ) => {
-    return async ( dispatch ) => {
-        try{
-            dispatch( deleteSancion( id ) );
-        }
-        catch( e ){
-            throw e;
-        }
-    };
-};
-
-export const deleteSancion = ( id ) => ({
-    type: types.sanciones + types.remove,
-    payload: id
+    payload: sancion
 });

@@ -1,22 +1,13 @@
-import { Alumno1 } from "./alumnoModel";
-import { Docente1 } from "./docenteModel";
+import moment from "moment";
 
-export const sancionModel = {
-    id: 0,
-    alumno: '',
-    docente: '',
-    tipoSancion: '',
-    descripcion: '',
-    fecha: ''
-};
-
-export const Sancion1 = {
-    id: 1,
-    alumno: Alumno1,
-    docente: Docente1,
-    tipoSancion: 'Leve',
-    descripcion: 'Duerme en clases',
-    fecha: '2022-03-24'
-};
-
+export const sancionFormatter = ( sancion ) => {
+    return {
+        id: sancion.id,
+        alumno: sancion.alumno_id,
+        docente: sancion.docente_id,
+        tipoSancion: sancion.tipo_sancion,
+        descripcion: sancion.descripcion,
+        fecha: moment(sancion.fecha).format("yyyy-MM-DD")
+    };
+}
 export const tiposSanciones = [ 'Leve', 'Moderada', 'Grave' ];

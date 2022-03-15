@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import Modal from 'react-modal/lib/components/Modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { useForm } from '../../Hooks/useForm';
-import { cleanActiveSancion, startNewSancion, startUpdateSancion } from '../../Store/Sancion/Actions/Sancion';
-import { Alumno2 } from '../../Utils/alumnoModel';
-import { Docente2 } from '../../Utils/docenteModel';
+import { cleanActiveSancion, startUpdateSancion } from '../../Store/Sancion/Actions/Sancion';
 import { tiposSanciones } from '../../Utils/sancionModel';
+import { alumnosGetAll } from '../../Services/restCallAlumnos';
+import { docentesGetAll } from '../../Services/restCallDocentes';
+import { useForm } from '../../Hooks/useForm';
 
 const customStyles = {
     content: {
@@ -19,16 +19,23 @@ const customStyles = {
     },
 };
 
-const actions = {
-    create: 'Create',
-    edit: 'Edit'
-};
-
-export const SancionModal = ({ isOpenModal, closeModal, action }) => {
+export const SancionModal = ({ isOpenModal, closeModal }) => {
     const dispatch = useDispatch();
 
     const { active } = useSelector( state => state.sancion );
 
+    const [ alumnosList, setAlumnosList ] = useState([]);
+    const [ docentesList, setDocentesList ] = useState([]);
+
+    const handleListGetAll = async () => {
+        setAlumnosList( await alumnosGetAll() );
+        setDocentesList( await docentesGetAll() );
+    }
+
+    useEffect(() => {
+        handleListGetAll();
+    }, []);
+    
     const [ formValues, handleInputChange ] = useForm( active );
 
     const {
@@ -39,17 +46,13 @@ export const SancionModal = ({ isOpenModal, closeModal, action }) => {
         fecha
     } = formValues;
 
-    const handleAddAula = () => {
-        dispatch( startNewSancion( formValues ) );
-        dispatch( cleanActiveSancion() );
-        closeModal()
-    }
-
-    const handleEditAula = () => {
+    const handleEditSancion = () => {
         dispatch( startUpdateSancion( formValues ) );
         dispatch( cleanActiveSancion() );
         closeModal();
     }
+
+
     return (
         <div>
             <Modal
@@ -58,12 +61,12 @@ export const SancionModal = ({ isOpenModal, closeModal, action }) => {
                 onRequestClose={ closeModal }
                 ariaHideApp={false}
             >
-                <h2>{ action === actions.create ? 'Crear Nuevo Sancion' : 'Editar Sancion' }</h2>
+                <h2>Editar Sancion</h2>
                 <div>
                     <label htmlFor="alumno">Alumno</label>
                     <select id="alumno" name="alumno" value={ alumno } onChange={ handleInputChange }>
                         <option value="" disabled>Seleccione un Alumno</option>
-                        { Alumno2.map((a) => (
+                        { alumnosList.map((a) => (
                             <option key={a.documento} value={ a.documento }>{ `${ a.apellido } ${ a.nombre }` }</option>
                         )) }
                     </select>
@@ -72,7 +75,7 @@ export const SancionModal = ({ isOpenModal, closeModal, action }) => {
                     <label htmlFor="docente">Docente</label>
                     <select id="docente" name="docente" value={ docente } onChange={ handleInputChange }>
                         <option value="" disabled>Seleccione un Docente</option>
-                        { Docente2.map((d) => (
+                        { docentesList.map((d) => (
                             <option key={d.documento} value={ d.documento }>{ `${ d.apellido } ${ d.nombre }` }</option>
                         )) }
                     </select>
@@ -100,7 +103,7 @@ export const SancionModal = ({ isOpenModal, closeModal, action }) => {
                     <input type="date" name="fecha" value={fecha} onChange={handleInputChange} />
                 </div>
                 <div>
-                    <button onClick={ action === actions.create ? handleAddAula : handleEditAula } >
+                    <button onClick={ handleEditSancion } >
                         Save
                     </button>
                 </div>
@@ -116,6 +119,5 @@ export const SancionModal = ({ isOpenModal, closeModal, action }) => {
 
 SancionModal.propTypes = {
     isOpenModal: PropTypes.bool.isRequired,
-    closeModal: PropTypes.func.isRequired,
-    action: PropTypes.string.isRequired
+    closeModal: PropTypes.func.isRequired
 }
