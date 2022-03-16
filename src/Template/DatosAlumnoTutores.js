@@ -3,18 +3,8 @@ import PropTypes from 'prop-types';
 import Modal from 'react-modal/lib/components/Modal';
 import Card from '../Components/Card';
 import { tutoresGetOne } from '../Services/restCallTutores';
-import { tutorFormatter } from '../Utils/tutorModel';
-
-const customStyles = {
-    content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
-    },
-};
+import { customStyles } from '../Utils/modalStyles';
+import { tutorFormatter } from '../Utils/Model/tutorModel';
 
 export const DatosAlumnoTutores = ({ tutores, handleInputChange }) => {
 

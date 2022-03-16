@@ -1,7 +1,12 @@
-/* eslint-disable no-useless-catch */
-import { materiasAdd, materiasDelete, materiasGetAll, materiasGetOne, materiasUpdate } from "../../../Services/restCallMaterias";
+import {
+    materiasAdd,
+    materiasDelete,
+    materiasGetAll,
+    materiasGetOne,
+    materiasUpdate
+} from "../../../Services/restCallMaterias";
 import { types } from "../../../Types";
-import { materiaFormatter } from "../../../Utils/materiaModel";
+import { materiaFormatter } from "../../../Utils/Model/materiaModel";
 
 export const startLoadingMaterias = () => {
     return async ( dispatch ) => {

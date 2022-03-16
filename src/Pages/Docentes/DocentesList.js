@@ -1,7 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { activeDocente, startDeletingDocente, startSetActive } from '../../Store/Docente/Actions/Docente';
-import { docenteModel } from '../../Utils/docenteModel';
+import {
+    activeDocente,
+    startDeletingDocente,
+    startSetActive
+} from '../../Store/Docente/Actions/Docente';
+import { docenteModel } from '../../Utils/Model/docenteModel';
 
 export const DocentesList = () => {
     const dispatch = useDispatch();
@@ -28,8 +32,16 @@ export const DocentesList = () => {
                     d.estado !== 0 && (
                         <div key={ d.documento }>
                             { `${ d.nombre } ${ d.apellido }` }
-                            <button onClick={  () => { handleEdit( d.documento ) }  }>Edit</button>
-                            <button onClick={  () => { handleDelete( d.documento ) }  }>Delete</button>
+                            <button onClick={
+                                () => { handleEdit( d.documento ) }
+                            }>
+                                Edit
+                            </button>
+                            <button onClick={
+                                () => { handleDelete( d.documento ) }
+                            }>
+                                Delete
+                            </button>
                         </div>
                     )
                 ))

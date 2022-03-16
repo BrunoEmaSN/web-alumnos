@@ -6,8 +6,8 @@ import { DatosPersonales } from '../../Template/DatosPersonales';
 import { DatosAlumnoMateria } from '../../Template/DatosAlumnoMateria';
 import { DatosAlumnoTutores } from '../../Template/DatosAlumnoTutores';
 import { useForm } from '../../Hooks/useForm';
-import { alumnoModel } from '../../Utils/alumnoModel';
 import { cursosGetAll } from '../../Services/restCallCursos';
+import { alumnoModel } from '../../Utils/Model/alumnoModel';
 
 export const AlumnosSave = () => {
     const dispatch = useDispatch();
@@ -66,9 +66,19 @@ export const AlumnosSave = () => {
                     handleInputChange={ handleInputChange }
                 />
                 <div>
-                    <button onClick={ active === alumnoModel ? handleAddAlumno :  handleEditAlumno }>
-                        Guardar
-                    </button>
+                    {
+                        active === alumnoModel
+                        ? (
+                            <button onClick={ handleAddAlumno }>
+                                Guardar
+                            </button>
+                        )
+                        :  (
+                            <button onClick={ handleEditAlumno }>
+                                Editar
+                            </button>
+                        )
+                    }
                 </div>
                 <div>
                     <button onClick={ back }>Volver</button>

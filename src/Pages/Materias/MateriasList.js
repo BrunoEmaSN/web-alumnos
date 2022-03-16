@@ -1,16 +1,18 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { activeMateria, startDeletingMateria, startSetActive } from '../../Store/Materia/Actions/Materia';
-import { materiaModel } from '../../Utils/materiaModel';
+import {
+    activeMateria,
+    startDeletingMateria,
+    startSetActive
+} from '../../Store/Materia/Actions/Materia';
+import { materiaModel } from '../../Utils/Model/materiaModel';
+
 export const MateriasList = () => {
     const dispatch = useDispatch();
 
     const { materias } = useSelector( state => state.materia );
 
     const handleCreate = () => {
-        const lastIndex = materias.length - 1;
-        const lastId = materias[lastIndex].id;
-        materiaModel.id = lastId + 1;
         dispatch( activeMateria( materiaModel ) );
     }
 
@@ -30,8 +32,16 @@ export const MateriasList = () => {
                 materias.map( m => (
                     m.estado !== 0 && <div key={ m.id}>
                         { `${ m.id } ${ m.descripcion } ${ m.plan_estudio } ${ m.regimen }` }
-                        <button onClick={  () => { handleEdit( m.id ) }  }>Edit</button>
-                        <button onClick={  () => { handleDelete( m.id) }  }>Delete</button>
+                        <button onClick={
+                            () => { handleEdit( m.id ) }
+                        }>
+                            Edit
+                        </button>
+                        <button onClick={
+                            () => { handleDelete( m.id) }
+                        }>
+                            Delete
+                        </button>
                     </div>
                 ))
             }

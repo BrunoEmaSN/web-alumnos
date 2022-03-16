@@ -1,16 +1,12 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from '../../Hooks/useForm';
-import { cleanActiveMateria, startNewMateria, startUpdateMateria } from '../../Store/Materia/Actions/Materia';
-import { materiaModel } from '../../Utils/materiaModel';
-
-const regimenes = [
-    'Anual',
-    'Semestral',
-    'Cuatrimestral',
-    'Trimestral',
-    'Bimestral',
-];
+import {
+    cleanActiveMateria,
+    startNewMateria,
+    startUpdateMateria
+} from '../../Store/Materia/Actions/Materia';
+import { materiaModel, regimenes } from '../../Utils/Model/materiaModel';
 
 export const MateriasSave = () => {
     const dispatch = useDispatch();
@@ -46,25 +42,51 @@ export const MateriasSave = () => {
         <div>
             <div>
                 <label htmlFor="descripcion">Descripcion</label>
-                <input type="text" id="descripcion" name="descripcion" value={descripcion} onChange={handleInputChange}/>
+                <input
+                    type="text"
+                    id="descripcion"
+                    name="descripcion"
+                    value={descripcion}
+                    onChange={handleInputChange}
+                />
             </div>
             <div>
                 <label htmlFor="regimen">Regimen</label>
-                <select id="regimen" name="regimen" value={regimen} onChange={handleInputChange}>
+                <select
+                    id="regimen"
+                    name="regimen"
+                    value={regimen} onChange={handleInputChange}
+                >
                     <option value="" disabled>selecione un aula</option>
-                    {regimenes.map((r) => (
+                    { regimenes.map((r) => (
                         <option key={r} value={r}>{r}</option>
-                    ))}
+                    )) }
                 </select>
             </div>
             <div>
                 <label htmlFor="planEstudio">Plan de Estudio</label>
-                <input type="text" id="planEstudio" name="planEstudio" value={planEstudio} onChange={handleInputChange}/>
+                <input
+                    type="text"
+                    id="planEstudio"
+                    name="planEstudio"
+                    value={planEstudio}
+                    onChange={handleInputChange}
+                />
             </div>
             <div>
-                <button onClick={ active === materiaModel ? handleAddMateria : handleEditMateria } >
-                    Save
-                </button>
+                {
+                    active === materiaModel
+                    ? (
+                        <button onClick={ handleAddMateria } >
+                            Guardar
+                        </button>
+                    )
+                    : (
+                        <button onClick={ handleEditMateria } >
+                            Editar
+                        </button>
+                    )
+                }
             </div>
             <div>
                 <button onClick={ back }>

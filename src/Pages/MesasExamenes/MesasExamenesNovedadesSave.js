@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
+import moment from 'moment';
 import { useForm } from "../../Hooks/useForm";
-import { llamadosList } from "../../Utils/mesaExamenModel";
 import { materiasGetAll } from '../../Services/restCallMaterias';
 
 import { MesasExamenesNovedadTable } from './MesasExamenesNovedadTable';
-import moment from 'moment';
+import { llamadosList } from '../../Utils/Model/mesaExamenModel';
 
 const initialState = {
   materia_id: '',
@@ -125,38 +125,78 @@ export const MesasExamenesNovedadesSave = ({ novedad, setNovedad }) => {
     <div>
       <div>
         <label htmlFor="materia_id">Materia</label>
-        <select id="materia_id" name="materia_id" value={ materia_id } onChange={ handleMateriaChange }>
+        <select
+          id="materia_id"
+          name="materia_id"
+          value={ materia_id }
+          onChange={ handleMateriaChange }
+        >
           <option value="" disabled>Seleccione una Materia</option>
-          {materiasList.map((m) => (
-            <option key={ m.id } value={ m.id }>{ m.descripcion }</option>
-          ))}
+          { materiasList.map((m) => (
+            <option key={ m.id } value={ m.id }>
+              { m.descripcion }
+            </option>
+          )) }
         </select>
       </div>
       <div>
         <label htmlFor="fecha">Fecha</label>
-        <input type="date" id="fecha" name="fecha" value={ fecha } onChange={ handleInputChange }/>
+        <input
+          type="date"
+          id="fecha"
+          name="fecha"
+          value={ fecha }
+          onChange={ handleInputChange }
+        />
       </div>
       <div>
         <label htmlFor="llamado">Llamados</label>
-        <select id="llamado" name="llamado" value={ llamado } onChange={ handleInputChange }>
-          <option value="" disabled>Seleccione un Llamado</option>
-          {llamadosList.map((l) => (
-            <option key={ l } value={ l }>{ l }</option>
-          ))}
+        <select
+          id="llamado"
+          name="llamado"
+          value={ llamado }
+          onChange={ handleInputChange }
+        >
+          <option value="" disabled>
+            Seleccione un Llamado
+          </option>
+          { llamadosList.map((l) => (
+            <option key={ l } value={ l }>
+              { l }
+            </option>
+          )) }
         </select>
       </div>
 
       <div>
         <label htmlFor="examinador1">Examinador 1</label>
-        <input type="text" id="examinador1" name="examinador1" value={ examinador1 } onChange={ handleInputChange }/>
+        <input
+          type="text"
+          id="examinador1"
+          name="examinador1"
+          value={ examinador1 }
+          onChange={ handleInputChange }
+        />
       </div>
       <div>
         <label htmlFor="examinador2">Examinador 2</label>
-        <input type="text" id="examinador2" name="examinador2" value={ examinador2 } onChange={ handleInputChange }/>
+        <input
+          type="text"
+          id="examinador2"
+          name="examinador2"
+          value={ examinador2 }
+          onChange={ handleInputChange }
+        />
       </div>
       <div>
         <label htmlFor="examinador3">Examinador 3</label>
-        <input type="text" id="examinador3" name="examinador3" value={ examinador3 } onChange={ handleInputChange }/>
+        <input
+          type="text"
+          id="examinador3"
+          name="examinador3"
+          value={ examinador3 }
+          onChange={ handleInputChange }
+        />
       </div>
 
       <div>
@@ -169,7 +209,7 @@ export const MesasExamenesNovedadesSave = ({ novedad, setNovedad }) => {
           )
           : (
             <button onClick={ handleEditRow }>
-              Edit
+              Editar
             </button>
           )
         }

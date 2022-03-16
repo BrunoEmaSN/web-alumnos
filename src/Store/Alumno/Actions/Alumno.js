@@ -1,5 +1,5 @@
 import { types } from "../../../Types";
-import { alumnoFormater } from "../../../Utils/alumnoModel";
+
 import {
     alumnosGetAll,
     alumnosGetOne,
@@ -13,6 +13,7 @@ import {
     alumnosMateriaUpdate,
     alumnosDelete
 } from "../../../Services/restCallAlumnos";
+import { alumnoFormater } from "../../../Utils/Model/alumnoModel";
 
 export const startLoadingAlumnos = () => {
     return async ( dispatch ) => {

@@ -3,8 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { useModal } from '../../Hooks/useModal';
 import { CursoModal } from './CursosModal';
-import { activeCurso, startDeletingCurso, startLoadingCursos, startSetActive } from '../../Store/Curso/Actions/Curso';
-import { cursoModel } from '../../Utils/cursoModel';
+import {
+    activeCurso,
+    startDeletingCurso,
+    startLoadingCursos,
+    startSetActive
+} from '../../Store/Curso/Actions/Curso';
+import { cursoModel } from '../../Utils/Model/cursoModel';
 
 const actions = {
     create: 'Create',
@@ -47,8 +52,16 @@ export const CursosScreen = () => {
                     c.estado !== 0 && (
                         <div key={ c.id }>
                             { `${ c.id } ${ c.nivel } ${ c.turno } ${ c.division } : ${ c.aula_descripcion }` }
-                            <button onClick={  () => { handleUpdate( c ) }  }>Edit</button>
-                            <button onClick={  () => { handleDelete( c.id ) }  }>Delete</button>
+                            <button onClick={
+                                () => { handleUpdate( c ) }
+                            }>
+                                Edit
+                            </button>
+                            <button onClick={
+                                () => { handleDelete( c.id ) }
+                            }>
+                                Delete
+                            </button>
                         </div>
                     )
                 )

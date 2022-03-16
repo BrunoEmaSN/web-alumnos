@@ -14,7 +14,12 @@ export const DatosTutor = ({
             <legend>Datos Tutor</legend>
             <div>
                 <label htmlFor="nivelAcademico">Nivel Academico</label>
-                <select id="nivelAcademico" name="nivelAcademico" value={ nivelAcademico } onChange={ handleInputChange }>
+                <select
+                    id="nivelAcademico"
+                    name="nivelAcademico"
+                    value={ nivelAcademico }
+                    onChange={ handleInputChange }
+                >
                     <option value="" disabled>Selecione un Nivel</option>
                     <option value="Primaria">Primaria</option>
                     <option value="Secundaria">Secundaria</option>
@@ -24,7 +29,12 @@ export const DatosTutor = ({
             </div>
             <div>
                 <label htmlFor="situacionAcademica">Situacion Academica</label>
-                <select id="situacionAcademica" name="situacionAcademica" value={ situacionAcademica } onChange={ handleInputChange }>
+                <select
+                    id="situacionAcademica"
+                    name="situacionAcademica"
+                    value={ situacionAcademica }
+                    onChange={ handleInputChange }
+                >
                     <option value="" disabled>Selecione una opcion</option>
                     <option value="Incompleto">Incompleto</option>
                     <option value="Completo">Completo</option>

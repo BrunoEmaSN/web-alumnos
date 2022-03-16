@@ -1,6 +1,9 @@
-import { sancionesGetAll, sancionesUpdate } from "../../../Services/restCallSanciones";
+import {
+    sancionesGetAll,
+    sancionesUpdate
+} from "../../../Services/restCallSanciones";
 import { types } from "../../../Types";
-import { sancionFormatter } from "../../../Utils/sancionModel";
+import { sancionFormatter } from "../../../Utils/Model/sancionModel";
 
 export const startLoadingSanciones = () => {
     return async ( dispatch ) => {

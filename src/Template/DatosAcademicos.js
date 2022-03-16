@@ -109,7 +109,12 @@ export const DatosAcademicos = ({
             </div>
             <div>
                 <label htmlFor="condicion">Condicion</label>
-                <select id="condicion" name="condicion" value={ condicion } onChange={ handleInputChange }>
+                <select
+                    id="condicion"
+                    name="condicion"
+                    value={ condicion }
+                    onChange={ handleInputChange }
+                >
                     <option value="" disabled>seleccione una condicion</option>
                     <option value="Regular">Regular</option>
                     <option value="Promocional">Promocional</option>
@@ -118,7 +123,12 @@ export const DatosAcademicos = ({
             </div>
             <div>
                 <label htmlFor="cursoId">Cursos</label>
-                <select id="cursoId" name="cursoId" value={ cursoId } onChange={ handleObjectChange }>
+                <select
+                    id="cursoId"
+                    name="cursoId"
+                    value={ cursoId }
+                    onChange={ handleObjectChange }
+                >
                     <option value="" disabled>Selecione un curso</option>
                     { cursosList.map( c => {
                         return (

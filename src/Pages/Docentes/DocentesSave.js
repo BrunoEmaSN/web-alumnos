@@ -1,18 +1,26 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from '../../Hooks/useForm';
-import { cleanActiveDocente, startNewDocente, startUpdateDocente } from '../../Store/Docente/Actions/Docente';
+import {
+    cleanActiveDocente,
+    startNewDocente,
+    startUpdateDocente
+} from '../../Store/Docente/Actions/Docente';
 import { DatosDocente } from '../../Template/DatosDocente';
 import { DatosPersonales } from '../../Template/DatosPersonales';
 import { DatosDocenteMateria } from '../../Template/DatosDocenteMateria';
-import { docenteModel } from '../../Utils/docenteModel';
+import { docenteModel } from '../../Utils/Model/docenteModel';
 
 export const DocentesSave = () => {
     const dispatch = useDispatch();
 
     const { active } = useSelector( state => state.docente );
 
-    const [ formValues, handleInputChange, handleCheckboxChange ] = useForm( active );
+    const [
+        formValues,
+        handleInputChange,
+        handleCheckboxChange
+    ] = useForm( active );
 
     const handleAddDocente = ( e ) => {
         e.preventDefault();
@@ -47,9 +55,19 @@ export const DocentesSave = () => {
                     handleInputChange={ handleInputChange }
                 />
                 <div>
-                    <button onClick={ active === docenteModel ? handleAddDocente : handleEditDocente } >
-                        Save
-                    </button>
+                    {
+                        active === docenteModel
+                        ? (
+                            <button onClick={ handleAddDocente }>
+                                Guardar
+                            </button>
+                        )
+                        : (
+                            <button onClick={ handleEditDocente }>
+                                Editar
+                            </button>
+                        )
+                    }
                 </div>
                 <div>
                     <button onClick={ back }>

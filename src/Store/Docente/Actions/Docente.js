@@ -1,7 +1,15 @@
-/* eslint-disable no-useless-catch */
-import { docentesAdd, docentesDelete, docentesGetAll, docentesGetOne, docentesMateriaAdd, docentesMateriaGetByDocente, docentesMateriaUpdate, docentesUpdate } from "../../../Services/restCallDocentes";
+import {
+    docentesAdd,
+    docentesDelete,
+    docentesGetAll,
+    docentesGetOne,
+    docentesMateriaAdd,
+    docentesMateriaGetByDocente,
+    docentesMateriaUpdate,
+    docentesUpdate
+} from "../../../Services/restCallDocentes";
 import { types } from "../../../Types";
-import { docenteFormatter } from "../../../Utils/docenteModel";
+import { docenteFormatter } from "../../../Utils/Model/docenteModel";
 
 export const startLoadingDocentes = () => {
     return async ( dispatch ) => {

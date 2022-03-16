@@ -1,7 +1,12 @@
-/* eslint-disable no-useless-catch */
-import { tutoresAdd, tutoresDelete, tutoresGetAll, tutoresGetOneWithPareja, tutoresUpdate } from "../../../Services/restCallTutores";
+import {
+    tutoresAdd,
+    tutoresDelete,
+    tutoresGetAll,
+    tutoresGetOneWithPareja,
+    tutoresUpdate
+} from "../../../Services/restCallTutores";
 import { types } from "../../../Types";
-import { tutorFormatter } from "../../../Utils/tutorModel";
+import { tutorFormatter } from "../../../Utils/Model/tutorModel";
 
 export const startLoadingTutores = () => {
     return async ( dispatch ) => {

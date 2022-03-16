@@ -5,7 +5,7 @@ import {
 	startDeletingAlumno,
 	activeAlumno,
 } from '../../Store/Alumno/Actions/Alumno';
-import { alumnoModel } from '../../Utils/alumnoModel';
+import { alumnoModel } from '../../Utils/Model/alumnoModel';
 
 export const AlumnosList = () => {
 	const dispatch = useDispatch();

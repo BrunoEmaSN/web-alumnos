@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from '../../Hooks/useForm';
-import { cleanActiveMesaExamen, startNewMesaExamen, startUpdateMesaExamen } from '../../Store/MesaExamen/Actions/MesaExamen';
+import {
+    cleanActiveMesaExamen,
+    startNewMesaExamen,
+    startUpdateMesaExamen
+} from '../../Store/MesaExamen/Actions/MesaExamen';
 import { MesasExamenesNovedadesSave } from './MesasExamenesNovedadesSave';
-import { mesaExamenModel } from '../../Utils/mesaExamenModel';
 import { periodosGetAll } from '../../Services/restCallPeriodos';
+import { mesaExamenModel } from '../../Utils/Model/mesaExamenModel';
+import { AgregarPeriodos } from '../../Template/AgregarPeriodos';
 
 export const MesasExamenesMaestrosSave = () => {
     const dispatch = useDispatch();
@@ -13,6 +18,7 @@ export const MesasExamenesMaestrosSave = () => {
     const [ formValues, handleInputChange ] = useForm( active.maestro );
     const [ novedad, setNovedad ] = useState( active.novedad );
     const [ periodoList, setPeriodoList ] = useState([]);
+    
     const handleListGetAll = async () => {
         setPeriodoList( await periodosGetAll() );
     }
@@ -48,14 +54,28 @@ export const MesasExamenesMaestrosSave = () => {
         <div>
             <div>
                 <label htmlFor="descripcion">Descripcion</label>
-                <input type="text" id="descripcion" name="descripcion" value={descripcion} onChange={handleInputChange}/>
+                <input
+                    type="text"
+                    id="descripcion"
+                    name="descripcion"
+                    value={descripcion}
+                    onChange={handleInputChange}
+                />
             </div>
             <div>
                 <label htmlFor="periodo_id">Perido</label>
-                <select id="periodo_id" name="periodo_id" value={ periodo_id } onChange={ handleInputChange }>
+                <AgregarPeriodos />
+                <select
+                    id="periodo_id"
+                    name="periodo_id"
+                    value={ periodo_id }
+                    onChange={ handleInputChange }
+                >
                     <option value="" disabled>Selecione un Periodo</option>
                     {periodoList.map((p) => (
-                        <option value={p.id} key={p.id}>{p.descripcion}</option>
+                        <option value={p.id} key={p.id}>
+                            {p.descripcion}
+                        </option>
                     ))}
                 </select>
             </div>
@@ -64,9 +84,19 @@ export const MesasExamenesMaestrosSave = () => {
                 setNovedad={ setNovedad }
             />
             <div>
-                <button onClick={ active === mesaExamenModel ? handleAddMesaExamen : handleEditMesaExamen } >
-                    Save
-                </button>
+                {
+                    active === mesaExamenModel
+                    ? (
+                        <button onClick={ handleAddMesaExamen } >
+                            Guardar
+                        </button>
+                    )
+                    : (
+                        <button onClick={ handleEditMesaExamen } >
+                            Editar
+                        </button>
+                    )
+                }
             </div>
             <div>
                 <button onClick={ back }>

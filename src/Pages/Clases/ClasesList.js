@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { activeClase, startDeletingClase, startSetActive } from '../../Store/Clase/Actions/Clase';
-import { claseModel } from '../../Utils/claseModel';
+import { claseModel } from '../../Utils/Model/claseModel';
 
 export const ClasesList = () => {
 	const dispatch = useDispatch();

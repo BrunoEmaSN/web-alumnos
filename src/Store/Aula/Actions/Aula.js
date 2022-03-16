@@ -1,5 +1,11 @@
-import { aulasAdd, aulasDelete, aulasGetAll, aulasGetOne, aulasUpdate } from "../../../Services/restCallAulas";
 import { types } from "../../../Types";
+import {
+    aulasAdd,
+    aulasDelete,
+    aulasGetAll,
+    aulasGetOne,
+    aulasUpdate
+} from "../../../Services/restCallAulas";
 
 export const startLoadingAulas = () => {
     return async ( dispatch ) => {

@@ -1,7 +1,12 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { activeMesaExamen, startDeletingMesaExamen, startSetActive } from '../../Store/MesaExamen/Actions/MesaExamen';
-import { mesaExamenModel } from '../../Utils/mesaExamenModel';
+import {
+    activeMesaExamen,
+    startDeletingMesaExamen,
+    startSetActive
+} from '../../Store/MesaExamen/Actions/MesaExamen';
+import { mesaExamenModel } from '../../Utils/Model/mesaExamenModel';
+
 export const MesasExamenesList = () => {
     const dispatch = useDispatch();
 
@@ -28,8 +33,16 @@ export const MesasExamenesList = () => {
                     mesaExamen.estado !== 0 && (
                         <div key={ mesaExamen.id}>
                             { `${ mesaExamen.id } ${ mesaExamen.descripcion }` }
-                            <button onClick={  () => { handleEdit( mesaExamen ) }  }>Edit</button>
-                            <button onClick={  () => { handleDelete( mesaExamen.id) }  }>Delete</button>
+                            <button onClick={
+                                () => { handleEdit( mesaExamen ) }
+                            }>
+                                Edit
+                            </button>
+                            <button onClick={
+                                () => { handleDelete( mesaExamen.id) }
+                            }>
+                                Delete
+                            </button>
                         </div>
                     )
                 ))

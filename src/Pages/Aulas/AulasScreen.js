@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { startLoadingAulas } from '../../Store/Aula/Actions/Aula';
 
-import { activeAula, startDeletingAula } from '../../Store/Aula/Actions/Aula';
-import { aulaModel } from '../../Utils/aulaModel';
+import {
+    activeAula,
+    startDeletingAula
+} from '../../Store/Aula/Actions/Aula';
 import { useModal } from '../../Hooks/useModal';
 import { AulasModal } from './AulasModal';
+import { aulaModel } from '../../Utils/Model/aulaModel';
 
 const actions = {
     create: 'Create',
@@ -48,8 +51,16 @@ export const AulasScreen = () => {
                     a.estado !== 0 && (
                         <div key={ a.id }>
                             { `${ a.id } ${ a.descripcion }` }
-                            <button onClick={  () => { handleUpdate( a ) }  }>Edit</button>
-                            <button onClick={  () => { handleDelete( a.id ) }  }>Delete</button>
+                            <button onClick={ 
+                                () => { handleUpdate( a ) } 
+                            }>
+                                Edit
+                            </button>
+                            <button onClick={ 
+                                () => { handleDelete( a.id ) } 
+                            }>
+                                Delete
+                            </button>
                         </div>
                     )
                 ))

@@ -4,17 +4,7 @@ import Modal from 'react-modal/lib/components/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from '../../Hooks/useForm';
 import { cleanActiveAula, startNewAula, startUpdateAula } from '../../Store/Aula/Actions/Aula';
-
-const customStyles = {
-    content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
-    },
-};
+import { customStyles } from '../../Utils/modalStyles';
 
 const actions = {
     create: 'Create',
@@ -75,9 +65,19 @@ export const AulasModal = ({ isOpenModal, closeModal, action }) => {
                     />
                 </div>
                 <div>
-                    <button onClick={ action === actions.create ? handleAddAula : handleEditAula } >
-                        Save
-                    </button>
+                    {
+                        action === actions.create
+                        ? (
+                            <button onClick={ handleAddAula } >
+                                Guardar
+                            </button>
+                        )
+                        : (
+                            <button onClick={ handleEditAula } >
+                                Save
+                            </button>
+                        )   
+                    }
                 </div>
                 <div>
                     <button onClick={ closeModal }>

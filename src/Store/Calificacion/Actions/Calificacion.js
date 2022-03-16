@@ -1,4 +1,7 @@
-import { calificacionesGetAll, calificacionesUpdate } from "../../../Services/restCallCalificaciones";
+import {
+    calificacionesGetAll,
+    calificacionesUpdate
+} from "../../../Services/restCallCalificaciones";
 import { types } from "../../../Types";
 
 export const startLoadingCalificaciones = () => {

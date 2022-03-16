@@ -2,22 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import Modal from 'react-modal/lib/components/Modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { cleanActiveSancion, startUpdateSancion } from '../../Store/Sancion/Actions/Sancion';
-import { tiposSanciones } from '../../Utils/sancionModel';
+import {
+    cleanActiveSancion,
+    startUpdateSancion
+} from '../../Store/Sancion/Actions/Sancion';
 import { alumnosGetAll } from '../../Services/restCallAlumnos';
 import { docentesGetAll } from '../../Services/restCallDocentes';
 import { useForm } from '../../Hooks/useForm';
-
-const customStyles = {
-    content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
-    },
-};
+import { customStyles } from '../../Utils/modalStyles';
+import { tiposSanciones } from '../../Utils/Model/sancionModel';
 
 export const SancionModal = ({ isOpenModal, closeModal }) => {
     const dispatch = useDispatch();
@@ -64,28 +57,49 @@ export const SancionModal = ({ isOpenModal, closeModal }) => {
                 <h2>Editar Sancion</h2>
                 <div>
                     <label htmlFor="alumno">Alumno</label>
-                    <select id="alumno" name="alumno" value={ alumno } onChange={ handleInputChange }>
+                    <select
+                        id="alumno"
+                        name="alumno"
+                        value={ alumno }
+                        onChange={ handleInputChange }
+                    >
                         <option value="" disabled>Seleccione un Alumno</option>
                         { alumnosList.map((a) => (
-                            <option key={a.documento} value={ a.documento }>{ `${ a.apellido } ${ a.nombre }` }</option>
+                            <option key={a.documento} value={ a.documento }>
+                                { `${ a.apellido } ${ a.nombre }` }
+                            </option>
                         )) }
                     </select>
                 </div>
                 <div>
                     <label htmlFor="docente">Docente</label>
-                    <select id="docente" name="docente" value={ docente } onChange={ handleInputChange }>
+                    <select
+                        id="docente"
+                        name="docente"
+                        value={ docente }
+                        onChange={ handleInputChange }
+                    >
                         <option value="" disabled>Seleccione un Docente</option>
                         { docentesList.map((d) => (
-                            <option key={d.documento} value={ d.documento }>{ `${ d.apellido } ${ d.nombre }` }</option>
+                            <option key={d.documento} value={ d.documento }>
+                                { `${ d.apellido } ${ d.nombre }` }
+                            </option>
                         )) }
                     </select>
                 </div>
                 <div>
                     <label htmlFor="tipoSancion">Tipo de Sancion</label>
-                    <select id="tipoSancion" name="tipoSancion" value={ tipoSancion } onChange={ handleInputChange }>
+                    <select
+                        id="tipoSancion"
+                        name="tipoSancion"
+                        value={ tipoSancion }
+                        onChange={ handleInputChange }
+                    >
                         <option value="" disabled>Seleccione un Tipo</option>
                         { tiposSanciones.map((ts) => (
-                            <option key={ts} value={ts}>{ ts }</option>
+                            <option key={ts} value={ts}>
+                                { ts }
+                            </option>
                         )) }
                     </select>
                 </div>
@@ -100,11 +114,16 @@ export const SancionModal = ({ isOpenModal, closeModal }) => {
                 </div>
                 <div>
                     <label htmlFor="fecha">Fecha</label>
-                    <input type="date" name="fecha" value={fecha} onChange={handleInputChange} />
+                    <input
+                        type="date"
+                        name="fecha"
+                        value={fecha}
+                        onChange={handleInputChange}
+                    />
                 </div>
                 <div>
                     <button onClick={ handleEditSancion } >
-                        Save
+                        Editar
                     </button>
                 </div>
                 <div>

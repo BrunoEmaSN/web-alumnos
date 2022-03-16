@@ -1,6 +1,11 @@
-import { cursosAdd, cursosDelete, cursosGetAll, cursosUpdate } from "../../../Services/restCallCursos";
+import {
+    cursosAdd,
+    cursosDelete,
+    cursosGetAll,
+    cursosUpdate
+} from "../../../Services/restCallCursos";
 import { types } from "../../../Types";
-import { cursoFormatter } from "../../../Utils/cursoModel";
+import { cursoFormatter } from "../../../Utils/Model/cursoModel";
 
 
 export const startLoadingCursos = () => {

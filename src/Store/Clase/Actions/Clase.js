@@ -1,6 +1,12 @@
-import { clasesAdd, clasesDelete, clasesGetAll, clasesGetOne, clasesUpdate } from "../../../Services/restCallClases";
+import {
+    clasesAdd,
+    clasesDelete,
+    clasesGetAll,
+    clasesGetOne,
+    clasesUpdate
+} from "../../../Services/restCallClases";
 import { types } from "../../../Types";
-import { claseFormatter } from "../../../Utils/claseModel";
+import { claseFormatter } from "../../../Utils/Model/claseModel";
 
 export const startLoadingClases = () => {
     return async ( dispatch ) => {
