@@ -12,9 +12,6 @@ import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
 
 const pages = [
-    'Alumnos',
-    'Docentes',
-    'Tutores',
     'Aulas',
     'Cursos',
     'Clases',
@@ -24,16 +21,30 @@ const pages = [
     'Sanciones'
 ];
 
+const personas = [
+    'Alumnos',
+    'Docentes',
+    'Tutores',
+];
+
 export const AppBarComponent = () => {
     const [ anchorElNav, setAnchorElNav ] = useState(null);
+    const [ anchorElPersona, setAnchorElPersona ] = useState(null);
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
-
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
     };
+
+    const handleOpenPersonaMenu = (event) => {
+        setAnchorElPersona(event.currentTarget);
+    }
+
+    const handleClosePersonaMenu = () => {
+        setAnchorElPersona(null);
+    }
 
     return (
         <AppBar position="static">
@@ -57,8 +68,8 @@ export const AppBarComponent = () => {
                             onClick={handleOpenNavMenu}
                             color="inherit"
                         >
-                        <MenuIcon />
-                            </IconButton>
+                            <MenuIcon />
+                        </IconButton>
                         <Menu
                             id="menu-appbar"
                             anchorEl={anchorElNav}
@@ -95,6 +106,39 @@ export const AppBarComponent = () => {
                         LOGO
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                        <Button
+                            onClick={ handleOpenPersonaMenu }
+                            sx={{ my: 2, color: 'white', display: 'block' }}
+                        >
+                            Personas
+                        </Button>
+                        <Menu
+                            anchorEl={anchorElPersona}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'left',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'left',
+                            }}
+                            open={Boolean(anchorElPersona)}
+                            onClose={handleClosePersonaMenu}
+                            sx={{
+                                display: { xs: 'none', md: 'block' },
+                            }}
+                        >
+                            {personas.map((persona) => (
+                                <Link key={persona} to={persona}>
+                                    <MenuItem onClick={handleCloseNavMenu}>
+                                        <Typography textAlign="center">
+                                            {persona}
+                                        </Typography>
+                                    </MenuItem>
+                                </Link>
+                            ))}
+                        </Menu>
                         {pages.map((page) => (
                             <Link key={page} to={ page }>
                                 <Button
