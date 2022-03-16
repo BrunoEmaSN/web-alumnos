@@ -1,179 +1,191 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-
 import { useForm } from "../../Hooks/useForm";
-import { Docente2 } from "../../Utils/docenteModel";
-import { Materia2 } from "../../Utils/materiaModel";
-import { Llamado1 } from "../../Utils/mesaExamenModel";
+import { llamadosList } from "../../Utils/mesaExamenModel";
+import { materiasGetAll } from '../../Services/restCallMaterias';
+
+import { MesasExamenesNovedadTable } from './MesasExamenesNovedadTable';
+import moment from 'moment';
 
 const initialState = {
-  materias: '',
-  fechas: '',
-  llamados: '',
+  materia_id: '',
+  fecha: '',
+  llamado: '',
   examinador1: '',
   examinador2: '',
   examinador3: ''
 };
 
+const initialOldState = {
+  materia_id: '',
+  fecha: '',
+  llamado: ''
+}
+
+const actionsList = { create: 'create', edit: 'edit' };
+
 export const MesasExamenesNovedadesSave = ({ novedad, setNovedad }) => {
+  const [ materiasList, setMateriasList ] = useState([]);
+  const [ materia_descripcion, setMateriaDescripcion ] = useState('');
+  const [ action, setAction ] = useState(actionsList.create);
+  const [ oldState, setOldState ] = useState(initialOldState);
+
+  const handleListGetAll = async () => {
+    setMateriasList( await materiasGetAll() );
+  }
+
+  useEffect(() => {
+    handleListGetAll();
+  }, [])
+  
+
   const [
     formValues,
-    handleInputChange, ,
-    handleObjectChange, ,
+    handleInputChange, , , ,
     setFormValues
   ] = useForm( initialState );
-  const [ rowId, setRowId ] = useState('');
+
   const {
-    materias,
-    fechas,
-    llamados,
+    materia_id,
+    fecha,
+    llamado,
     examinador1,
     examinador2,
     examinador3
   } = formValues;
 
-  const handleAddOrEditRows = () => {
-    if(rowId === ''){
-      const lastIndex = novedad.length - 1;
-      const lastId = novedad.length > 0 ? novedad[lastIndex].id : 0;
-      setNovedad(
-        (prevState) => (
-          [
-            ...prevState,
-            { id: lastId + 1, ...formValues }
-          ]
-        )
-      );
-    }
-    else {
-      setNovedad(
-        (prevState) => (
-          prevState.map((state) => (
-            state.id === rowId
-            ? { id: rowId, ...formValues }
-            : state
-          ))
-        )
-      );
-    }
-    setRowId('');
+  const handleMateriaChange = ({ target }) => {
+    const materia = materiasList.find( m => m.id === parseInt( target.value ) );
+    handleInputChange({ target });
+    setMateriaDescripcion( materia.descripcion );
+  }
+  
+  const handleAddRow = () => {
+    setNovedad(
+      (prevState) => (
+        [
+          ...prevState,
+          { ...formValues, materia_descripcion }
+        ]
+      )
+    );
     setFormValues(initialState);
+    setMateriaDescripcion('');
+    setAction(actionsList.create);
+    setOldState(initialOldState);
+  }
+
+  const handleEditRow = () => {
+    setNovedad(
+      (prevState) => (
+        prevState.map((state) => (
+          state.materia_id === oldState.materia_id
+          && state.llamado === oldState.llamado
+          && state.fecha === oldState.fecha
+          ? { ...formValues, materia_descripcion }
+          : state
+        ))
+      )
+    );
+    setFormValues(initialState);
+    setMateriaDescripcion('');
+    setAction(actionsList.create);
+    setOldState(initialOldState);
   }
 
   const handleFormValues = (row) => {
-    setRowId(row.id);
     setFormValues({
-      materias: row.materias,
-      fechas: row.fechas,
-      llamados: row.llamados,
+      materia_id: row.materia_id,
+      fecha: moment(row.fecha).format('yyyy-MM-DD'),
+      llamado: row.llamado,
       examinador1: row.examinador1,
       examinador2: row.examinador2,
       examinador3: row.examinador3
     });
+    setMateriaDescripcion(row.materia_descripcion);
+    setAction(actionsList.edit);
+    setOldState({
+      materia_id: row.materia_id,
+      fecha: row.fecha,
+      llamado: row.llamado
+    });
+  }
+
+  const handleDeleteRow = (row) => {
+    setNovedad(
+      (prevState) => {
+        return prevState.filter(s => JSON.stringify( s ) !== JSON.stringify( row ))
+      }
+      
+    );
   }
   
   return (
     <div>
       <div>
-        <label htmlFor="materias">Materias</label>
-        <select id="materias" name="materias" value={ materias !== '' ? JSON.stringify( materias ) : '' } onChange={ handleObjectChange }>
+        <label htmlFor="materia_id">Materia</label>
+        <select id="materia_id" name="materia_id" value={ materia_id } onChange={ handleMateriaChange }>
           <option value="" disabled>Seleccione una Materia</option>
-          {Materia2.map((m) => (
-            <option key={ m.id } value={ JSON.stringify( m ) }>{ m.descripcion }</option>
+          {materiasList.map((m) => (
+            <option key={ m.id } value={ m.id }>{ m.descripcion }</option>
           ))}
         </select>
       </div>
       <div>
-        <label htmlFor="fechas">Fechas</label>
-        <input type="date" name="fechas" value={ fechas } onChange={ handleInputChange }/>
+        <label htmlFor="fecha">Fecha</label>
+        <input type="date" id="fecha" name="fecha" value={ fecha } onChange={ handleInputChange }/>
       </div>
       <div>
-        <label htmlFor="llamados">Llamados</label>
-        <select id="llamados" name="llamados" value={ llamados } onChange={ handleInputChange }>
+        <label htmlFor="llamado">Llamados</label>
+        <select id="llamado" name="llamado" value={ llamado } onChange={ handleInputChange }>
           <option value="" disabled>Seleccione un Llamado</option>
-          {Llamado1.map((l) => (
+          {llamadosList.map((l) => (
             <option key={ l } value={ l }>{ l }</option>
           ))}
         </select>
       </div>
+
       <div>
         <label htmlFor="examinador1">Examinador 1</label>
-        <select id="examinador1" name="examinador1" value={ examinador1 !== '' ? JSON.stringify( examinador1 ) : '' } onChange={ handleObjectChange }>
-          <option value="" disabled>Seleccione un Examinador</option>
-          {Docente2.map((d) => (
-            <option key={d.documento} value={JSON.stringify( d )}>{`${d.apellido} ${d.nombre}`}</option>
-          ))}
-        </select>
+        <input type="text" id="examinador1" name="examinador1" value={ examinador1 } onChange={ handleInputChange }/>
       </div>
       <div>
         <label htmlFor="examinador2">Examinador 2</label>
-        <select id="examinador2" name="examinador2" value={ examinador2 !== '' ? JSON.stringify( examinador2 ) : ''  } onChange={ handleObjectChange }>
-          <option value="" disabled>Seleccione un Examinador</option>
-          {Docente2.map((d) => (
-            <option key={d.documento} value={JSON.stringify(d)}>{`${d.apellido} ${d.nombre}`}</option>
-          ))}
-        </select>
+        <input type="text" id="examinador2" name="examinador2" value={ examinador2 } onChange={ handleInputChange }/>
       </div>
       <div>
         <label htmlFor="examinador3">Examinador 3</label>
-        <select id="examinador3" name="examinador3" value={ examinador3 !== '' ? JSON.stringify( examinador3 ) : ''  } onChange={ handleObjectChange }>
-          <option value="" disabled>Seleccione un Examinador</option>
-          {Docente2.map((d) => (
-            <option key={d.documento} value={JSON.stringify(d)}>{`${d.apellido} ${d.nombre}`}</option>
-          ))}
-        </select>
+        <input type="text" id="examinador3" name="examinador3" value={ examinador3 } onChange={ handleInputChange }/>
       </div>
+
       <div>
-        <button onClick={handleAddOrEditRows}>Agregar</button>
+        {
+          action === actionsList.create
+          ? (
+            <button onClick={ handleAddRow }>
+              Agregar
+            </button>
+          )
+          : (
+            <button onClick={ handleEditRow }>
+              Edit
+            </button>
+          )
+        }
+        
       </div>
-      <div>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Materias</TableCell>
-                <TableCell>Fechas</TableCell>
-                <TableCell>Llamados</TableCell>
-                <TableCell>Examinador 1</TableCell>
-                <TableCell>Examinador 2</TableCell>
-                <TableCell>Examinador 3</TableCell>
-                <TableCell>Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {novedad.map((n) => (
-                <TableRow
-                  key={n.id}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <TableCell>{n.materias.descripcion}</TableCell>
-                  <TableCell>{n.fechas}</TableCell>
-                  <TableCell>{n.llamados}</TableCell>
-                  <TableCell>{`${n.examinador1.apellido} ${n.examinador1.nombre}`}</TableCell>
-                  <TableCell>{`${n.examinador2.apellido} ${n.examinador2.nombre}`}</TableCell>
-                  <TableCell>{`${n.examinador3.apellido} ${n.examinador3.nombre}`}</TableCell>
-                  <TableCell>
-                    <button onClick={() => handleFormValues(n)}>Edit</button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </div>
+
+      <MesasExamenesNovedadTable
+        novedad={ novedad }
+        handleFormValues={ handleFormValues }
+        handleDeleteRow={ handleDeleteRow }
+      />
     </div>
   );
 };
 
 MesasExamenesNovedadesSave.propTypes = {
-  novedad: PropTypes.array.isRequired,
-  setNovedad: PropTypes.func.isRequired
+  novedad: PropTypes.array,
+  setNovedad: PropTypes.func
 }

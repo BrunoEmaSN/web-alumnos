@@ -5,6 +5,7 @@ import {
     Routes,
     Navigate
 } from 'react-router-dom';
+import { AppBarComponent } from '../Components/AppBar/AppBar';
 import { AlumnosScreen } from '../Pages/Alumnos/AlumnosScreen';
 import { AulasScreen } from '../Pages/Aulas/AulasScreen';
 import { CalificacionesScreen } from '../Pages/Calificaciones/CalificacionesScreen';
@@ -21,6 +22,7 @@ export const AppRoute = () => {
     return (
         <Router>
             <div>
+                <AppBarComponent />
                 <Routes>
                     <Route exact path="/Aulas" element={
                         <AulasScreen />

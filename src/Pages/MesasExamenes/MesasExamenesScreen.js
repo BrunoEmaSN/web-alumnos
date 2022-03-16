@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getMesasExamenes } from "../../Store/MesaExamen/Actions/MesaExamen";
-import { MesaExamen1 } from "../../Utils/mesaExamenModel";
+import { startLoadingMesasExamenes } from "../../Store/MesaExamen/Actions/MesaExamen";
 import { MesasExamenesList } from "./MesasExamenesList";
 import { MesasExamenesMaestrosSave } from "./MesasExamenesMaestrosSave";
 
@@ -10,7 +9,7 @@ export const MesasExamenesScreen = () => {
 
     const { active } = useSelector( state => state.mesaExamen );
     useEffect(() => {
-        dispatch( getMesasExamenes( MesaExamen1 ) );
+        dispatch( startLoadingMesasExamenes() );
     }, []);
     return (
         <div>

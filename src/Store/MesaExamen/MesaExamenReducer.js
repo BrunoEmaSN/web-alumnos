@@ -10,10 +10,10 @@ export const MesaExamenReducer = ( state = initialState, actions ) => {
         case types.mesasExamenes + types.getAll:
             return {
                 ...state,
-                mesasExamenes: [ { ...actions.payload } ]
+                mesasExamenes: [ ...actions.payload ]
             };
         
-        case types.mesasExamenes + types.getOne:
+        case types.mesasExamenes + types.active:
             return {
                 ...state,
                 active: actions.payload
@@ -35,8 +35,8 @@ export const MesaExamenReducer = ( state = initialState, actions ) => {
             return {
                 ...state,
                 mesasExamenes: state.mesasExamenes.map(
-                    m => m.id === actions.payload.mesaExamen.id
-                    ? actions.payload.mesaExamen
+                    m => m.id === actions.payload.id
+                    ? actions.payload
                     : m
                 )
             };
@@ -44,7 +44,7 @@ export const MesaExamenReducer = ( state = initialState, actions ) => {
         case types.mesasExamenes + types.remove:
             return {
                 ...state,
-                mesasExamenes: state.mesasExamenes.filter( ({maestro}) => maestro.id !== actions.payload )
+                mesasExamenes: state.mesasExamenes.filter((mesaExamen) => mesaExamen.id !== actions.payload )
             };
 
         default:

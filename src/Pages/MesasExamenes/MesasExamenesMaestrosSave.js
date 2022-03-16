@@ -1,20 +1,30 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from '../../Hooks/useForm';
 import { cleanActiveMesaExamen, startNewMesaExamen, startUpdateMesaExamen } from '../../Store/MesaExamen/Actions/MesaExamen';
 import { MesasExamenesNovedadesSave } from './MesasExamenesNovedadesSave';
 import { mesaExamenModel } from '../../Utils/mesaExamenModel';
+import { periodosGetAll } from '../../Services/restCallPeriodos';
 
 export const MesasExamenesMaestrosSave = () => {
     const dispatch = useDispatch();
 
     const { active } = useSelector( state => state.mesaExamen );
-
     const [ formValues, handleInputChange ] = useForm( active.maestro );
     const [ novedad, setNovedad ] = useState( active.novedad );
+    const [ periodoList, setPeriodoList ] = useState([]);
+    const handleListGetAll = async () => {
+        setPeriodoList( await periodosGetAll() );
+    }
 
+    useEffect(() => {
+        handleListGetAll()
+    }, [])
+    
+    
     const {
         descripcion,
+        periodo_id
     } = formValues;
 
     const handleAddMesaExamen = ( e ) => {
@@ -39,6 +49,15 @@ export const MesasExamenesMaestrosSave = () => {
             <div>
                 <label htmlFor="descripcion">Descripcion</label>
                 <input type="text" id="descripcion" name="descripcion" value={descripcion} onChange={handleInputChange}/>
+            </div>
+            <div>
+                <label htmlFor="periodo_id">Perido</label>
+                <select id="periodo_id" name="periodo_id" value={ periodo_id } onChange={ handleInputChange }>
+                    <option value="" disabled>Selecione un Periodo</option>
+                    {periodoList.map((p) => (
+                        <option value={p.id} key={p.id}>{p.descripcion}</option>
+                    ))}
+                </select>
             </div>
             <MesasExamenesNovedadesSave
                 novedad={ novedad }
