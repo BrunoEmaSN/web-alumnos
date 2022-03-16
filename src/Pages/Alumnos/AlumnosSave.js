@@ -1,47 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { cleanActiveAlumno, startNewAlumno, startUpdateAlumno } from '../../Store/Alumno/Actions/Alumno';
+import React, { useContext, useEffect, useState } from 'react';
+
+import { AlumnosContext } from '../../Context/BuildContext';
 import { DatosAcademicos } from '../../Template/DatosAcademicos';
 import { DatosPersonales } from '../../Template/DatosPersonales';
 import { DatosAlumnoMateria } from '../../Template/DatosAlumnoMateria';
 import { DatosAlumnoTutores } from '../../Template/DatosAlumnoTutores';
-import { useForm } from '../../Hooks/useForm';
 import { cursosGetAll } from '../../Services/restCallCursos';
-import { alumnoModel } from '../../Utils/Model/alumnoModel';
+import { useForm } from '../../Hooks/useForm';
 
 export const AlumnosSave = () => {
-    const dispatch = useDispatch();
+    const {
+        active,
+        alumnoModel,
+        handleAddAlumno,
+        handleEditAlumno,
+        handleBack
+    } = useContext(AlumnosContext);
 
-    const { active } = useSelector( state => state.alumno );
-
-    const [ formValues, handleInputChange, handleCheckboxChange, handleObjectChange ] = useForm( active );
+    const [
+        formValues,
+        handleInputChange,
+        handleCheckboxChange,
+        handleObjectChange,
+    ] = useForm( active );
 
     const [ cursosList, setCursosList ] = useState([]);
-
     const handleCursosGet = async () => {
         setCursosList( await cursosGetAll() );
     }
-
     useEffect(() => {
         handleCursosGet();
     }, []);
-
-    const handleAddAlumno = ( e ) => {
-        e.preventDefault();
-        dispatch( startNewAlumno( formValues ) );
-        dispatch( cleanActiveAlumno() );
-    }
-
-    const handleEditAlumno = ( e ) => {
-        e.preventDefault();
-        dispatch( startUpdateAlumno( formValues ) );
-        dispatch( cleanActiveAlumno() );
-    }
-
-    const back = ( e ) => {
-        e.preventDefault();
-        dispatch( cleanActiveAlumno() );
-    }
     
     return (
         <div>
@@ -69,19 +58,23 @@ export const AlumnosSave = () => {
                     {
                         active === alumnoModel
                         ? (
-                            <button onClick={ handleAddAlumno }>
+                            <button onClick={
+                                () => handleAddAlumno(formValues)
+                            }>
                                 Guardar
                             </button>
                         )
                         :  (
-                            <button onClick={ handleEditAlumno }>
+                            <button onClick={
+                                () => handleEditAlumno(formValues)
+                            }>
                                 Editar
                             </button>
                         )
                     }
                 </div>
                 <div>
-                    <button onClick={ back }>Volver</button>
+                    <button onClick={ handleBack }>Volver</button>
                 </div>
         </div>
     )

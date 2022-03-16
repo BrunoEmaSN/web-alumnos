@@ -1,28 +1,13 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-	startSetActive,
-	startDeletingAlumno,
-	activeAlumno,
-} from '../../Store/Alumno/Actions/Alumno';
-import { alumnoModel } from '../../Utils/Model/alumnoModel';
+import React, { useContext } from 'react';
+import { AlumnosContext } from '../../Context/BuildContext';
 
 export const AlumnosList = () => {
-	const dispatch = useDispatch();
-
-	const { alumnos } = useSelector((state) => state.alumno);
-
-	const handleCreate = () => {
-		dispatch(activeAlumno(alumnoModel));
-	};
-
-	const handleEdit = (documento) => {
-		dispatch(startSetActive(documento));
-	};
-
-	const handleDelete = (documento) => {
-		dispatch(startDeletingAlumno(documento));
-	};
+	const {
+		alumnos,
+		handleCreate,
+		handleEdit,
+		handleDelete
+	} = useContext(AlumnosContext);
 
 	return (
 		<div>

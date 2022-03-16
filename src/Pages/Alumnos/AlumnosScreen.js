@@ -1,22 +1,27 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { startLoadingAlumnos } from '../../Store/Alumno/Actions/Alumno';
+import React, { useContext } from 'react'
+import { Box } from '@mui/system';
+import { AlumnosState } from '../../Context/AlumnosState';
+import { AlumnosContext } from '../../Context/BuildContext';
 import { AlumnosList } from './AlumnosList';
 import { AlumnosSave } from './AlumnosSave';
 
-export const AlumnosScreen = () => {
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch( startLoadingAlumnos() );
-    }, []);
-    
-
-    const { active } = useSelector( state => state.alumno );
-    
+const Alumnos = () => {
+    const { active } = useContext( AlumnosContext )
     return (
-        <div>
-            { Object.entries(active).length ? <AlumnosSave /> : <AlumnosList /> }
-        </div>
+        <Box>
+            {
+                Object.entries( active ).length
+                ? <AlumnosSave />
+                : <AlumnosList />
+            }
+        </Box>
     )
+}
+
+export const AlumnosScreen = () => {
+    return (
+        <AlumnosState>
+            <Alumnos />
+        </AlumnosState>
+    );
 }
