@@ -1,23 +1,20 @@
-import React, { useEffect, useState } from 'react';
-
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useContext, useEffect, useState } from 'react';
+import { ClasesContext } from '../../Context/BuildContext';
 import { useForm } from '../../Hooks/useForm';
 import { cursosGetAll } from '../../Services/restCallCursos';
 import { docentesGetAll } from '../../Services/restCallDocentes';
 import { materiasGetAll } from '../../Services/restCallMaterias';
 import { periodosGetAll } from '../../Services/restCallPeriodos';
-import {
-    cleanActiveClase,
-    startNewClase,
-    startUpdateClase
-} from '../../Store/Clase/Actions/Clase';
 import { AgregarPeriodos } from '../../Template/AgregarPeriodos';
 import { claseModel } from '../../Utils/Model/claseModel';
 
 export const ClasesSave = () => {
-    const dispatch = useDispatch();
-
-    const { active } = useSelector( state => state.clase );
+    const {
+        active,
+        handleAddclase,
+        handleEditclase,
+        handleBack
+    } = useContext(ClasesContext);
 
     const [
         formValues,
@@ -51,23 +48,6 @@ export const ClasesSave = () => {
         horarioInicio,
         horarioFin
     } = formValues;
-
-    const handleAddclase = ( e ) => {
-        e.preventDefault();
-        dispatch( startNewClase( formValues ) );
-        dispatch( cleanActiveClase() );
-    }
-
-    const handleEditclase = ( e ) => {
-        e.preventDefault();
-        dispatch( startUpdateClase( formValues ) );
-        dispatch( cleanActiveClase() );
-    }
-
-    const back = ( e ) => {
-        e.preventDefault();
-        dispatch( cleanActiveClase() );
-    }
     
     return (
         <div>
@@ -178,19 +158,19 @@ export const ClasesSave = () => {
                 {
                     active === claseModel
                     ? (
-                        <button onClick={ handleAddclase }>
+                        <button onClick={ () => handleAddclase(formValues) }>
                             Guardar
                         </button>
                     )
                     :  (
-                        <button onClick={ handleEditclase }>
+                        <button onClick={ () => handleEditclase(formValues) }>
                             Editar
                         </button>
                     )
                 }
             </div>
             <div>
-                <button onClick={ back }>Volver</button>
+                <button onClick={ handleBack }>Volver</button>
             </div>
         </div>
     )

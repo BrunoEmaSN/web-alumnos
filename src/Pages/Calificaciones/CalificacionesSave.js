@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useContext, useEffect, useState } from 'react';
+import { CalificacionesContext } from '../../Context/BuildContext';
 import { useForm } from '../../Hooks/useForm';
 import { alumnosGetAll } from '../../Services/restCallAlumnos';
 import { docentesGetAll } from '../../Services/restCallDocentes';
 import { materiasGetAll } from '../../Services/restCallMaterias';
-import {
-    cleanActiveCalificacion,
-    startUpdateCalificacion
-} from '../../Store/Calificacion/Actions/Calificacion';
 import { regimenes } from '../../Utils/Model/materiaModel';
 
 export const CalificacionesSave = () => {
-    const dispatch = useDispatch();
+    const {
+        active,
+        handleEditCalificacion,
+        handleBack
+    } = useContext(CalificacionesContext);
 
-    const { active } = useSelector( state => state.calificacion );
     const [ alumnosList, setAlumnosList ] = useState([]);
     const [ materiasList, setMateriasList ] = useState([]);
     const [ docentesList, setDocentesList ] = useState([]);
@@ -40,17 +39,6 @@ export const CalificacionesSave = () => {
         docente_id,
         materia_id,
     } = formValues;
-
-    const handleEditCalificacion = ( e ) => {
-        e.preventDefault();
-        dispatch( startUpdateCalificacion( formValues ) );
-        dispatch( cleanActiveCalificacion() );
-    }
-
-    const back = ( e ) => {
-        e.preventDefault();
-        dispatch( cleanActiveCalificacion() );
-    }
     
     return (
         <div>
@@ -157,12 +145,12 @@ export const CalificacionesSave = () => {
                 </select>
             </div>
             <div>
-                <button onClick={ handleEditCalificacion }>
+                <button onClick={ () => handleEditCalificacion(formValues) }>
                     Editar
                 </button>
             </div>
             <div>
-                <button onClick={ back }>Volver</button>
+                <button onClick={ handleBack }>Volver</button>
             </div>
         </div>
     )

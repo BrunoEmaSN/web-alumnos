@@ -1,43 +1,25 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useContext } from 'react';
 import { useForm } from '../../Hooks/useForm';
-import {
-    cleanActiveDocente,
-    startNewDocente,
-    startUpdateDocente
-} from '../../Store/Docente/Actions/Docente';
 import { DatosDocente } from '../../Template/DatosDocente';
 import { DatosPersonales } from '../../Template/DatosPersonales';
 import { DatosDocenteMateria } from '../../Template/DatosDocenteMateria';
 import { docenteModel } from '../../Utils/Model/docenteModel';
+import { DocentesContext } from '../../Context/BuildContext';
 
 export const DocentesSave = () => {
-    const dispatch = useDispatch();
-
-    const { active } = useSelector( state => state.docente );
+    const {
+        active,
+        handleAddDocente,
+        handleEditDocente,
+        handleBack
+    } = useContext(DocentesContext);
 
     const [
         formValues,
         handleInputChange,
         handleCheckboxChange
     ] = useForm( active );
-
-    const handleAddDocente = ( e ) => {
-        e.preventDefault();
-        dispatch( startNewDocente( formValues ) );
-        dispatch( cleanActiveDocente() );
-    }
-
-    const handleEditDocente = ( e ) => {
-        e.preventDefault();
-        dispatch( startUpdateDocente( formValues ) );
-        dispatch( cleanActiveDocente() );
-    }
-
-    const back = ( e ) => {
-        e.preventDefault();
-        dispatch( cleanActiveDocente() );
-    }
+    
     return (
         <div>
             <h1>Docente Save</h1>  
@@ -58,19 +40,19 @@ export const DocentesSave = () => {
                     {
                         active === docenteModel
                         ? (
-                            <button onClick={ handleAddDocente }>
+                            <button onClick={ () => handleAddDocente(formValues) }>
                                 Guardar
                             </button>
                         )
                         : (
-                            <button onClick={ handleEditDocente }>
+                            <button onClick={ () => handleEditDocente(formValues) }>
                                 Editar
                             </button>
                         )
                     }
                 </div>
                 <div>
-                    <button onClick={ back }>
+                    <button onClick={ handleBack }>
                         Volver
                     </button>
                 </div>

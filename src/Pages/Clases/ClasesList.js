@@ -1,24 +1,13 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { activeClase, startDeletingClase, startSetActive } from '../../Store/Clase/Actions/Clase';
-import { claseModel } from '../../Utils/Model/claseModel';
+import React, { useContext } from 'react';
+import { ClasesContext } from '../../Context/BuildContext';
 
 export const ClasesList = () => {
-	const dispatch = useDispatch();
-
-	const { clases } = useSelector((state) => state.clase);
-
-	const handleCreate = () => {
-		dispatch(activeClase(claseModel));
-	};
-
-	const handleEdit = (id) => {
-		dispatch(startSetActive(id));
-	};
-
-	const handleDelete = (id) => {
-		dispatch(startDeletingClase(id));
-	};
+	const {
+		clases,
+		handleCreate,
+		handleEdit,
+		handleDelete
+	} = useContext(ClasesContext);
 
 	return (
 		<div>

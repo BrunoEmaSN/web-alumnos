@@ -1,34 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import Modal from 'react-modal/lib/components/Modal';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-    cleanActiveSancion,
-    startUpdateSancion
-} from '../../Store/Sancion/Actions/Sancion';
 import { alumnosGetAll } from '../../Services/restCallAlumnos';
 import { docentesGetAll } from '../../Services/restCallDocentes';
 import { useForm } from '../../Hooks/useForm';
 import { customStyles } from '../../Utils/modalStyles';
 import { tiposSanciones } from '../../Utils/Model/sancionModel';
+import { SancionesContext } from '../../Context/BuildContext';
 
 export const SancionModal = ({ isOpenModal, closeModal }) => {
-    const dispatch = useDispatch();
-
-    const { active } = useSelector( state => state.sancion );
+    const {
+        active,
+        handleEditSancion
+    } = useContext(SancionesContext);
 
     const [ alumnosList, setAlumnosList ] = useState([]);
     const [ docentesList, setDocentesList ] = useState([]);
 
-    const handleListGetAll = async () => {
-        setAlumnosList( await alumnosGetAll() );
-        setDocentesList( await docentesGetAll() );
-    }
-
-    useEffect(() => {
-        handleListGetAll();
-    }, []);
-    
     const [ formValues, handleInputChange ] = useForm( active );
 
     const {
@@ -39,12 +27,14 @@ export const SancionModal = ({ isOpenModal, closeModal }) => {
         fecha
     } = formValues;
 
-    const handleEditSancion = () => {
-        dispatch( startUpdateSancion( formValues ) );
-        dispatch( cleanActiveSancion() );
-        closeModal();
+    const handleListGetAll = async () => {
+        setAlumnosList( await alumnosGetAll() );
+        setDocentesList( await docentesGetAll() );
     }
 
+    useEffect(() => {
+        handleListGetAll();
+    }, []);
 
     return (
         <div>

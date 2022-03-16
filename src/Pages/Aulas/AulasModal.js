@@ -1,19 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-modal/lib/components/Modal';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useForm } from '../../Hooks/useForm';
-import { cleanActiveAula, startNewAula, startUpdateAula } from '../../Store/Aula/Actions/Aula';
 import { customStyles } from '../../Utils/modalStyles';
-
-const actions = {
-    create: 'Create',
-    edit: 'Edit'
-};
+import { AulasContext } from '../../Context/BuildContext';
 
 export const AulasModal = ({ isOpenModal, closeModal, action }) => {
-    const dispatch = useDispatch();
-
+    const {
+        actions,
+        handleAddAula,
+        handleEditAula
+    } = useContext(AulasContext);
     const { active } = useSelector( state => state.aula );
 
     const [ formValues, handleInputChange ] = useForm( active );
@@ -22,19 +20,6 @@ export const AulasModal = ({ isOpenModal, closeModal, action }) => {
         descripcion,
         capacidad
     } = formValues;
-    
-
-    const handleAddAula = () => {
-        dispatch( startNewAula( formValues ) );
-        dispatch( cleanActiveAula() );
-        closeModal()
-    }
-
-    const handleEditAula = () => {
-        dispatch( startUpdateAula( formValues ) );
-        dispatch( cleanActiveAula() );
-        closeModal();
-    }
     
     return (
         <div>
@@ -68,12 +53,12 @@ export const AulasModal = ({ isOpenModal, closeModal, action }) => {
                     {
                         action === actions.create
                         ? (
-                            <button onClick={ handleAddAula } >
+                            <button onClick={ () => handleAddAula(formValues) }>
                                 Guardar
                             </button>
                         )
                         : (
-                            <button onClick={ handleEditAula } >
+                            <button onClick={ () => handleEditAula(formValues) }>
                                 Save
                             </button>
                         )   

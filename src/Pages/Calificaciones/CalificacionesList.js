@@ -1,15 +1,11 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { activeCalificacion } from '../../Store/Calificacion/Actions/Calificacion';
+import React, { useContext } from 'react';
+import { CalificacionesContext } from '../../Context/BuildContext';
 
 export const CalificacionesList = () => {
-	const dispatch = useDispatch();
-
-	const { calificaciones } = useSelector((state) => state.calificacion);
-
-	const handleEdit = (c) => {
-		dispatch(activeCalificacion(c));
-	};
+	const {
+		calificaciones,
+		handleEdit
+	} = useContext(CalificacionesContext);
 
 	return (
 		<div>

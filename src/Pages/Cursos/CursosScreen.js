@@ -1,47 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { useModal } from '../../Hooks/useModal';
+import React, { useContext } from 'react';
+import { CursosContext } from '../../Context/BuildContext';
+import { CursosState } from '../../Context/CursosState';
 import { CursoModal } from './CursosModal';
-import {
-    activeCurso,
-    startDeletingCurso,
-    startLoadingCursos,
-    startSetActive
-} from '../../Store/Curso/Actions/Curso';
-import { cursoModel } from '../../Utils/Model/cursoModel';
 
-const actions = {
-    create: 'Create',
-    edit: 'Edit'
-};
-
-export const CursosScreen = () => {
-    const dispatch = useDispatch();
-
-    const { cursos } = useSelector( state => state.curso );
-    const [ isOpenModal, openModal, closeModal ] = useModal( false );
-    const [ action, setAction ] = useState('');
-
-    const handleCreate = () => {
-        setAction( actions.create );
-        dispatch( activeCurso( cursoModel ) );
-        openModal();
-    }
-
-    const handleUpdate = ( c ) => {
-        setAction( actions.edit );
-        dispatch( startSetActive( c ) );
-        openModal();
-    }
-
-    const handleDelete = ( id ) => {
-        dispatch( startDeletingCurso( id ) );
-    }
-
-    useEffect(() => {
-        dispatch( startLoadingCursos() );
-    }, [dispatch]);
+const Cursos = () => {
+    const {
+        cursos,
+        action,
+        isOpenModal,
+        closeModal,
+        handleCreate,
+        handleUpdate,
+        handleDelete
+    } = useContext(CursosContext)
     
     return (
         <div>
@@ -76,3 +47,11 @@ export const CursosScreen = () => {
         </div>
     )
 };
+
+export const CursosScreen = () => {
+    return (
+        <CursosState>
+            <Cursos />
+        </CursosState>
+    );
+}

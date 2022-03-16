@@ -1,28 +1,13 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-    activeMesaExamen,
-    startDeletingMesaExamen,
-    startSetActive
-} from '../../Store/MesaExamen/Actions/MesaExamen';
-import { mesaExamenModel } from '../../Utils/Model/mesaExamenModel';
+import React, { useContext } from 'react';
+import { MesasExamenesContext } from '../../Context/BuildContext';
 
 export const MesasExamenesList = () => {
-    const dispatch = useDispatch();
-
-    const { mesasExamenes } = useSelector( state => state.mesaExamen );
-
-    const handleCreate = () => {
-        dispatch( activeMesaExamen( mesaExamenModel ) );
-    }
-
-    const handleEdit = ( m ) => {
-        dispatch( startSetActive( m ) );
-    }
-
-    const handleDelete = ( id) => {
-        dispatch( startDeletingMesaExamen( id) );
-    }
+    const {
+        mesasExamenes,
+        handleCreate,
+        handleEdit,
+        handleDelete
+    } = useContext(MesasExamenesContext);
 
     return (
         <div>

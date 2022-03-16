@@ -1,20 +1,19 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from '../../Hooks/useForm';
-import {
-    cleanActiveMesaExamen,
-    startNewMesaExamen,
-    startUpdateMesaExamen
-} from '../../Store/MesaExamen/Actions/MesaExamen';
 import { MesasExamenesNovedadesSave } from './MesasExamenesNovedadesSave';
 import { periodosGetAll } from '../../Services/restCallPeriodos';
 import { mesaExamenModel } from '../../Utils/Model/mesaExamenModel';
 import { AgregarPeriodos } from '../../Template/AgregarPeriodos';
+import { MesasExamenesContext } from '../../Context/BuildContext';
 
 export const MesasExamenesMaestrosSave = () => {
-    const dispatch = useDispatch();
+    const {
+        active,
+        handleAddMesaExamen,
+        handleEditMesaExamen,
+        handleBack
+    } = useContext(MesasExamenesContext);
 
-    const { active } = useSelector( state => state.mesaExamen );
     const [ formValues, handleInputChange ] = useForm( active.maestro );
     const [ novedad, setNovedad ] = useState( active.novedad );
     const [ periodoList, setPeriodoList ] = useState([]);
@@ -32,23 +31,6 @@ export const MesasExamenesMaestrosSave = () => {
         descripcion,
         periodo_id
     } = formValues;
-
-    const handleAddMesaExamen = ( e ) => {
-        e.preventDefault();
-        dispatch( startNewMesaExamen( { maestro: formValues, novedad } ) );
-        dispatch( cleanActiveMesaExamen() );
-    }
-
-    const handleEditMesaExamen = ( e ) => {
-        e.preventDefault();
-        dispatch( startUpdateMesaExamen( { maestro: formValues, novedad } ) );
-        dispatch( cleanActiveMesaExamen() );
-    }
-
-    const back = ( e ) => {
-        e.preventDefault();
-        dispatch( cleanActiveMesaExamen() );
-    }
 
     return (
         <div>
@@ -87,19 +69,19 @@ export const MesasExamenesMaestrosSave = () => {
                 {
                     active === mesaExamenModel
                     ? (
-                        <button onClick={ handleAddMesaExamen } >
+                        <button onClick={ () => handleAddMesaExamen(formValues) } >
                             Guardar
                         </button>
                     )
                     : (
-                        <button onClick={ handleEditMesaExamen } >
+                        <button onClick={ () => handleEditMesaExamen(formValues) } >
                             Editar
                         </button>
                     )
                 }
             </div>
             <div>
-                <button onClick={ back }>
+                <button onClick={ handleBack }>
                     Volver
                 </button>
             </div>

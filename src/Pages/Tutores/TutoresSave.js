@@ -1,35 +1,20 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useContext } from 'react';
 import { useForm } from '../../Hooks/useForm';
-import {
-    cleanActiveTutor,
-    startNewTutor,
-    startUpdateTutor
-} from '../../Store/Tutor/Actions/Tutor';
 import { DatosPersonales } from '../../Template/DatosPersonales';
 import { DatosPareja } from '../../Template/DatosPareja';
 import { DatosTutor } from '../../Template/DatosTutor';
 import { tutorModel } from '../../Utils/Model/tutorModel';
+import { TutoresContext } from '../../Context/BuildContext';
 
 export const TutoresSave = () => {
-    const dispatch = useDispatch();
-    const { active } = useSelector( state => state.tutor );
+    const {
+        active,
+        handleAddTutor,
+        handleEditTutor,
+        handleBack
+    } = useContext(TutoresContext);
+    
     const [ formValues, handleInputChange ] = useForm( active );
-
-    const handleAddTutor = ( e ) => {
-        e.preventDefault();
-        dispatch( startNewTutor( formValues ) );
-        dispatch( cleanActiveTutor() );
-    }
-    const handleEditTutor = ( e ) => {
-        e.preventDefault();
-        dispatch( startUpdateTutor( formValues ) );
-        dispatch( cleanActiveTutor() );
-    }
-    const back = ( e ) => {
-        e.preventDefault();
-        dispatch( cleanActiveTutor() );
-    }
 
     return (
         <div>
@@ -51,12 +36,12 @@ export const TutoresSave = () => {
                     {
                         active === tutorModel
                         ? (
-                            <button onClick={ handleAddTutor } >
+                            <button onClick={ () => handleAddTutor(formValues) }>
                                 Guardar
                             </button>
                         )
                         : (
-                            <button onClick={ handleEditTutor } >
+                            <button onClick={ () => handleEditTutor(formValues) }>
                                 Editar
                             </button>
                         )
@@ -64,7 +49,7 @@ export const TutoresSave = () => {
                     
                 </div>
                 <div>
-                    <button onClick={ back }>
+                    <button onClick={ handleBack }>
                         Volver
                     </button>
                 </div>

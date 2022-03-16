@@ -1,17 +1,15 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useContext } from 'react';
+import { MateriasContext } from '../../Context/BuildContext';
 import { useForm } from '../../Hooks/useForm';
-import {
-    cleanActiveMateria,
-    startNewMateria,
-    startUpdateMateria
-} from '../../Store/Materia/Actions/Materia';
 import { materiaModel, regimenes } from '../../Utils/Model/materiaModel';
 
 export const MateriasSave = () => {
-    const dispatch = useDispatch();
-
-    const { active } = useSelector( state => state.materia );
+    const {
+        active,
+        handleAddMateria,
+        handleEditMateria,
+        handleBack
+    } = useContext(MateriasContext);
 
     const [ formValues, handleInputChange ] = useForm( active );
 
@@ -20,23 +18,6 @@ export const MateriasSave = () => {
         planEstudio,
         regimen
     } = formValues;
-
-    const handleAddMateria = ( e ) => {
-        e.preventDefault();
-        dispatch( startNewMateria( formValues ) );
-        dispatch( cleanActiveMateria() );
-    }
-
-    const handleEditMateria = ( e ) => {
-        e.preventDefault();
-        dispatch( startUpdateMateria( formValues ) );
-        dispatch( cleanActiveMateria() );
-    }
-
-    const back = ( e ) => {
-        e.preventDefault();
-        dispatch( cleanActiveMateria() );
-    }
 
     return (
         <div>
@@ -77,19 +58,19 @@ export const MateriasSave = () => {
                 {
                     active === materiaModel
                     ? (
-                        <button onClick={ handleAddMateria } >
+                        <button onClick={ () => handleAddMateria(formValues) } >
                             Guardar
                         </button>
                     )
                     : (
-                        <button onClick={ handleEditMateria } >
+                        <button onClick={ () => handleEditMateria(formValues) } >
                             Editar
                         </button>
                     )
                 }
             </div>
             <div>
-                <button onClick={ back }>
+                <button onClick={ handleBack }>
                     Volver
                 </button>
             </div>

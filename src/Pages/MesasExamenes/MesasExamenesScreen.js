@@ -1,21 +1,27 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { startLoadingMesasExamenes } from "../../Store/MesaExamen/Actions/MesaExamen";
+import React, { useContext } from "react";
+import { MesasExamenesContext } from "../../Context/BuildContext";
+import { MesasExamenesState } from "../../Context/MesasExamenesState";
 import { MesasExamenesList } from "./MesasExamenesList";
 import { MesasExamenesMaestrosSave } from "./MesasExamenesMaestrosSave";
 
-export const MesasExamenesScreen = () => {
-    const dispatch = useDispatch();
+const MesasExamenes = () => {
+    const {active} = useContext(MesasExamenesContext);
 
-    const { active } = useSelector( state => state.mesaExamen );
-    useEffect(() => {
-        dispatch( startLoadingMesasExamenes() );
-    }, []);
     return (
         <div>
-            { Object.entries(active).length ?
-            <MesasExamenesMaestrosSave /> :
-            <MesasExamenesList /> }
+            {
+                Object.entries(active).length
+                ? <MesasExamenesMaestrosSave />
+                : <MesasExamenesList />
+            }
         </div>
     );
 };
+
+export const MesasExamenesScreen = () => {
+    return (
+        <MesasExamenesState>
+            <MesasExamenes />
+        </MesasExamenesState>
+    );
+}

@@ -1,28 +1,13 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-    activeMateria,
-    startDeletingMateria,
-    startSetActive
-} from '../../Store/Materia/Actions/Materia';
-import { materiaModel } from '../../Utils/Model/materiaModel';
+import React, { useContext } from 'react';
+import { MateriasContext } from '../../Context/BuildContext';
 
 export const MateriasList = () => {
-    const dispatch = useDispatch();
-
-    const { materias } = useSelector( state => state.materia );
-
-    const handleCreate = () => {
-        dispatch( activeMateria( materiaModel ) );
-    }
-
-    const handleEdit = ( id ) => {
-        dispatch( startSetActive( id ) );
-    }
-
-    const handleDelete = ( id) => {
-        dispatch( startDeletingMateria( id) );
-    }
+    const {
+        materias,
+        handleCreate,
+        handleEdit,
+        handleDelete
+    } = useContext(MateriasContext);
 
     return (
         <div>

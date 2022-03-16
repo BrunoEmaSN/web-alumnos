@@ -1,31 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import Modal from 'react-modal/lib/components/Modal';
-import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from '../../Hooks/useForm';
-import { cleanActiveCurso, startNewCurso, startUpdateCurso } from '../../Store/Curso/Actions/Curso';
 import { aulasGetAll } from '../../Services/restCallAulas';
-
-const customStyles = {
-    content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
-    },
-};
-
-const actions = {
-    create: 'Create',
-    edit: 'Edit'
-};
+import { CursosContext } from '../../Context/BuildContext';
+import { customStyles } from '../../Utils/modalStyles';
 
 export const CursoModal = ({ isOpenModal, closeModal, action }) => {
-    const dispatch = useDispatch();
-
-    const { active } = useSelector( state => state.curso );
+    const {
+        active,
+        actions,
+        handleAddCurso,
+        handleEditCurso,
+    } = useContext(CursosContext);
 
     const [ formValues, handleInputChange, , handleObjectChange ] = useForm( active );
 
@@ -38,18 +25,6 @@ export const CursoModal = ({ isOpenModal, closeModal, action }) => {
     } = formValues;
 
     const [ aulas, setAulas ] = useState([]);
-
-    const handleAddCurso = () => {
-        dispatch( startNewCurso( formValues ) );
-        dispatch( cleanActiveCurso() );
-        closeModal()
-    }
-
-    const handleEditCurso = () => {
-        dispatch( startUpdateCurso( formValues ) );
-        dispatch( cleanActiveCurso() );
-        closeModal();
-    }
 
     const handleAulasGetAll = async () => {
         setAulas( await aulasGetAll() );
@@ -126,9 +101,19 @@ export const CursoModal = ({ isOpenModal, closeModal, action }) => {
                     </select>
                 </div>
                 <div>
-                    <button onClick={ action === actions.create ? handleAddCurso : handleEditCurso } >
-                        Save
-                    </button>
+                    {
+                        action === actions.create
+                        ? (
+                            <button onClick={ () => handleAddCurso(formValues) } >
+                                Guardar
+                            </button>
+                        )
+                        : (
+                            <button onClick={ () => handleEditCurso(formValues) } >
+                                Editar
+                            </button>
+                        )
+                    }
                 </div>
                 <div>
                     <button onClick={ closeModal }>

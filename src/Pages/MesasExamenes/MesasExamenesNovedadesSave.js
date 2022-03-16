@@ -7,6 +7,7 @@ import { materiasGetAll } from '../../Services/restCallMaterias';
 
 import { MesasExamenesNovedadTable } from './MesasExamenesNovedadTable';
 import { llamadosList } from '../../Utils/Model/mesaExamenModel';
+import Swal from 'sweetalert2';
 
 const initialState = {
   materia_id: '',
@@ -62,18 +63,26 @@ export const MesasExamenesNovedadesSave = ({ novedad, setNovedad }) => {
   }
   
   const handleAddRow = () => {
-    setNovedad(
-      (prevState) => (
-        [
-          ...prevState,
-          { ...formValues, materia_descripcion }
-        ]
-      )
-    );
-    setFormValues(initialState);
-    setMateriaDescripcion('');
-    setAction(actionsList.create);
-    setOldState(initialOldState);
+    const isExist = novedad.find( n => (
+      parseInt(n.materia_id) === parseInt(materia_id)
+      && n.llamado === llamado
+    ));
+    if(!isExist){
+      setNovedad(
+        (prevState) => (
+          [
+            ...prevState,
+            { ...formValues, materia_descripcion }
+          ]
+        )
+      );
+      setFormValues(initialState);
+      setMateriaDescripcion('');
+      setAction(actionsList.create);
+      setOldState(initialOldState);
+    } else{
+      Swal.fire('Ya Existe una Mesa igual', '', 'info');
+    }
   }
 
   const handleEditRow = () => {

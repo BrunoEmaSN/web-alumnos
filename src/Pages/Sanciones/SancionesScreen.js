@@ -1,25 +1,12 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useContext } from 'react';
 
 import moment from 'moment';
-import { useModal } from '../../Hooks/useModal';
 import { SancionModal } from './SancionesModal';
-import { startLoadingSanciones, startSetActive } from '../../Store/Sancion/Actions/Sancion';
+import { SancionesContext } from '../../Context/BuildContext';
+import { SancionesState } from '../../Context/SancionesState';
 
-export const SancionesScreen = () => {
-    const dispatch = useDispatch();
-
-    const { sanciones } = useSelector( state => state.sancion );
-    const [ isOpenModal, openModal, closeModal ] = useModal( false );
-
-    const handleUpdate = ( sancion ) => {
-        dispatch( startSetActive( sancion ) );
-        openModal();
-    }
-
-    useEffect(() => {
-        dispatch( startLoadingSanciones() );
-    }, [dispatch]);
+const Sanciones = () => {
+    const {sanciones, handleUpdate, isOpenModal, closeModal} = useContext(SancionesContext);
     
     return (
         <div>
@@ -39,3 +26,11 @@ export const SancionesScreen = () => {
         </div>
     )
 };
+
+export const SancionesScreen = () => {
+    return (
+        <SancionesState>
+            <Sanciones />
+        </SancionesState>
+    );
+}
