@@ -62,7 +62,13 @@ export const startUpdateTutor = ( tutor ) => {
                 telefonoMovilPareja: ''
             };
         }
-        dispatch( refreshTutor( tutor ) );
+        const datosTutor = {
+            ...tutor,
+            tipo_documento: tutor.tipoDocumento,
+            nivel_academico: tutor.nivelAcademico,
+            situacion_academica: tutor.situacionAcademica,
+    }
+        dispatch( refreshTutor( datosTutor ) );
     };
 };
 

@@ -1,42 +1,34 @@
+import { Button, Typography } from '@mui/material';
 import React, { useContext } from 'react';
 import { AulasState } from '../../Context/AulasState';
 import { AulasContext } from '../../Context/BuildContext';
 import { AulasModal } from './AulasModal';
+import { AulasTable } from './AulasTable';
 
 const Aulas = () => {
     const {
-        aulas,
         isOpenModal,
         closeModal,
         action,
         handleCreate,
-        handleUpdate,
-        handleDelete
     } = useContext(AulasContext);
 
     return (
         <div>
-            <h1>AulasList</h1>
-            <button onClick={ handleCreate }>Save</button>
-            {
-                aulas.map( a => (
-                    a.estado !== 0 && (
-                        <div key={ a.id }>
-                            { `${ a.id } ${ a.descripcion }` }
-                            <button onClick={ 
-                                () => { handleUpdate( a ) } 
-                            }>
-                                Edit
-                            </button>
-                            <button onClick={ 
-                                () => { handleDelete( a.id ) } 
-                            }>
-                                Delete
-                            </button>
-                        </div>
-                    )
-                ))
-            }
+            <Typography
+				variant="h2"
+				component="div"
+				gutterBottom
+			>
+				Aulas
+			</Typography>
+			<Button
+				onClick={handleCreate}
+				variant="outlined"
+			>
+				Crear Nuevo
+			</Button>
+            <AulasTable />
             {
                 isOpenModal && <AulasModal
                     isOpenModal={ isOpenModal }

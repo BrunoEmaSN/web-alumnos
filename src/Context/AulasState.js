@@ -37,6 +37,7 @@ export const AulasState = ({ children }) => {
     }
 
     const handleUpdate = ( a ) => {
+        console.log(a)
         setAction( actions.edit );
         dispatch( activeAula( a ) );
         openModal();

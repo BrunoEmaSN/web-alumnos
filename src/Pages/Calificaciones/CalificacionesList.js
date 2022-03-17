@@ -1,27 +1,18 @@
-import React, { useContext } from 'react';
-import { CalificacionesContext } from '../../Context/BuildContext';
+import React from 'react';
+import { Typography } from '@mui/material';
+import { CalificacionesTable } from './CalificacionesTable';
 
 export const CalificacionesList = () => {
-	const {
-		calificaciones,
-		handleEdit
-	} = useContext(CalificacionesContext);
-
 	return (
 		<div>
-			<h1>CalificacionesList</h1>
-			{calificaciones.map((c) => (
-				<div key={c.id}>
-					{`${c.id} ${c.descripcion} ${c.regimen} ${c.etapa}`}
-					<button
-						onClick={() => {
-							handleEdit(c);
-						}}
-					>
-						Edit
-					</button>
-				</div>
-			))}
+			<Typography
+				variant="h2"
+				component="div"
+				gutterBottom
+			>
+				Calificaciones
+			</Typography>
+			<CalificacionesTable />
 		</div>
 	);
 };

@@ -26,7 +26,7 @@ export const TableGeneric = ({ columns, rows }) => {
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
             <TableContainer>
-                <Table stickyHeader aria-label="sticky table">
+                <Table aria-label="table generic">
                     <TableHead>
                         <TableRow>
                             {columns.map((column) => (

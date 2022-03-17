@@ -15,7 +15,7 @@ export const AlumnosList = () => {
 				component="div"
 				gutterBottom
 			>
-				AlumnosList
+				Alumnos
 			</Typography>
 			<Button
 				onClick={handleCreate}

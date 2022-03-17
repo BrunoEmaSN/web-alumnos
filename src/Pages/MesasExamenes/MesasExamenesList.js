@@ -1,37 +1,29 @@
+import { Button, Typography } from '@mui/material';
 import React, { useContext } from 'react';
 import { MesasExamenesContext } from '../../Context/BuildContext';
+import { MesasExamenesTable } from './MesasExamenesTable';
 
 export const MesasExamenesList = () => {
     const {
-        mesasExamenes,
-        handleCreate,
-        handleEdit,
-        handleDelete
+        handleCreate
     } = useContext(MesasExamenesContext);
 
     return (
         <div>
-            <h1>mesasExamenesList</h1>
-            <button onClick={ handleCreate }>Save</button>
-            {
-                mesasExamenes.map( (mesaExamen) => (
-                    mesaExamen.estado !== 0 && (
-                        <div key={ mesaExamen.id}>
-                            { `${ mesaExamen.id } ${ mesaExamen.descripcion }` }
-                            <button onClick={
-                                () => { handleEdit( mesaExamen ) }
-                            }>
-                                Edit
-                            </button>
-                            <button onClick={
-                                () => { handleDelete( mesaExamen.id) }
-                            }>
-                                Delete
-                            </button>
-                        </div>
-                    )
-                ))
-            }
+            <Typography
+				variant="h2"
+				component="div"
+				gutterBottom
+			>
+				Mesas Examenes
+			</Typography>
+			<Button
+				onClick={handleCreate}
+				variant="outlined"
+			>
+				Crear Nuevo
+			</Button>
+            <MesasExamenesTable />
         </div>
     );
 };

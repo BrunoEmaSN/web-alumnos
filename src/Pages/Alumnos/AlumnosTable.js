@@ -1,10 +1,10 @@
+import React, { useContext } from 'react'
 import { Box } from '@mui/system';
 import moment from 'moment';
-import React, { useContext } from 'react'
+import { OpcionesERVButtons } from '../../Components/OptionesButtons/OptionesERVButtons';
 import { TableGeneric } from '../../Components/Table/TableGeneric';
 import { AlumnosContext } from '../../Context/BuildContext';
-import { FaltantesList } from './Components.js/FaltantesList';
-import { OpcionesButtons } from './Components.js/OpcionesButtons';
+import { FaltantesList } from './Components/FaltantesList';
 
 const createData = (
 	fechaAgregado,
@@ -28,16 +28,20 @@ const createData = (
 		tipoDocumento,
 		id: documento,
 		condicion,
-		faltantes: FaltantesList({
-			partidaNacimiento,
-			fotocopiaDNI,
-			fotocopiaCUIL,
-			foto4x4,
-			contrato
-		}),
-		opciones: OpcionesButtons(
-			CallBackEdit,
-			CallBackDelete
+		faltantes: (
+			<FaltantesList
+				partidaNacimiento={partidaNacimiento}
+				fotocopiaDNI={fotocopiaDNI}
+				fotocopiaCUIL={fotocopiaCUIL}
+				foto4x4={foto4x4}
+				contrato={contrato}
+			/>
+		),
+		opciones: (
+			<OpcionesERVButtons
+				CallBackEdit={CallBackEdit}
+				CallBackDelete={CallBackDelete}
+			/>
 		)
 	}
 }

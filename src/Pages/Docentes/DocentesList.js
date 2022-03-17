@@ -1,37 +1,29 @@
 import React, { useContext } from 'react';
+import { Button, Typography } from '@mui/material';
 import { DocentesContext } from '../../Context/BuildContext';
+import { DocentesTable } from './DocentesTable';
 
 export const DocentesList = () => {
     const {
-        docentes,
         handleCreate,
-        handleEdit,
-        handleDelete
     } = useContext(DocentesContext);
 
     return (
         <div>
-            <h1>Docente List</h1>
-            <button onClick={ handleCreate }>Save</button>
-            {
-                docentes.map( d => (
-                    d.estado !== 0 && (
-                        <div key={ d.documento }>
-                            { `${ d.nombre } ${ d.apellido }` }
-                            <button onClick={
-                                () => { handleEdit( d.documento ) }
-                            }>
-                                Edit
-                            </button>
-                            <button onClick={
-                                () => { handleDelete( d.documento ) }
-                            }>
-                                Delete
-                            </button>
-                        </div>
-                    )
-                ))
-            }
+            <Typography
+				variant="h2"
+				component="div"
+				gutterBottom
+			>
+				Docentes
+			</Typography>
+			<Button
+				onClick={handleCreate}
+				variant="outlined"
+			>
+				Crear Nuevo
+			</Button>
+            <DocentesTable />
         </div>
     );
 };

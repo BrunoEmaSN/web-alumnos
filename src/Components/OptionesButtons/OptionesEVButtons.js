@@ -2,9 +2,8 @@ import React from "react";
 import PropTypes from 'prop-types';
 import { Button, ButtonGroup } from "@mui/material";
 
-export const OpcionesButtons = ({
-	CallBackEdit,
-	CallBackDelete
+export const OpcionesEVButtons = ({
+	CallBackEdit
 }) => {
 	return (
         <ButtonGroup
@@ -16,16 +15,10 @@ export const OpcionesButtons = ({
 			>
 				Edit
 			</Button>
-			<Button
-				onClick={ CallBackDelete }
-			>
-				Delete
-			</Button>
         </ButtonGroup>
 	);
 }
 
-OpcionesButtons.propTypes = {
-    CallBackEdit: PropTypes.func.isRequired,
-	CallBackDelete: PropTypes.func.isRequired
+OpcionesEVButtons.propTypes = {
+    CallBackEdit: PropTypes.func.isRequired
 }
