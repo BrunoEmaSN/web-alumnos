@@ -13,7 +13,8 @@ const createData = (
     materia,
     alumno,
     docente,
-    CallBackEdit
+    CallBackEdit,
+    CallBackView
 ) => {
     return {
         id,
@@ -27,6 +28,7 @@ const createData = (
         opciones: (
             <OpcionesEVButtons
 				CallBackEdit={CallBackEdit}
+                CallBackView={CallBackView}
 			/>
         )
     }
@@ -35,7 +37,8 @@ const createData = (
 export const CalificacionesTable = () => {
     const {
         calificaciones,
-        handleEdit
+        handleEdit,
+        handleView
     } = useContext(CalificacionesContext);
 
     const columns = [
@@ -60,7 +63,8 @@ export const CalificacionesTable = () => {
             c.descripcion_materia,
             c.nombre_alumno,
             c.nombre_docente,
-            () => handleEdit(c)
+            () => handleEdit(c),
+            () => handleView(c.id)
         )
     ));
 

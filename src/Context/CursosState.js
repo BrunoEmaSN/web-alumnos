@@ -14,6 +14,7 @@ import {
 } from '../Store/Curso/Actions/Curso';
 import { cursoModel } from '../Utils/Model/cursoModel';
 import { useIsValidate } from '../Hooks/useIsValidate';
+import { cursosGetOne } from '../Services/restCallCursos';
 
 const initialState = {
     nivel: '',
@@ -36,6 +37,8 @@ export const CursosState = ({ children }) => {
     const [ action, setAction ] = useState(actions.create);
     const [ errors, setErrors ] = useState(initialState);
     const [ handleValidateString, handleValidateInterger ] = useIsValidate();
+    const [ data, setData ] = useState(false);
+    const [ isOpenModalView, openModalView, closeModalView ] = useModal( false );
 
     useEffect(() => {
         dispatch( startLoadingCursos() );
@@ -55,6 +58,12 @@ export const CursosState = ({ children }) => {
 
     const handleDelete = ( id ) => {
         dispatch( startDeletingCurso( id ) );
+    }
+
+    const handleView = async (id) => {
+        const newData = await cursosGetOne(id);
+        setData( Object.entries(newData) );
+        openModalView();
     }
 
     const handleAddCurso = (formValues) => {
@@ -121,7 +130,11 @@ export const CursosState = ({ children }) => {
             handleAddCurso,
             handleEditCurso,
             errors,
-            resetErrors
+            resetErrors,
+            isOpenModalView,
+            handleView,
+            closeModalView,
+            data
         }}>
             {children}
         </CursosContext.Provider>

@@ -1,5 +1,6 @@
 import { Box, Button, Stack, Typography } from '@mui/material';
 import React, { useContext } from 'react';
+import { ViewGeneric } from '../../Components/View/ViewGeneric';
 import { AulasState } from '../../Context/AulasState';
 import { AulasContext } from '../../Context/BuildContext';
 import { AulasModal } from './AulasModal';
@@ -11,6 +12,9 @@ const Aulas = () => {
         closeModal,
         action,
         handleCreate,
+        isOpenModalView,
+		closeModalView,
+		data
     } = useContext(AulasContext);
 
     return (
@@ -38,6 +42,15 @@ const Aulas = () => {
                     closeModal={ closeModal }
                     action={ action }
                 />
+            }
+            {
+                isOpenModalView && (
+					<ViewGeneric
+						data={data}
+						isOpen={isOpenModalView}
+						handleClose={closeModalView}
+					/>
+				)
             }
         </Box>
     )

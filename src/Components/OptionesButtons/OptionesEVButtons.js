@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { Button, ButtonGroup } from "@mui/material";
 
 export const OpcionesEVButtons = ({
-	CallBackEdit
+	CallBackEdit,
+	CallBackView
 }) => {
 	return (
         <ButtonGroup
@@ -13,12 +14,18 @@ export const OpcionesEVButtons = ({
 			<Button
 				onClick={ CallBackEdit }
 			>
-				Edit
+				Editar
+			</Button>
+			<Button
+				onClick={ CallBackView }
+			>
+				Ver
 			</Button>
         </ButtonGroup>
 	);
 }
 
 OpcionesEVButtons.propTypes = {
-    CallBackEdit: PropTypes.func.isRequired
+    CallBackEdit: PropTypes.func.isRequired,
+	CallBackView: PropTypes.func.isRequired
 }

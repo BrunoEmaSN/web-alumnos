@@ -4,6 +4,7 @@ import { Button, ButtonGroup } from "@mui/material";
 
 export const OpcionesERVButtons = ({
 	CallBackEdit,
+	CallBackView,
 	CallBackDelete
 }) => {
 	return (
@@ -14,12 +15,17 @@ export const OpcionesERVButtons = ({
 			<Button
 				onClick={ CallBackEdit }
 			>
-				Edit
+				Editar
+			</Button>
+			<Button
+				onClick={ CallBackView }
+			>
+				Ver
 			</Button>
 			<Button
 				onClick={ CallBackDelete }
 			>
-				Delete
+				Eliminar
 			</Button>
         </ButtonGroup>
 	);
@@ -27,5 +33,6 @@ export const OpcionesERVButtons = ({
 
 OpcionesERVButtons.propTypes = {
     CallBackEdit: PropTypes.func.isRequired,
+	CallBackView: PropTypes.func.isRequired,
 	CallBackDelete: PropTypes.func.isRequired
 }

@@ -10,6 +10,8 @@ import {
 } from '../Store/Calificacion/Actions/Calificacion';
 import { CalificacionesContext } from './BuildContext';
 import { useIsValidate } from '../Hooks/useIsValidate';
+import { useModal } from '../Hooks/useModal';
+import { calificacionesGetOne } from '../Services/restCallCalificaciones';
 
 const initialState = {
     regimen: '',
@@ -27,6 +29,8 @@ export const CalificacionesState = ({ children }) => {
     const { calificaciones, active } = useSelector( state => state.calificacion );
     const [ errors, setErrors ] = useState(initialState);
     const [ handleValidateString, handleValidateInterger ] = useIsValidate();
+    const [ data, setData ] = useState(false);
+    const [ isOpenModalView, openModalView, closeModalView ] = useModal( false );
 
     useEffect(() => {
         dispatch( startLoadingCalificaciones() );
@@ -35,6 +39,12 @@ export const CalificacionesState = ({ children }) => {
     const handleEdit = (c) => {
 		dispatch(activeCalificacion(c));
 	};
+
+    const handleView = async (id) => {
+        const newData = await calificacionesGetOne(id);
+        setData( Object.entries(newData) );
+        openModalView();
+    }
     
     const handleEditCalificacion = ( formValues ) => {
         if(handleErrors(formValues)){
@@ -94,7 +104,11 @@ export const CalificacionesState = ({ children }) => {
             handleEdit,
             handleEditCalificacion,
             handleBack,
-            errors
+            errors,
+            isOpenModalView,
+            handleView,
+            closeModalView,
+            data
         }}>
             {children}
         </CalificacionesContext.Provider>

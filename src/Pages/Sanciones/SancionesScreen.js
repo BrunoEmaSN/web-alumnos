@@ -4,9 +4,16 @@ import { SancionesContext } from '../../Context/BuildContext';
 import { SancionesState } from '../../Context/SancionesState';
 import { Box, Stack, Typography } from '@mui/material';
 import { SancionesTable } from './SancionesTable';
+import { ViewGeneric } from '../../Components/View/ViewGeneric';
 
 const Sanciones = () => {
-    const {isOpenModal, closeModal} = useContext(SancionesContext);
+    const {
+        isOpenModal,
+        closeModal,
+        isOpenModalView,
+		closeModalView,
+		data
+    } = useContext(SancionesContext);
     
     return (
         <Box>
@@ -25,6 +32,15 @@ const Sanciones = () => {
                     isOpenModal={ isOpenModal }
                     closeModal={ closeModal }
                 />
+            }
+            {
+                isOpenModalView && (
+					<ViewGeneric
+						data={data}
+						isOpen={isOpenModalView}
+						handleClose={closeModalView}
+					/>
+				)
             }
         </Box>
     )

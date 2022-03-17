@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { activeMesaExamen, cleanActiveMesaExamen, startDeletingMesaExamen, startLoadingMesasExamenes, startNewMesaExamen, startSetActive, startUpdateMesaExamen } from '../Store/MesaExamen/Actions/MesaExamen';
 import { mesaExamenModel } from '../Utils/Model/mesaExamenModel';
 import { useIsValidate } from '../Hooks/useIsValidate';
+import { useModal } from '../Hooks/useModal';
+import { mesasExamenesGetOne } from '../Services/restCallMesasExamenes';
 
 const initialStateMaestro = {
     descripcion: '',
@@ -28,6 +30,8 @@ export const MesasExamenesState = ({ children }) => {
     const [handleValidateString, handleValidateInterger ] = useIsValidate();
     const [errorMaestro, setErrorMaestro] = useState(initialStateMaestro);
     const [errorNovedad, setErrorNovedad] = useState(initialStateNovedad);
+    const [ data, setData ] = useState(false);
+    const [ isOpenModalView, openModalView, closeModalView ] = useModal( false );
     
     useEffect(() => {
         dispatch( startLoadingMesasExamenes() );
@@ -41,6 +45,11 @@ export const MesasExamenesState = ({ children }) => {
     }
     const handleDelete = ( id) => {
         dispatch( startDeletingMesaExamen( id) );
+    }
+    const handleView = async (id) => {
+        const newData = await mesasExamenesGetOne(id);
+        setData( Object.entries(newData) );
+        openModalView();
     }
 
     const handleAddMesaExamen = (formValues, novedad) => {
@@ -127,7 +136,11 @@ export const MesasExamenesState = ({ children }) => {
             handleBack,
             errorMaestro,
             errorNovedad,
-            handleErrorsNovedad
+            handleErrorsNovedad,
+            isOpenModalView,
+            handleView,
+            closeModalView,
+            data
         }}>
             {children}
         </MesasExamenesContext.Provider>

@@ -14,6 +14,7 @@ const createData = (
     profesion,
     ocupacion,
 	CallBackEdit,
+    CallBackView,
 	CallBackDelete
 ) => {
 	return {
@@ -28,6 +29,7 @@ const createData = (
 		opciones: (
 			<OpcionesERVButtons
 				CallBackEdit={CallBackEdit}
+                CallBackView={CallBackView}
 				CallBackDelete={CallBackDelete}
 			/>
 		)
@@ -38,6 +40,7 @@ export const TutoresTable = () => {
     const {
         tutores,
         handleEdit,
+        handleView,
         handleDelete
     } = useContext(TutoresContext);
     const columns = [
@@ -63,6 +66,7 @@ export const TutoresTable = () => {
             t.profesion,
             t.ocupacion,
             () => handleEdit(t.documento),
+            () => handleView(t.documento),
             () => handleDelete(t.documento)
         )
     ));

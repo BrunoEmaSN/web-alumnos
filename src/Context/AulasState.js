@@ -14,6 +14,7 @@ import {
 import { aulaModel } from '../Utils/Model/aulaModel';
 import { AulasContext } from './BuildContext';
 import { useIsValidate } from '../Hooks/useIsValidate';
+import { aulasGetOne } from '../Services/restCallAulas';
 
 const initialState = {
     descripcion: '',
@@ -31,6 +32,8 @@ export const AulasState = ({ children }) => {
     const { aulas, active } = useSelector( state => state.aula );
     const [ action, setAction ] = useState(actions.create);
     const [ isOpenModal, openModal, closeModal ] = useModal( false );
+    const [ data, setData ] = useState(false);
+    const [ isOpenModalView, openModalView, closeModalView ] = useModal( false );
     const [ errors, setErrors ] = useState(initialState);
     const [ handleValidateString, handleValidateInterger ] = useIsValidate();
 
@@ -52,6 +55,12 @@ export const AulasState = ({ children }) => {
 
     const handleDelete = ( id ) => {
         dispatch( startDeletingAula( id ) );
+    }
+
+    const handleView = async (id) => {
+        const newData = await aulasGetOne(id);
+        setData( Object.entries(newData) );
+        openModalView();
     }
 
     const handleAddAula = (formValues) => {
@@ -104,7 +113,11 @@ export const AulasState = ({ children }) => {
             handleAddAula,
             handleEditAula,
             errors,
-            resetErrors
+            resetErrors,
+            isOpenModalView,
+            handleView,
+            closeModalView,
+            data
         }}>
             { children }
         </AulasContext.Provider>

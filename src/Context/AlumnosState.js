@@ -13,6 +13,8 @@ import {
 } from '../Store/Alumno/Actions/Alumno';
 import { alumnoModel } from '../Utils/Model/alumnoModel';
 import { useIsValidate } from '../Hooks/useIsValidate';
+import { useModal } from '../Hooks/useModal';
+import { alumnosGetOne } from '../Services/restCallAlumnos';
 
 const initialState = {
     nombre: '',
@@ -33,6 +35,8 @@ export const AlumnosState = ({ children }) => {
 	const { alumnos, active } = useSelector( state => state.alumno);
     const [ errors, setErrors ] = useState(initialState);
     const [ handleValidateString, handleValidateInterger, handleValidateDate ] = useIsValidate();
+    const [ data, setData ] = useState(false);
+    const [ isOpenModalView, openModalView, closeModalView ] = useModal( false );
 
     useEffect(() => {
         dispatch( startLoadingAlumnos() );
@@ -68,6 +72,12 @@ export const AlumnosState = ({ children }) => {
 	const handleDelete = (documento) => {
 		dispatch(startDeletingAlumno(documento));
 	};
+
+    const handleView = async (id) => {
+        const newData = await alumnosGetOne(id);
+        setData( Object.entries(newData) );
+        openModalView();
+    }
     
     const handleErrors = (formValues) => {
         let isValid = true;
@@ -132,7 +142,11 @@ export const AlumnosState = ({ children }) => {
             handleCreate,
             handleEdit,
             handleDelete,
-            errors
+            errors,
+            isOpenModalView,
+            handleView,
+            closeModalView,
+            data
         }}>
             { children }
         </AlumnosContext.Provider>

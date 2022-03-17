@@ -1,11 +1,15 @@
 import { Box, Button, Stack, Typography } from '@mui/material';
 import React, { useContext } from 'react';
 import { MesasExamenesContext } from '../../Context/BuildContext';
+import { ViewMesaExamen } from './Components/ViewMesaExamen';
 import { MesasExamenesTable } from './MesasExamenesTable';
 
 export const MesasExamenesList = () => {
     const {
-        handleCreate
+        handleCreate,
+		isOpenModalView,
+		closeModalView,
+		data
     } = useContext(MesasExamenesContext);
 
     return (
@@ -27,6 +31,15 @@ export const MesasExamenesList = () => {
 				</Button>
 			</Stack>
             <MesasExamenesTable />
+			{
+                isOpenModalView && (
+					<ViewMesaExamen
+						data={data}
+						isOpen={isOpenModalView}
+						handleClose={closeModalView}
+					/>
+				)
+            }
 		</Box>
     );
 };

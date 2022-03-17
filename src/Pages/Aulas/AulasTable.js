@@ -4,13 +4,14 @@ import { OpcionesERVButtons } from '../../Components/OptionesButtons/OptionesERV
 import { TableGeneric } from '../../Components/Table/TableGeneric';
 import { AulasContext } from '../../Context/BuildContext';
 
-const createData = (id, descripcion, CallBackEdit, CallBackDelete) => {
+const createData = (id, descripcion, CallBackEdit, CallBackView,CallBackDelete) => {
     return {
         id,
         descripcion,
         opciones: (
             <OpcionesERVButtons
 				CallBackEdit={CallBackEdit}
+                CallBackView={CallBackView}
 				CallBackDelete={CallBackDelete}
 			/>
         )
@@ -21,7 +22,8 @@ export const AulasTable = () => {
     const {
         aulas,
         handleUpdate,
-        handleDelete
+        handleDelete,
+        handleView
     } = useContext(AulasContext);
 
     const columns = [
@@ -35,6 +37,7 @@ export const AulasTable = () => {
             a.id,
             a.descripcion,
             () => handleUpdate(a),
+            () => handleView(a.id),
             () => handleDelete(a.id)
         )
     ));

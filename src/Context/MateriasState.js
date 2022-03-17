@@ -13,6 +13,8 @@ import {
 } from '../Store/Materia/Actions/Materia';
 import { materiaModel } from '../Utils/Model/materiaModel';
 import { useIsValidate } from '../Hooks/useIsValidate';
+import { materiasGetOne } from '../Services/restCallMaterias';
+import { useModal } from '../Hooks/useModal';
 
 const initialState = {
     descripcion: '',
@@ -32,6 +34,8 @@ export const MateriasState = ({ children }) => {
     const [ action, setAction ] = useState(actions.create);
     const [ errors, setErrors ] = useState(initialState);
     const [ handleValidateString ] = useIsValidate();
+    const [ data, setData ] = useState(false);
+    const [ isOpenModalView, openModalView, closeModalView ] = useModal( false );
 
     useEffect(() => {
         dispatch( startLoadingMaterias() );
@@ -47,6 +51,11 @@ export const MateriasState = ({ children }) => {
     }
     const handleDelete = ( id) => {
         dispatch( startDeletingMateria( id) );
+    }
+    const handleView = async (id) => {
+        const newData = await materiasGetOne(id);
+        setData( Object.entries(newData) );
+        openModalView();
     }
 
     const handleAddMateria = ( formValues ) => {
@@ -103,7 +112,11 @@ export const MateriasState = ({ children }) => {
             handleAddMateria,
             handleEditMateria,
             handleBack,
-            errors
+            errors,
+            isOpenModalView,
+            handleView,
+            closeModalView,
+            data
         }}>
             {children}
         </MateriasContext.Provider>

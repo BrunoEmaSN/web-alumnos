@@ -13,6 +13,7 @@ const createData = (
     division,
     aula,
     CallBackEdit,
+    CallBackView,
     CallBackDelete
 ) => {
     return {
@@ -25,6 +26,7 @@ const createData = (
         opciones: (
             <OpcionesERVButtons
 				CallBackEdit={CallBackEdit}
+                CallBackView={CallBackView}
 				CallBackDelete={CallBackDelete}
 			/>
         )
@@ -35,6 +37,7 @@ export const CursosTable = () => {
     const {
         cursos,
         handleUpdate,
+        handleView,
         handleDelete
     } = useContext(CursosContext);
 
@@ -57,6 +60,7 @@ export const CursosTable = () => {
             c.division,
             c.aula_descripcion,
             () => handleUpdate(c),
+            () => handleView(c.id),
             () => handleDelete(c.id)
         )
     ));

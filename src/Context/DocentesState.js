@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { activeDocente, cleanActiveDocente, startDeletingDocente, startLoadingDocentes, startNewDocente, startSetActive, startUpdateDocente } from '../Store/Docente/Actions/Docente';
 import { docenteModel } from '../Utils/Model/docenteModel';
 import { useIsValidate } from '../Hooks/useIsValidate';
+import { useModal } from '../Hooks/useModal';
+import { docentesGetOne } from '../Services/restCallDocentes';
 
 const initialState = {
     nombre: '',
@@ -25,6 +27,8 @@ export const DocentesState = ({ children }) => {
     const { docentes, active } = useSelector( state => state.docente );
     const [ errors, setErrors ] = useState(initialState);
     const [ handleValidateString, handleValidateInterger, handleValidateDate ] = useIsValidate();
+    const [ data, setData ] = useState(false);
+    const [ isOpenModalView, openModalView, closeModalView ] = useModal( false );
 
     useEffect(() => {
         dispatch( startLoadingDocentes() );
@@ -38,6 +42,11 @@ export const DocentesState = ({ children }) => {
     }
     const handleDelete = ( documento ) => {
         dispatch( startDeletingDocente( documento ) );
+    }
+    const handleView = async (id) => {
+        const newData = await docentesGetOne(id);
+        setData( Object.entries(newData) );
+        openModalView();
     }
 
     const handleAddDocente = ( formValues ) => {
@@ -120,7 +129,11 @@ export const DocentesState = ({ children }) => {
             handleAddDocente,
             handleEditDocente,
             handleBack,
-            errors          
+            errors,
+            isOpenModalView,
+            handleView,
+            closeModalView,
+            data        
         }}>
             {children}
         </DocentesContext.Provider>

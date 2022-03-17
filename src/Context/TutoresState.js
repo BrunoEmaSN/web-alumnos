@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { activeTutor, cleanActiveTutor, startDeletingTutor, startLoadingTutores, startNewTutor, startSetActive, startUpdateTutor } from '../Store/Tutor/Actions/Tutor';
 import { tutorModel } from '../Utils/Model/tutorModel';
 import { useIsValidate } from '../Hooks/useIsValidate';
+import { useModal } from '../Hooks/useModal';
+import { tutoresGetOne } from '../Services/restCallTutores';
 
 const initialState = {
     nombre: '',
@@ -23,6 +25,8 @@ export const TutoresState = ({ children }) => {
     const { tutores, active } = useSelector( state => state.tutor );
     const [ errors, setErrors ] = useState(initialState);
     const [ handleValidateString, handleValidateInterger, handleValidateDate ] = useIsValidate();
+    const [ data, setData ] = useState(false);
+    const [ isOpenModalView, openModalView, closeModalView ] = useModal( false );
 
     useEffect(() => {
         dispatch( startLoadingTutores() );
@@ -36,6 +40,11 @@ export const TutoresState = ({ children }) => {
     }
     const handleDelete = ( documento ) => {
         dispatch( startDeletingTutor( documento ) );
+    }
+    const handleView = async (id) => {
+        const newData = await tutoresGetOne(id);
+        setData( Object.entries(newData) );
+        openModalView();
     }
 
     const handleAddTutor = (formValues) => {
@@ -109,7 +118,11 @@ export const TutoresState = ({ children }) => {
             handleAddTutor,
             handleEditTutor,
             handleBack,
-            errors
+            errors,
+            isOpenModalView,
+            handleView,
+            closeModalView,
+            data
         }}>
             {children}
         </TutoresContext.Provider>

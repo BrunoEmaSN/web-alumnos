@@ -12,6 +12,7 @@ const createData = (
     fechaFin,
     periodo,
     CallBackEdit,
+    CallBackView,
     CallBackDelete
 ) => {
     return {
@@ -23,6 +24,7 @@ const createData = (
         opciones: (
             <OpcionesERVButtons
 				CallBackEdit={CallBackEdit}
+                CallBackView={CallBackView}
 				CallBackDelete={CallBackDelete}
 			/>
         )
@@ -33,6 +35,7 @@ export const MesasExamenesTable = () => {
     const {
         mesasExamenes,
         handleEdit,
+        handleView,
         handleDelete
     } = useContext(MesasExamenesContext);
     const columns = [
@@ -52,6 +55,7 @@ export const MesasExamenesTable = () => {
             moment(m.fecha_fin).format('yyyy-MM-DD'),
             m.periodo_descripcion,
             () => handleEdit(m),
+            () => handleView(m.id),
             () => handleDelete(m.id)
         )
     ));

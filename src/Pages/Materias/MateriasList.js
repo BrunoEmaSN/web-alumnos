@@ -2,10 +2,14 @@ import React, { useContext } from 'react';
 import { Box, Button, Stack, Typography } from '@mui/material';
 import { MateriasContext } from '../../Context/BuildContext';
 import { MateriasTable } from './MateriasTable';
+import { ViewGeneric } from '../../Components/View/ViewGeneric';
 
 export const MateriasList = () => {
     const {
         handleCreate,
+		isOpenModalView,
+		closeModalView,
+		data
     } = useContext(MateriasContext);
 
     return (
@@ -27,6 +31,15 @@ export const MateriasList = () => {
 				</Button>
 			</Stack>
             <MateriasTable />
+			{
+                isOpenModalView && (
+					<ViewGeneric
+						data={data}
+						isOpen={isOpenModalView}
+						handleClose={closeModalView}
+					/>
+				)
+            }
 		</Box>
     );
 };

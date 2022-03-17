@@ -10,6 +10,7 @@ import {
     startUpdateSancion
 } from '../Store/Sancion/Actions/Sancion';
 import { useIsValidate } from '../Hooks/useIsValidate';
+import { sancionesGetOne } from '../Services/restCallSanciones';
 
 const initialState = {
     alumno: '',
@@ -26,6 +27,8 @@ export const SancionesState = ({children}) => {
     const [ isOpenModal, openModal, closeModal ] = useModal( false );
     const [ errors, setErrors ] = useState(initialState);
     const [ handleValidateString, handleValidateInterger, handleValidateDate ] = useIsValidate();
+    const [ data, setData ] = useState(false);
+    const [ isOpenModalView, openModalView, closeModalView ] = useModal( false );
 
     useEffect(() => {
         dispatch( startLoadingSanciones() );
@@ -34,6 +37,12 @@ export const SancionesState = ({children}) => {
     const handleUpdate = ( sancion ) => {
         dispatch( startSetActive( sancion ) );
         openModal();
+    }
+
+    const handleView = async (id) => {
+        const newData = await sancionesGetOne(id);
+        setData( Object.entries(newData) );
+        openModalView();
     }
 
     const handleEditSancion = (formValues) => {
@@ -87,7 +96,11 @@ export const SancionesState = ({children}) => {
             handleUpdate,
             handleEditSancion,
             errors,
-            resetErrors
+            resetErrors,
+            isOpenModalView,
+            handleView,
+            closeModalView,
+            data
         }}>
             {children}
         </SancionesContext.Provider>

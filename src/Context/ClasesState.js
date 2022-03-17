@@ -14,6 +14,8 @@ import {
 import { claseModel } from '../Utils/Model/claseModel';
 import { ClasesContext } from './BuildContext';
 import { useIsValidate } from '../Hooks/useIsValidate';
+import { clasesGetOne } from '../Services/restCallClases';
+import { useModal } from '../Hooks/useModal';
 
 const initialState = {
     dias: '',
@@ -31,6 +33,8 @@ export const ClasesState = ({ children }) => {
 	const { clases, active } = useSelector( state => state.clase );
     const [ errors, setErrors ] = useState(initialState);
     const [ handleValidateString, handleValidateInterger, handleValidateDate ] = useIsValidate();
+    const [ data, setData ] = useState(false);
+    const [ isOpenModalView, openModalView, closeModalView ] = useModal( false );
 
     useEffect(() => {
         dispatch( startLoadingClases() );
@@ -47,6 +51,12 @@ export const ClasesState = ({ children }) => {
 	const handleDelete = (id) => {
 		dispatch(startDeletingClase(id));
 	}
+
+    const handleView = async (id) => {
+        const newData = await clasesGetOne(id);
+        setData( Object.entries(newData) );
+        openModalView();
+    }
 
     const handleAddclase = (formValues) => {
         if(handleErrors(formValues)){
@@ -117,7 +127,11 @@ export const ClasesState = ({ children }) => {
             handleAddclase,
             handleEditclase,
             handleBack,
-            errors
+            errors,
+            isOpenModalView,
+            handleView,
+            closeModalView,
+            data
         }}>
             {children}
         </ClasesContext.Provider>

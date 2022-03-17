@@ -10,7 +10,8 @@ const createData = (
     descripcion,
     tipoSancion,
     fecha,
-    CallBackEdit
+    CallBackEdit,
+    CallBackView
 ) => {
     return {
         id,
@@ -20,6 +21,7 @@ const createData = (
         opciones: (
             <OpcionesEVButtons
 				CallBackEdit={CallBackEdit}
+                CallBackView={CallBackView}
 			/>
         )
     }
@@ -28,7 +30,8 @@ const createData = (
 export const SancionesTable = () => {
     const {
         sanciones,
-        handleUpdate
+        handleUpdate,
+        handleView
     } = useContext(SancionesContext);
     const columns = [
         {id: 'id', label: 'Id'},
@@ -44,7 +47,8 @@ export const SancionesTable = () => {
             s.descripcion,
             s.tipo_sancion,
             moment(s.fecha).format('yyyy-MM-DD'),
-            () => handleUpdate(s)
+            () => handleUpdate(s),
+            () => handleView(s.id)
         )
     ));
 

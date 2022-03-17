@@ -1,5 +1,6 @@
 import { Box, Button, Stack, Typography } from '@mui/material';
 import React, { useContext } from 'react';
+import { ViewGeneric } from '../../Components/View/ViewGeneric';
 import { CursosContext } from '../../Context/BuildContext';
 import { CursosState } from '../../Context/CursosState';
 import { CursoModal } from './CursosModal';
@@ -11,6 +12,9 @@ const Cursos = () => {
         isOpenModal,
         closeModal,
         handleCreate,
+        isOpenModalView,
+		closeModalView,
+		data
     } = useContext(CursosContext)
     
     return (
@@ -38,6 +42,15 @@ const Cursos = () => {
                     closeModal={ closeModal }
                     action={ action }
                 />
+            }
+            {
+                isOpenModalView && (
+					<ViewGeneric
+						data={data}
+						isOpen={isOpenModalView}
+						handleClose={closeModalView}
+					/>
+				)
             }
         </Box>
     )

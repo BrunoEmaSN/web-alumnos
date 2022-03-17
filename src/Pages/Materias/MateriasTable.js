@@ -10,6 +10,7 @@ const createData = (
     regimen,
     planEstudio,
     CallBackEdit,
+    CallBackView,
     CallBackDelete
 ) => {
     return {
@@ -20,6 +21,7 @@ const createData = (
         opciones: (
             <OpcionesERVButtons
 				CallBackEdit={CallBackEdit}
+                CallBackView={CallBackView}
 				CallBackDelete={CallBackDelete}
 			/>
         )
@@ -30,6 +32,7 @@ export const MateriasTable = () => {
     const {
         materias,
         handleEdit,
+        handleView,
         handleDelete
     } = useContext(MateriasContext);
 
@@ -48,6 +51,7 @@ export const MateriasTable = () => {
             m.regimen,
             m.plan_estudio,
             () => handleEdit(m.id),
+            () => handleView(m.id),
             () => handleDelete(m)
         )
     ));
