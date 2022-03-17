@@ -48,7 +48,7 @@ export const MateriasTable = () => {
             m.regimen,
             m.plan_estudio,
             () => handleEdit(m.id),
-            () => handleDelete(m.id)
+            () => handleDelete(m)
         )
     ));
 

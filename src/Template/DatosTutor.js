@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Grid, MenuItem, Paper, TextField, Typography } from '@mui/material';
 
 export const DatosTutor = ({
     nivelAcademico,
@@ -10,68 +11,97 @@ export const DatosTutor = ({
     handleInputChange
 }) => {
     return (
-        <fieldset>
-            <legend>Datos Tutor</legend>
-            <div>
-                <label htmlFor="nivelAcademico">Nivel Academico</label>
-                <select
-                    id="nivelAcademico"
-                    name="nivelAcademico"
-                    value={ nivelAcademico }
-                    onChange={ handleInputChange }
-                >
-                    <option value="" disabled>Selecione un Nivel</option>
-                    <option value="Primaria">Primaria</option>
-                    <option value="Secundaria">Secundaria</option>
-                    <option value="Terciario">Terciario</option>
-                    <option value="Universitario">Universitario</option>
-                </select>
-            </div>
-            <div>
-                <label htmlFor="situacionAcademica">Situacion Academica</label>
-                <select
-                    id="situacionAcademica"
-                    name="situacionAcademica"
-                    value={ situacionAcademica }
-                    onChange={ handleInputChange }
-                >
-                    <option value="" disabled>Selecione una opcion</option>
-                    <option value="Incompleto">Incompleto</option>
-                    <option value="Completo">Completo</option>
-                    <option value="Cursando">Cursando</option>
-                </select>
-            </div>
-            <div>
-                <label htmlFor="profesion">Profesion</label>
-                <input
-                    id="profesion"
-                    name="profesion"
-                    type="text"
-                    value={ profesion }
-                    onChange={ handleInputChange }
-                />
-            </div>
-            <div>
-                <label htmlFor="ocupacion">Ocupacion</label>
-                <input
-                    id="ocupacion"
-                    name="ocupacion"
-                    type="text"
-                    value={ ocupacion }
-                    onChange={ handleInputChange }
-                />
-            </div>
-            <div>
-                <label htmlFor="telefonoLaboral">Telefono Laboral</label>
-                <input
-                    id="telefonoLaboral"
-                    name="telefonoLaboral"
-                    type="number"
-                    value={ telefonoLaboral }
-                    onChange={ handleInputChange }
-                />
-            </div>
-        </fieldset>
+        <Paper sx={{ width: '60%', margin: '0 20% 2%', padding: '1%' }}>
+            <Typography variant="h4" gutterBottom component="div">
+                Datos Profesionales
+            </Typography>
+            <Grid container spacing={2}>
+                <Grid item xs={3}>
+                    <TextField
+                        //error
+                        fullWidth
+                        id="nivelAcademico"
+                        name="nivelAcademico"
+                        value={ nivelAcademico }
+                        onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        select
+                        margin="normal"
+                        label="Nivel Academico"
+                        //helperText="Please select your currency"
+                    >
+                        <MenuItem value="" disabled>Seleccione una opcion</MenuItem>
+                        <MenuItem value="Primaria">Primaria</MenuItem>
+                        <MenuItem value="Secundaria">Secundaria</MenuItem>
+                        <MenuItem value="Terciario">Terciario</MenuItem>
+                        <MenuItem value="Universitario">Universitario</MenuItem>
+                    </TextField>
+                </Grid>
+                <Grid item xs={3}>
+                    <TextField
+                        //error
+                        fullWidth
+                        id="situacionAcademica"
+                        name="situacionAcademica"
+                        value={ situacionAcademica }
+                        onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        select
+                        margin="normal"
+                        label="Situacion Academica"
+                        //helperText="Please select your currency"
+                    >
+                        <MenuItem value="" disabled>Seleccione una opcion</MenuItem>
+                        <MenuItem value="Incompleto">Incompleto</MenuItem>
+                        <MenuItem value="Completo">Completo</MenuItem>
+                        <MenuItem value="Cursando">Cursando</MenuItem>
+                    </TextField>
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        //error
+                        fullWidth
+                        id="profesion"
+                        name="profesion"
+                        value={ profesion }
+                        onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        margin="normal"
+                        label="Profesion"
+                        //helperText="Incorrect entry."
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        //error
+                        fullWidth
+                        id="ocupacion"
+                        name="ocupacion"
+                        value={ ocupacion }
+                        onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        margin="normal"
+                        label="Ocupacion"
+                        //helperText="Incorrect entry."
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        //error
+                        fullWidth
+                        id="telefonoLaboral"
+                        name="telefonoLaboral"
+                        type="number"
+                        value={ telefonoLaboral }
+                        onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        margin="normal"
+                        label="Telefono Laboral"
+                        //helperText="Incorrect entry."
+                    />
+                </Grid>
+            </Grid>
+        </Paper>
     )
 }
 

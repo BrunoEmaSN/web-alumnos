@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { Box, Button, Grid, MenuItem, TextField, Typography } from '@mui/material';
 import Modal from 'react-modal/lib/components/Modal';
 import { useForm } from '../Hooks/useForm';
-import { useModal } from '../Hooks/useModal';
 import { periodosAdd } from '../Services/restCallPeriodos';
 import { customStyles } from '../Utils/modalStyles';
 
@@ -12,8 +13,7 @@ const initialState = {
     tipoPeriodo: ''
 }
 
-export const AgregarPeriodos = () => {
-    const [ isOpenModal, openModal, closeModal ] = useModal( false );
+export const AgregarPeriodos = ({ isOpenModal, openModal, closeModal }) => {
     const [ formValues, handleInputChange, , , , setValues ] = useForm(initialState);
     const {
         descripcionPeriodo,
@@ -29,71 +29,115 @@ export const AgregarPeriodos = () => {
     }
 
     return (
-        <div>
-            <button onClick={ openModal }>Agregar</button>
+        <Box>
+            <Button
+                fullWidth
+                onClick={ openModal }
+                sx={{ padding: '0 2%', height: 50 }}
+            >
+                Agregar Periodo
+            </Button>
             <Modal
                 isOpen={ isOpenModal }
                 style={ customStyles }
                 onRequestClose={ closeModal }
-                ariaHideApp={false}
+                ariaHideApp={true}
             >
-                <div>
-                    <h2>Agregar Periodo</h2>
-                    <div>
-                        <label htmlFor="descripcionPeriodo">
-                            Descripcion
-                        </label>
-                        <input
-                            type="text"
+                <Typography variant="h6" gutterBottom component="div">
+                    Agregar Periodo
+                </Typography>
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <TextField
+                            //error
+                            fullWidth
+                            id="descripcionPeriodo"
                             name="descripcionPeriodo"
                             value={ descripcionPeriodo }
                             onChange={ handleInputChange }
+                            InputLabelProps={{ shrink: true, required: true }}
+                            margin="normal"
+                            label="Descripcion"
+                            //helperText="Incorrect entry."
                         />
-                    </div>
-                    <div>
-                        <label htmlFor="fechaInicio">
-                            Fecha Inicio
-                        </label>
-                        <input
-                            type="date"
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            //error
+                            fullWidth
+                            id="fechaInicio"
                             name="fechaInicio"
                             value={ fechaInicio }
-                            onChange={ handleInputChange }
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="fechaFin">Fecha Fin</label>
-                        <input
                             type="date"
+                            onChange={ handleInputChange }
+                            InputLabelProps={{ shrink: true, required: true }}
+                            margin="normal"
+                            label="Fecha Inicio"
+                            //helperText="Incorrect entry."
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            //error
+                            fullWidth
+                            id="fechaFin"
                             name="fechaFin"
                             value={ fechaFin }
+                            type="date"
                             onChange={ handleInputChange }
+                            InputLabelProps={{ shrink: true, required: true }}
+                            margin="normal"
+                            label="Fecha Fin"
+                            //helperText="Incorrect entry."
                         />
-                    </div>
-                    <div>
-                        <label htmlFor="tipoPeriodo">Tipo</label>
-                        <select
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            //error
+                            fullWidth
                             id="tipoPeriodo"
                             name="tipoPeriodo"
                             value={ tipoPeriodo }
                             onChange={ handleInputChange }
+                            InputLabelProps={{ shrink: true, required: true }}
+                            select
+                            margin="normal"
+                            label="Tipo"
+                            //helperText="Please select your currency"
                         >
-                            <option value="" disabled>
-                                Selecione un tipo
-                            </option>
-                            <option value="CicloLectivo">
-                                Ciclo Lectivo
-                            </option>
-                            <option value="Mesa">
-                                Mesa
-                            </option>
-                        </select>
-                    </div>
-                    <div>
-                        <button onClick={ handleAddPeriodo }>Agregar</button>
-                    </div>
-                </div>
+                            <MenuItem value="" disabled>
+                                Seleccione un día
+                            </MenuItem>
+                            <MenuItem value="CicloLectivo">Ciclo Lectivo</MenuItem>
+                            <MenuItem value="Mesa">Mesa</MenuItem>
+                        </TextField>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button
+                            fullWidth
+                            onClick={ handleAddPeriodo }
+                            variant="contained"
+                        >
+                            Agregar
+                        </Button>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button
+                            fullWidth
+                            onClick={ closeModal }
+                            variant="outlined"
+                        >
+                        Cerrar
+                        </Button>
+                    </Grid>
+                </Grid>
             </Modal>
-        </div>
+        </Box>
     )
+}
+
+AgregarPeriodos.propTypes = {
+    isOpenModal: PropTypes.bool.isRequired,
+    openModal: PropTypes.func.isRequired,
+    closeModal: PropTypes.func.isRequired
 }

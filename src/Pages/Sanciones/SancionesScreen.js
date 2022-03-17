@@ -2,21 +2,23 @@ import React, { useContext } from 'react';
 import { SancionModal } from './SancionesModal';
 import { SancionesContext } from '../../Context/BuildContext';
 import { SancionesState } from '../../Context/SancionesState';
-import { Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { SancionesTable } from './SancionesTable';
 
 const Sanciones = () => {
     const {isOpenModal, closeModal} = useContext(SancionesContext);
     
     return (
-        <div>
-            <Typography
-				variant="h2"
-				component="div"
-				gutterBottom
-			>
-				Sanciones
-			</Typography>
+        <Box>
+			<Stack direction="row" spacing={2} margin={1}>
+                <Typography
+                    variant="h3"
+                    component="div"
+                    gutterBottom
+                >
+                    Sanciones
+                </Typography>
+            </Stack>
             <SancionesTable />
             {
                 isOpenModal && <SancionModal
@@ -24,7 +26,7 @@ const Sanciones = () => {
                     closeModal={ closeModal }
                 />
             }
-        </div>
+        </Box>
     )
 };
 

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Button, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import { DocentesContext } from '../../Context/BuildContext';
 import { DocentesTable } from './DocentesTable';
 
@@ -9,21 +9,24 @@ export const DocentesList = () => {
     } = useContext(DocentesContext);
 
     return (
-        <div>
-            <Typography
-				variant="h2"
-				component="div"
-				gutterBottom
-			>
-				Docentes
-			</Typography>
-			<Button
-				onClick={handleCreate}
-				variant="outlined"
-			>
-				Crear Nuevo
-			</Button>
-            <DocentesTable />
-        </div>
+        <Box>
+			<Stack direction="row" spacing={2} margin={1}>
+				<Typography
+					variant="h3"
+					component="div"
+					gutterBottom
+				>
+					Docentes
+				</Typography>
+				<Button
+					onClick={handleCreate}
+					variant="outlined"
+					sx={{ padding: '0 2%', height: 50 }}
+				>
+					Crear Nuevo
+				</Button>
+			</Stack>
+			<DocentesTable />
+		</Box>
     );
 };

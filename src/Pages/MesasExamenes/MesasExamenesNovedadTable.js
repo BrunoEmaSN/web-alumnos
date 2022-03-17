@@ -9,6 +9,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import moment from 'moment';
+import { Button, ButtonGroup } from '@mui/material';
 
 export const MesasExamenesNovedadTable = ({ novedad, handleFormValues, handleDeleteRow }) => {
     return (
@@ -43,12 +44,21 @@ export const MesasExamenesNovedadTable = ({ novedad, handleFormValues, handleDel
                                 <TableCell>{`${n.examinador2}`}</TableCell>
                                 <TableCell>{`${n.examinador3}`}</TableCell>
                                 <TableCell>
-                                    <button onClick={() => handleFormValues(n)}>
-                                        Edit
-                                    </button>
-                                    <button onClick={() => handleDeleteRow(n)}>
-                                        Remove
-                                    </button>
+                                    <ButtonGroup
+                                        orientation="vertical"
+                                        aria-label="vertical outlined button group"
+                                    >
+                                        <Button
+                                            onClick={() => handleFormValues(n)}
+                                        >
+                                            Edit
+                                        </Button>
+                                        <Button
+                                            onClick={() => handleDeleteRow(n)}
+                                        >
+                                            Delete
+                                        </Button>
+                                    </ButtonGroup>
                                 </TableCell>
                             </TableRow>
                         ))}

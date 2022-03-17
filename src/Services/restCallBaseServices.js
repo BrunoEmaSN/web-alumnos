@@ -2,7 +2,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 export const axiosWithToken = async ( url, data = {}, method = 'GET' ) => {
-    const token = localStorage.getItem('token') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMSIsImlhdCI6MTY0NzQ0MDkyMiwiZXhwIjoxNjQ3NTI3MzIyfQ.0T8nb7LbLl7rGGZ-PksZvJY-vWiBUfCSbdfHKgVT5WI';
+    const token = localStorage.getItem('token') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMSIsImlhdCI6MTY0NzUyNzU0MywiZXhwIjoxNjQ3NjEzOTQzfQ.ab4VdPfEysKWE_53DUN8MzBRrUA2dJCxRhdWzLNLK30';
 
     var config = {
         method,

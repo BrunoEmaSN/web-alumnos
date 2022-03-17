@@ -13,6 +13,12 @@ import {
 } from '../Store/Aula/Actions/Aula';
 import { aulaModel } from '../Utils/Model/aulaModel';
 import { AulasContext } from './BuildContext';
+import { useIsValidate } from '../Hooks/useIsValidate';
+
+const initialState = {
+    descripcion: '',
+    capacidad: ''
+}
 
 export const AulasState = ({ children }) => {
     const dispatch = useDispatch();
@@ -25,6 +31,8 @@ export const AulasState = ({ children }) => {
     const { aulas, active } = useSelector( state => state.aula );
     const [ action, setAction ] = useState(actions.create);
     const [ isOpenModal, openModal, closeModal ] = useModal( false );
+    const [ errors, setErrors ] = useState(initialState);
+    const [ handleValidateString, handleValidateInterger ] = useIsValidate();
 
     useEffect(() => {
         dispatch( startLoadingAulas() );
@@ -37,7 +45,6 @@ export const AulasState = ({ children }) => {
     }
 
     const handleUpdate = ( a ) => {
-        console.log(a)
         setAction( actions.edit );
         dispatch( activeAula( a ) );
         openModal();
@@ -48,15 +55,38 @@ export const AulasState = ({ children }) => {
     }
 
     const handleAddAula = (formValues) => {
-        dispatch( startNewAula( formValues ) );
-        dispatch( cleanActiveAula() );
-        closeModal()
+        if(handleErrors(formValues)){
+            dispatch( startNewAula( formValues ) );
+            dispatch( cleanActiveAula() );
+            closeModal()
+        }
     }
 
     const handleEditAula = (formValues) => {
-        dispatch( startUpdateAula( formValues ) );
-        dispatch( cleanActiveAula() );
-        closeModal();
+        if(handleErrors(formValues)){
+            dispatch( startUpdateAula( formValues ) );
+            dispatch( cleanActiveAula() );
+            closeModal();
+        }
+    }
+
+    const handleErrors = (formValues) => {
+        let isValid = true;
+        let newState = initialState;
+        if(!handleValidateString(formValues.descripcion)){
+            isValid = false
+            newState = {...newState, descripcion: 'es necesario una descripcion'};
+        }
+        if(!handleValidateInterger(formValues.capacidad)){
+            isValid = false;
+            newState = {...newState, capacidad: 'es necesario la capacidad'}
+        }
+        setErrors(newState);
+        return isValid;
+    }
+
+    const resetErrors = () => {
+        setErrors(initialState);
     }
 
     return (
@@ -72,7 +102,9 @@ export const AulasState = ({ children }) => {
             handleUpdate,
             handleDelete,
             handleAddAula,
-            handleEditAula
+            handleEditAula,
+            errors,
+            resetErrors
         }}>
             { children }
         </AulasContext.Provider>

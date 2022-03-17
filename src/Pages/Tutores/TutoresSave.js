@@ -5,54 +5,80 @@ import { DatosPareja } from '../../Template/DatosPareja';
 import { DatosTutor } from '../../Template/DatosTutor';
 import { tutorModel } from '../../Utils/Model/tutorModel';
 import { TutoresContext } from '../../Context/BuildContext';
+import { Box, Button, Grid } from '@mui/material';
 
 export const TutoresSave = () => {
     const {
         active,
         handleAddTutor,
         handleEditTutor,
-        handleBack
+        handleBack,
+        errors
     } = useContext(TutoresContext);
     
     const [ formValues, handleInputChange ] = useForm( active );
 
     return (
-        <div>
-            <h1>Tutor Save</h1>
-                <DatosPersonales
-                    { ...formValues }
-                    handleInputChange={ handleInputChange }
-                />
-                <DatosTutor
-                    { ...formValues }
-                    handleInputChange={ handleInputChange }
-                />
-                <DatosPareja
-                    { ...formValues }
-                    handleInputChange={ handleInputChange }
-                />
-
-                <div>
-                    {
-                        active === tutorModel
-                        ? (
-                            <button onClick={ () => handleAddTutor(formValues) }>
-                                Guardar
-                            </button>
-                        )
-                        : (
-                            <button onClick={ () => handleEditTutor(formValues) }>
-                                Editar
-                            </button>
-                        )
-                    }
-                    
-                </div>
-                <div>
-                    <button onClick={ handleBack }>
-                        Volver
-                    </button>
-                </div>
-        </div>
+        <Box>
+            <DatosPersonales
+                { ...formValues }
+                handleInputChange={ handleInputChange }
+                errors={errors}
+            />
+            <DatosTutor
+                { ...formValues }
+                handleInputChange={ handleInputChange }
+            />
+            <DatosPareja
+                { ...formValues }
+                handleInputChange={ handleInputChange }
+            />
+            <Box sx={{ width: '60%', margin: '0 20% 2%', padding: '1%' }}>
+                <Grid
+                    container
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing={2}
+                >
+                    <Grid item xs={6}>
+                        {
+                            active === tutorModel
+                            ? (
+                                <Button
+                                    fullWidth
+                                    onClick={
+                                        () => handleAddTutor(formValues)
+                                    }
+                                    variant="contained"
+                                >
+                                    Guardar
+                                </Button>
+                            )
+                            :  (
+                                <Button
+                                    fullWidth
+                                    onClick={
+                                        () => handleEditTutor(formValues)
+                                    }
+                                    variant="contained"
+                                >
+                                    Editar
+                                </Button>
+                            )
+                        }
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Button
+                            fullWidth
+                            onClick={ handleBack }
+                            variant="outlined"
+                        >
+                            Volver
+                        </Button>
+                    </Grid>
+                </Grid>
+            </Box>
+        </Box>
     );
 };

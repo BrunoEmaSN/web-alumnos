@@ -23,7 +23,7 @@ const loadingCursos = ( cursos ) => ({
 export const startSetActive = ( datosCurso ) => {
     return ( dispatch ) => {
         const curso = cursoFormatter( datosCurso );
-        dispatch( activeCurso( curso ) );
+        dispatch( activeCurso({ ...curso, aula: datosCurso.aula_id }) );
     }
 }
 
@@ -48,11 +48,11 @@ export const startNewCurso = ( curso ) => {
         
         dispatch( addNewCurso({
             ...curso,
-            id: result.last_id,
+            id: result.id,
             grado_ano: curso.gradoAno,
-            aula_id: curso.aula.id,
-            aula_descripcion: curso.aula.descripcion,
-            aula_capacidad: curso.aula.capacidad
+            aula_id: result.aula_id,
+            aula_descripcion: result.aula_descripcion,
+            aula_capacidad: result.aula_capacidad
         }) );
     };
 };
@@ -65,8 +65,15 @@ export const addNewCurso = ( curso ) => ({
 export const startUpdateCurso = ( curso ) => {
     return async ( dispatch ) => {
         const { id } = curso;
-        await cursosUpdate( id, curso );
-        dispatch( refreshCurso( curso ) );
+        const result = await cursosUpdate( id, curso );
+        dispatch( refreshCurso({
+            ...curso,
+            id: result.id,
+            grado_ano: curso.gradoAno,
+            aula_id: result.aula_id,
+            aula_descripcion: result.aula_descripcion,
+            aula_capacidad: result.aula_capacidad
+        }));
     };
 };
 

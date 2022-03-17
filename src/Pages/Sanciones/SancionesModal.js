@@ -7,11 +7,14 @@ import { useForm } from '../../Hooks/useForm';
 import { customStyles } from '../../Utils/modalStyles';
 import { tiposSanciones } from '../../Utils/Model/sancionModel';
 import { SancionesContext } from '../../Context/BuildContext';
+import { Button, Grid, MenuItem, TextField, Typography } from '@mui/material';
 
 export const SancionModal = ({ isOpenModal, closeModal }) => {
     const {
         active,
-        handleEditSancion
+        handleEditSancion,
+        errors,
+        resetErrors
     } = useContext(SancionesContext);
 
     const [ alumnosList, setAlumnosList ] = useState([]);
@@ -37,92 +40,136 @@ export const SancionModal = ({ isOpenModal, closeModal }) => {
     }, []);
 
     return (
-        <div>
-            <Modal
-                isOpen={ isOpenModal }
-                style={ customStyles }
-                onRequestClose={ closeModal }
-                ariaHideApp={false}
-            >
-                <h2>Editar Sancion</h2>
-                <div>
-                    <label htmlFor="alumno">Alumno</label>
-                    <select
+        <Modal
+            isOpen={ isOpenModal }
+            style={ customStyles }
+            onRequestClose={ closeModal }
+            ariaHideApp={false}
+        >
+            <Typography variant="h6" gutterBottom component="div">
+                Editar Sancion
+            </Typography>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
                         id="alumno"
                         name="alumno"
                         value={ alumno }
                         onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        select
+                        margin="normal"
+                        label="Alumno"
+                        error={Boolean(errors?.alumno)}
+                        helperText={errors?.alumno}
                     >
-                        <option value="" disabled>Seleccione un Alumno</option>
+                        <MenuItem value="" disabled>Seleccione un alumno</MenuItem>
                         { alumnosList.map((a) => (
-                            <option key={a.documento} value={ a.documento }>
+                            <MenuItem key={a.documento} value={ a.documento }>
                                 { `${ a.apellido } ${ a.nombre }` }
-                            </option>
+                            </MenuItem>
                         )) }
-                    </select>
-                </div>
-                <div>
-                    <label htmlFor="docente">Docente</label>
-                    <select
+                    </TextField>
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
                         id="docente"
                         name="docente"
                         value={ docente }
                         onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        select
+                        margin="normal"
+                        label="Docente"
+                        error={Boolean(errors?.docente)}
+                        helperText={errors?.docente}
                     >
-                        <option value="" disabled>Seleccione un Docente</option>
+                        <MenuItem value="" disabled>Seleccione un docente</MenuItem>
                         { docentesList.map((d) => (
-                            <option key={d.documento} value={ d.documento }>
+                            <MenuItem key={d.documento} value={ d.documento }>
                                 { `${ d.apellido } ${ d.nombre }` }
-                            </option>
+                            </MenuItem>
                         )) }
-                    </select>
-                </div>
-                <div>
-                    <label htmlFor="tipoSancion">Tipo de Sancion</label>
-                    <select
+                    </TextField>
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
                         id="tipoSancion"
                         name="tipoSancion"
                         value={ tipoSancion }
                         onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        select
+                        margin="normal"
+                        label="Tipo de Sancion"
+                        error={Boolean(errors?.tipoSancion)}
+                        helperText={errors?.tipoSancion}
                     >
-                        <option value="" disabled>Seleccione un Tipo</option>
+                        <MenuItem value="" disabled>Seleccione un alumno</MenuItem>
                         { tiposSanciones.map((ts) => (
-                            <option key={ts} value={ts}>
+                            <MenuItem key={ts} value={ts}>
                                 { ts }
-                            </option>
+                            </MenuItem>
                         )) }
-                    </select>
-                </div>
-                <div>
-                    <label htmlFor="descripcion">Descripcion</label>
-                    <input
-                        type="text"
+                    </TextField>
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        id="descripcion"
                         name="descripcion"
                         value={ descripcion }
                         onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        margin="normal"
+                        label="Descripcion"
+                        error={Boolean(errors?.descripcion)}
+                        helperText={errors?.descripcion}
                     />
-                </div>
-                <div>
-                    <label htmlFor="fecha">Fecha</label>
-                    <input
-                        type="date"
+                </Grid>
+                <Grid item xs={12}>
+                <TextField
+                        fullWidth
+                        id="fecha"
                         name="fecha"
                         value={fecha}
+                        type="date"
                         onChange={handleInputChange}
+                        InputLabelProps={{ shrink: true, required: true }}
+                        margin="normal"
+                        label="Fecha"
+                        error={Boolean(errors?.fecha)}
+                        helperText={errors?.fecha}
                     />
-                </div>
-                <div>
-                    <button onClick={ handleEditSancion } >
+                </Grid>
+                <Grid item xs={12}>
+                    <Button
+                        fullWidth
+                        onClick={
+                            () => handleEditSancion(formValues)
+                        }
+                        variant="contained"
+                    >
                         Editar
-                    </button>
-                </div>
-                <div>
-                    <button onClick={ closeModal }>
-                        Cerrar
-                    </button>
-                </div>
-            </Modal>
-        </div>
+                    </Button>
+                </Grid>
+                <Grid item xs={12}>
+                    <Button
+                        fullWidth
+                        onClick={ () => {
+                            resetErrors();
+                            closeModal();
+                        } }
+                        variant="outlined"
+                    >
+                       Cerrar
+                    </Button>
+                </Grid>
+            </Grid>
+        </Modal>
     );
 };
 

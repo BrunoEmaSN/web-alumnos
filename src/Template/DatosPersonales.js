@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Grid, MenuItem, Paper, TextField, Typography } from '@mui/material';
 
 export const DatosPersonales = ({
     nombre = '',
@@ -15,150 +16,219 @@ export const DatosPersonales = ({
     numero = '',
     departamento = '',
     piso = '',
-    handleInputChange
+    handleInputChange,
+    errors
 }) => {
 
     return (
-        <fieldset>
-            <legend>Datos Personales</legend>
-            <div>
-                <label htmlFor="nombre">Nombre</label>
-                <input
-                    type="text"
-                    id="nombre"
-                    name="nombre"
-                    value={ nombre }
-                    onChange={ handleInputChange }
-                />
-            </div>
-            <div>
-                <label htmlFor="apellido">Apellido</label>
-                <input
-                    type="text"
-                    id="apellido"
-                    name="apellido"
-                    value={ apellido }
-                    onChange={ handleInputChange }
-                />
-            </div>
-            <div>
-                <label htmlFor="tipoDocumento">Tipo Documento</label>
-                <select 
-                    id="tipoDocumento"
-                    name="tipoDocumento"
-                    value={ tipoDocumento }
-                    onChange={ handleInputChange }
-                >
-                    <option value="DNI">DNI</option>
-                    <option value="CUIL">CUIL</option>
-                    <option value="LE">Libreta Enrolamiento</option>
-                    <option value="LC">Libreta Civica</option>
-                </select>
-            </div>
-            <div>
-                <label htmlFor="documento">Documento</label>
-                <input
-                    type="number"
-                    id="documento"
-                    name="documento"
-                    value={ documento }
-                    onChange={ handleInputChange }
-                />
-            </div>
-            <div>
-                <label htmlFor="fechaNacimiento">Fecha Nacimiento</label>
-                <input
-                    type="date"
-                    id="fechaNacimiento"
-                    name="fechaNacimiento"
-                    value={ fechaNacimiento }
-                    onChange={ handleInputChange }
-                />
-            </div>
-            <div>
-                <label htmlFor="sexo">Sexo</label>
-                <select
-                    id="sexo"
-                    name="sexo"
-                    value={ sexo }
-                    onChange={ handleInputChange }
-                >
-                    <option value="Masculino">Masculino</option>
-                    <option value="Feminino">Femenino</option>
-                    <option value="Otros">Otros</option>
-                </select>
-            </div>
-            <div>
-                <label htmlFor="lugarNacimiento">Lugar Nacimiento</label>
-                <input
-                    type="text"
-                    id="lugarNacimiento"
-                    name="lugarNacimiento"
-                    value={ lugarNacimiento }
-                    onChange={ handleInputChange }
-                />
-            </div>
-            <div>
-                <label htmlFor="telefonoFijo">Telefono Fijo</label>
-                <input 
-                    type="number"
-                    id="telefonoFijo"
-                    name="telefonoFijo"
-                    value={ telefonoFijo }
-                    onChange={ handleInputChange }
-                />
-            </div>
-            <div>
-                <label htmlFor="telefonoMovil">Telofono Movil</label>
-                <input
-                    type="number"
-                    id="telefonoMovil"
-                    name="telefonoMovil"
-                    value={ telefonoMovil }
-                    onChange={ handleInputChange }
-                />
-            </div>
-            <div>
-                <label htmlFor="domicilio">Domicilio</label>
-                <input
-                    type="text"
-                    id="domicilio"
-                    name="domicilio"
-                    value={ domicilio }
-                    onChange={ handleInputChange }
-                />
-            </div>
-            <div>
-                <label htmlFor="numero">Numero</label>
-                <input
-                    type="number"
-                    id="numero"
-                    name="numero"
-                    value={ numero }
-                    onChange={ handleInputChange }
-                />
-            </div>
-            <div>
-                <label htmlFor="departamento">Departamento</label>
-                <input
-                    type="text"
-                    id="departamento"
-                    name="departamento"
-                    value={ departamento }
-                    onChange={ handleInputChange }
-                />
-            </div>
-            <div>
-                <label htmlFor="piso">Piso</label>
-                <input
-                    type="number"
-                    id="piso"
-                    name="piso"
-                    value={ piso }
-                    onChange={ handleInputChange }
-                />
-            </div>
-        </fieldset>
+        <Paper sx={{ width: '60%', margin: '0 20% 2%', padding: '1%' }}>
+            <Typography variant="h4" gutterBottom component="div">
+                Datos Personales
+            </Typography>
+            <Grid container spacing={2}>
+                <Grid item xs={6}>
+                    <TextField
+                        fullWidth
+                        id="nombre"
+                        name="nombre"
+                        value={ nombre }
+                        onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        margin="normal"
+                        label="Nombre"
+                        error={Boolean(errors?.nombre)}
+                        helperText={errors?.nombre}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        fullWidth
+                        id="apellido"
+                        name="apellido"
+                        value={ apellido }
+                        onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        margin="normal"
+                        label="Apellido"
+                        error={Boolean(errors?.apellido)}
+                        helperText={errors?.apellido}
+                    />
+                </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+                <Grid item xs={3}>
+                    <TextField
+                        fullWidth
+                        id="tipoDocumento"
+                        name="tipoDocumento"
+                        value={ tipoDocumento }
+                        onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        select
+                        margin="normal"
+                        label="Tipo de Documento"
+                        error={Boolean(errors?.tipoDocumento)}
+                        helperText={errors?.tipoDocumento}
+                    >
+                        <MenuItem value="" disabled>Seleccione una opcion</MenuItem>
+                        <MenuItem value="DNI">DNI</MenuItem>
+                        <MenuItem value="CUIL">CUIL</MenuItem>
+                        <MenuItem value="LE">Libreta Enrolamiento</MenuItem>
+                        <MenuItem value="LC">Libreta Civica</MenuItem>
+                    </TextField>
+                </Grid>
+                <Grid item xs={3}>
+                    <TextField
+                        fullWidth
+                        id="documento"
+                        name="documento"
+                        type="number"
+                        value={ documento }
+                        onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        margin="normal"
+                        label="Documento"
+                        error={Boolean(errors?.documento)}
+                        helperText={errors?.documento}
+                    />
+                </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+                <Grid item xs={3}>
+                    <TextField
+                        fullWidth
+                        id="fechaNacimiento"
+                        name="fechaNacimiento"
+                        type="date"
+                        value={ fechaNacimiento }
+                        onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        margin="normal"
+                        label="Fecha Nacimiento"
+                        error={Boolean(errors?.fechaNacimiento)}
+                        helperText={errors?.fechaNacimiento}
+                    />
+                </Grid>
+                <Grid item xs={3}>
+                    <TextField
+                        fullWidth
+                        id="sexo"
+                        name="sexo"
+                        value={ sexo }
+                        onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        select
+                        margin="normal"
+                        label="Sexo"
+                        error={Boolean(errors?.sexo)}
+                        helperText={errors?.sexo}
+                    >
+                        <MenuItem value="" disabled>Seleccione una opcion</MenuItem>
+                        <MenuItem value="Masculino">Masculino</MenuItem>
+                        <MenuItem value="Feminino">Femenino</MenuItem>
+                        <MenuItem value="Otros">Otros</MenuItem>
+                    </TextField>
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        fullWidth
+                        id="lugarNacimiento"
+                        name="lugarNacimiento"
+                        value={ lugarNacimiento }
+                        onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        margin="normal"
+                        label="Lugar de Nacimiento"
+                        error={Boolean(errors?.lugarNacimiento)}
+                        helperText={errors?.lugarNacimiento}
+                    />
+                </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+                <Grid item xs={6}>
+                    <TextField
+                        fullWidth
+                        id="telefonoFijo"
+                        name="telefonoFijo"
+                        type="number"
+                        value={ telefonoFijo }
+                        onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true }}
+                        margin="normal"
+                        label="Telefono Fijo"
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        fullWidth
+                        id="telefonoMovil"
+                        name="telefonoMovil"
+                        type="number"
+                        value={ telefonoMovil }
+                        onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true }}
+                        margin="normal"
+                        label="Telefono Movil"
+                    />
+                </Grid>
+            </Grid>
+            <Grid contaienr>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        id="domicilio"
+                        name="domicilio"
+                        value={ domicilio }
+                        onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        margin="normal"
+                        label="Domicilio"
+                        error={Boolean(errors?.domicilio)}
+                        helperText={errors?.domicilio}
+                    />
+                </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+                <Grid item xs={4}>
+                    <TextField
+                        fullWidth
+                        id="numero"
+                        name="numero"
+                        type="number"
+                        value={ numero }
+                        onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true }}
+                        margin="normal"
+                        label="Numero"
+                    />
+                </Grid>
+                <Grid item xs={4}>
+                    <TextField
+                        fullWidth
+                        id="departamento"
+                        name="departamento"
+                        value={ departamento }
+                        onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true }}
+                        margin="normal"
+                        label="Departamento"
+                    />
+                </Grid>
+                <Grid item xs={4}>
+                    <TextField
+                        fullWidth
+                        id="piso"
+                        name="piso"
+                        type="number"
+                        value={ piso }
+                        onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true }}
+                        margin="normal"
+                        label="Piso"
+                    />
+                </Grid>
+            </Grid>
+        </Paper>
     );
 };
 
@@ -179,4 +249,5 @@ DatosPersonales.propTypes = {
     piso: PropTypes.any.isRequired,
     
     handleInputChange: PropTypes.func.isRequired,
+    errors: PropTypes.any
 }

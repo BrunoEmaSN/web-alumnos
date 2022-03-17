@@ -5,12 +5,15 @@ import { useSelector } from 'react-redux';
 import { useForm } from '../../Hooks/useForm';
 import { customStyles } from '../../Utils/modalStyles';
 import { AulasContext } from '../../Context/BuildContext';
+import { Button, Grid, TextField, Typography } from '@mui/material';
 
 export const AulasModal = ({ isOpenModal, closeModal, action }) => {
     const {
         actions,
         handleAddAula,
-        handleEditAula
+        handleEditAula,
+        errors,
+        resetErrors
     } = useContext(AulasContext);
     const { active } = useSelector( state => state.aula );
 
@@ -22,55 +25,86 @@ export const AulasModal = ({ isOpenModal, closeModal, action }) => {
     } = formValues;
     
     return (
-        <div>
-            <Modal
-                isOpen={ isOpenModal }
-                style={ customStyles }
-                onRequestClose={ closeModal }
-                ariaHideApp={false}
-            >
-                <h2>{ action === actions.create ? 'Crear Nueva Aula' : 'Editar Aula' }</h2>
-                
-                <div>
-                    <label htmlFor="descripcion">Descripcion</label>
-                    <input
-                        type="text"
+        <Modal
+            isOpen={ isOpenModal }
+            style={ customStyles }
+            onRequestClose={ closeModal }
+            ariaHideApp={false}
+        >
+            <Typography variant="h6" gutterBottom component="div">
+                { action === actions.create ? 'Crear Nueva Aula' : 'Editar Aula' }
+            </Typography>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        id="descripcion"
                         name="descripcion"
                         value={ descripcion }
                         onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        margin="normal"
+                        label="Descripcion"
+                        error={Boolean(errors?.descripcion)}
+                        helperText={errors?.descripcion}
                     />
-                </div>
-                <div>
-                    <label htmlFor="capacidad">Capacidad</label>
-                    <input
-                        type="number"
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        id="capacidad"
                         name="capacidad"
+                        type="number"
                         value={ capacidad }
                         onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        margin="normal"
+                        label="Capacidad"
+                        error={Boolean(errors?.capacidad)}
+                        helperText={errors?.capacidad}
                     />
-                </div>
-                <div>
+                </Grid>
+                <Grid item xs={12}>
                     {
                         action === actions.create
                         ? (
-                            <button onClick={ () => handleAddAula(formValues) }>
+                            <Button
+                                fullWidth
+                                onClick={
+                                    () => handleAddAula(formValues)
+                                }
+                                variant="contained"
+                            >
                                 Guardar
-                            </button>
+                            </Button>
                         )
-                        : (
-                            <button onClick={ () => handleEditAula(formValues) }>
-                                Save
-                            </button>
-                        )   
+                        :  (
+                            <Button
+                                fullWidth
+                                onClick={
+                                    () => handleEditAula(formValues)
+                                }
+                                variant="contained"
+                            >
+                                Editar
+                            </Button>
+                        )
                     }
-                </div>
-                <div>
-                    <button onClick={ closeModal }>
-                        Cerrar
-                    </button>
-                </div>
-            </Modal>
-        </div>
+                </Grid>
+                <Grid item xs={12}>
+                    <Button
+                        fullWidth
+                        onClick={ () => {
+                            resetErrors();
+                            closeModal(); 
+                        } }
+                        variant="outlined"
+                    >
+                       Cerrar
+                    </Button>
+                </Grid>
+            </Grid>
+        </Modal>
     );
 };
 

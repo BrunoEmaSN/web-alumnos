@@ -7,6 +7,7 @@ import { DatosAlumnoMateria } from '../../Template/DatosAlumnoMateria';
 import { DatosAlumnoTutores } from '../../Template/DatosAlumnoTutores';
 import { cursosGetAll } from '../../Services/restCallCursos';
 import { useForm } from '../../Hooks/useForm';
+import { Box, Button, Grid } from '@mui/material';
 
 export const AlumnosSave = () => {
     const {
@@ -14,7 +15,8 @@ export const AlumnosSave = () => {
         alumnoModel,
         handleAddAlumno,
         handleEditAlumno,
-        handleBack
+        handleBack,
+        errors
     } = useContext(AlumnosContext);
 
     const [
@@ -33,49 +35,74 @@ export const AlumnosSave = () => {
     }, []);
     
     return (
-        <div>
-            
-                <DatosPersonales
-                    { ...formValues }
-                    handleInputChange={ handleInputChange }
-                />
-                <DatosAcademicos
-                    { ...formValues }
-                    cursosList={ cursosList }
-                    handleInputChange={ handleInputChange }
-                    handleCheckboxChange={ handleCheckboxChange }
-                    handleObjectChange={ handleObjectChange }
-                />
-                <DatosAlumnoTutores
-                    { ...formValues }
-                    handleInputChange={ handleInputChange }
-                />
-                <DatosAlumnoMateria
-                    { ...formValues }
-                    handleInputChange={ handleInputChange }
-                />
-                <div>
-                    {
-                        active === alumnoModel
-                        ? (
-                            <button onClick={
-                                () => handleAddAlumno(formValues)
-                            }>
-                                Guardar
-                            </button>
-                        )
-                        :  (
-                            <button onClick={
-                                () => handleEditAlumno(formValues)
-                            }>
-                                Editar
-                            </button>
-                        )
-                    }
-                </div>
-                <div>
-                    <button onClick={ handleBack }>Volver</button>
-                </div>
-        </div>
+        <Box>
+            <DatosPersonales
+                { ...formValues }
+                handleInputChange={ handleInputChange }
+                errors={errors}
+            />
+            <DatosAcademicos
+                { ...formValues }
+                cursosList={ cursosList }
+                handleInputChange={ handleInputChange }
+                handleCheckboxChange={ handleCheckboxChange }
+                handleObjectChange={ handleObjectChange }
+                errors={errors}
+            />
+            <DatosAlumnoTutores
+                { ...formValues }
+                handleInputChange={ handleInputChange }
+            />
+            <DatosAlumnoMateria
+                { ...formValues }
+                handleInputChange={ handleInputChange }
+            />
+            <Box sx={{ width: '60%', margin: '0 20% 2%', padding: '1%' }}>
+                <Grid
+                    container
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing={2}
+                >
+                    <Grid item xs={6}>
+                        {
+                            active === alumnoModel
+                            ? (
+                                <Button
+                                    fullWidth
+                                    onClick={
+                                        () => handleAddAlumno(formValues)
+                                    }
+                                    variant="contained"
+                                >
+                                    Guardar
+                                </Button>
+                            )
+                            :  (
+                                <Button
+                                    fullWidth
+                                    onClick={
+                                        () => handleEditAlumno(formValues)
+                                    }
+                                    variant="contained"
+                                >
+                                    Editar
+                                </Button>
+                            )
+                        }
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Button
+                            fullWidth
+                            onClick={ handleBack }
+                            variant="outlined"
+                        >
+                            Volver
+                        </Button>
+                    </Grid>
+                </Grid>
+            </Box>
+        </Box>
     )
 }

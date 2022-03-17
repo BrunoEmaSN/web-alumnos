@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { AlumnosContext } from './BuildContext';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,27 +12,48 @@ import {
     startUpdateAlumno
 } from '../Store/Alumno/Actions/Alumno';
 import { alumnoModel } from '../Utils/Model/alumnoModel';
+import { useIsValidate } from '../Hooks/useIsValidate';
+
+const initialState = {
+    nombre: '',
+    apellido: '',
+    tipoDocumento: '',
+    documento: '',
+    fechaNacimiento: '',
+    sexo: '',
+    lugarNacimiento: '',
+    domicilio: '',
+    cursoId: '',
+    condicion: '',
+}
 
 export const AlumnosState = ({ children }) => {
     const dispatch = useDispatch();
 
 	const { alumnos, active } = useSelector( state => state.alumno);
+    const [ errors, setErrors ] = useState(initialState);
+    const [ handleValidateString, handleValidateInterger, handleValidateDate ] = useIsValidate();
 
     useEffect(() => {
         dispatch( startLoadingAlumnos() );
     }, []);
 
     const handleAddAlumno = ( formValues ) => {
-        dispatch( startNewAlumno( formValues ) );
-        dispatch( cleanActiveAlumno() );
+        if(handleErrors(formValues)){
+            dispatch( startNewAlumno( formValues ) );
+            dispatch( cleanActiveAlumno() );
+        }
     }
 
     const handleEditAlumno = ( formValues ) => {
-        dispatch( startUpdateAlumno( formValues ) );
-        dispatch( cleanActiveAlumno() );
+        if(handleErrors(formValues)){
+            dispatch( startUpdateAlumno( formValues ) );
+            dispatch( cleanActiveAlumno() );
+        }
     }
 
     const handleBack = () => {
+        resetErrors();
         dispatch( cleanActiveAlumno() );
     }
 
@@ -47,6 +68,58 @@ export const AlumnosState = ({ children }) => {
 	const handleDelete = (documento) => {
 		dispatch(startDeletingAlumno(documento));
 	};
+    
+    const handleErrors = (formValues) => {
+        let isValid = true;
+        let newState = initialState;
+        if(!handleValidateString(formValues.nombre)){
+            isValid = false;
+            newState = {...newState, nombre: 'es necesario un nombre'};
+        }
+        if(!handleValidateString(formValues.apellido)){
+            isValid = false;
+            newState = {...newState, apellido: 'es necesario un apellido'};
+        }
+        if(!handleValidateString(formValues.tipoDocumento)){
+            isValid = false;
+            newState = {...newState, tipoDocumento: 'tiene que seleccionar un tipo'};
+        }
+        if(!handleValidateInterger(formValues.documento)){
+            isValid = false;
+            newState = {...newState, documento: 'es necesario el documento'};
+        }
+        if(!handleValidateDate(formValues.fechaNacimiento)){
+            isValid = false;
+            newState = {...newState, fechaNacimiento: 'es necesario la fecha de nacimiento'};
+        }
+        if(!handleValidateString(formValues.sexo)){
+            isValid = false;
+            newState = {...newState, sexo: 'tiene que seleccionar el sexo'};
+        }
+        if(!handleValidateString(formValues.lugarNacimiento)){
+            isValid = false;
+            newState = {...newState, lugarNacimiento: 'es necesario el lugar de nacimiento'};
+        }
+        if(!handleValidateString(formValues.domicilio)){
+            isValid = false;
+            newState = {...newState, domicilio: 'es necesario el domicilio'};
+        }
+        if(!handleValidateInterger(formValues.cursoId)){
+            isValid = false;
+            newState = {...newState, cursoId: 'tiene que seleccionar un curso'};
+        }
+        if(!handleValidateString(formValues.condicion)){
+            isValid = false;
+            newState = {...newState, condicion: 'tiene que seleccionar la condicion'};
+        }
+
+        setErrors(newState);
+        return isValid;
+    }
+
+    const resetErrors = () => {
+        setErrors(initialState);
+    }
 
     return (
         <AlumnosContext.Provider value={{
@@ -58,7 +131,8 @@ export const AlumnosState = ({ children }) => {
             handleBack,
             handleCreate,
             handleEdit,
-            handleDelete
+            handleDelete,
+            errors
         }}>
             { children }
         </AlumnosContext.Provider>

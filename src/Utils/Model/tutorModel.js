@@ -3,10 +3,10 @@ import moment from "moment"
 export const tutorModel = {
     nombre: '',
     apellido: '',
-    tipoDocumento: 'DNI',
+    tipoDocumento: '',
     documento: '',
     fechaNacimiento: '',
-    sexo: 'Masculino',
+    sexo: '',
     lugarNacimiento: '',
     telefonoFijo: '',
     telefonoMovil: '',

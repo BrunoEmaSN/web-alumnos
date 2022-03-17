@@ -1,19 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-modal/lib/components/Modal';
-import Card from '../Components/Card';
 import { materiasGetAll } from '../Services/restCallMaterias';
-
-const customStyles = {
-    content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
-    },
-};
+import { CardGeneric } from '../Components/Card/CardGeneric';
+import { Box } from '@mui/system';
+import { Button, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material';
+import { customStyles } from '../Utils/modalStyles';
 
 export const DatosDocenteMateria = ({ materias, handleInputChange }) => {
     const [ materiasList, setMateriasList ] = useState([]);
@@ -69,14 +61,45 @@ export const DatosDocenteMateria = ({ materias, handleInputChange }) => {
         })
     }
     return (
-        <fieldset>
-            <legend>Materias del Docente</legend>
-            <div>
-                <button onClick={ openModalMateria }>Agregar Materia</button>
-                <div id="materias" name="materias">
+        <Box>
+            <Paper
+                sx={{
+                    width: '60%',
+                    margin: '0 20% 2%',
+                    padding: '1%'
+                }}
+            >
+                <Box
+                    sx={{
+                        display: 'flex',
+                        '& > :not(style)': {
+                            m: 1,
+                        },
+                    }}
+                >
+                    <Typography variant="h4" gutterBottom component="div">
+                        Materias
+                    </Typography>
+                    <Button onClick={ openModalMateria }>
+                        Agregar Materia
+                    </Button>
+                </Box>
+                <Box
+                    id="materias"
+                    name="materias"
+                    sx={{
+                        display: 'flex',
+                        minHeight: '140px',
+                        border: '1px solid black',
+                        borderRadius: '4px',
+                        '& > :not(style)': {
+                            m: 1,
+                        },
+                    }}
+                >
                     {
-                        materias.map( m => 
-                            <Card
+                        materias && materias.map( m => 
+                            <CardGeneric
                                 key={ m.id }
                                 titulo={ m.descripcion }
                                 descripcion={ '' }
@@ -85,31 +108,71 @@ export const DatosDocenteMateria = ({ materias, handleInputChange }) => {
                             />
                         )
                     }
-                </div>
-            </div>
+                </Box>
+            </Paper>
             <Modal
                 isOpen={ modalMateriaIsOpen }
                 style={ customStyles }
                 onRequestClose={ closeModalMateria }
                 ariaHideApp={false}
             >
-                <h2>Materias</h2>
-                <div>
-                    <label htmlFor="materias">Selecione una Materia</label>
-                    <select id="materias" value={ materia !== '' ? JSON.stringify(materia) : '' } onChange={ handleChageMateria }>
-                        <option value="" disabled>Selecione una materia</option>
-                        {
-                            materiasList.map( m => (
-                                <option key={ m.id } value={ JSON.stringify(m) } >{ m.descripcion }</option>
-                            ))
-                        }
-                    </select>
-                </div>
-                <div>
-                    <button onClick={ handleAddMateria }>Agregar</button>
-                </div>
+                <Typography variant="h6" gutterBottom component="div">
+                    Materias
+                </Typography>
+                <Grid
+                    container
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                >
+                    <Grid item xs={12}>
+                        <TextField
+                            //error
+                            fullWidth
+                            id="materias"
+                            name="materia"
+                            value={ materia !== '' ? JSON.stringify(materia) : '' }
+                            onChange={ handleChageMateria }
+                            InputLabelProps={{ shrink: true, required: true }}
+                            select
+                            margin="normal"
+                            label="Materia"
+                            //helperText="Please select your currency"
+                            >
+                                <MenuItem value="" disabled>Seleccione una opcion</MenuItem>
+                                {
+                                    materiasList.map( m => (
+                                        <MenuItem
+                                            key={ m.id }
+                                            value={ JSON.stringify( m ) }
+                                        >
+                                            { m.descripcion }
+                                        </MenuItem>
+                                    ))
+                                }
+                        </TextField>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button
+                            fullWidth
+                            onClick={ handleAddMateria }
+                            variant="contained"
+                        >
+                            Agregar
+                        </Button>
+                    </Grid>
+                    <Grid item xs={12} sx={{ marginTop: '2%' }}>
+                        <Button
+                            fullWidth
+                            onClick={ closeModalMateria }
+                            variant="outlined"
+                        >
+                            Close
+                        </Button>
+                    </Grid>
+                </Grid>
             </Modal>
-        </fieldset>
+        </Box>
     );
 };
 
