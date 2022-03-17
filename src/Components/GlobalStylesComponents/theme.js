@@ -18,7 +18,6 @@ export const theme = createTheme({
         },
     },
     typography: {
-        fontFamily: 'Segoe UI',
         fontWeightRegular: 'normal',
         fontWeightMedium: 600,
         fontWeightBold: 800

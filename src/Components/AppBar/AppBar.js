@@ -10,12 +10,13 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
+import { styles } from '../GlobalStylesComponents/styles';
 
 const pages = [
     'Aulas',
-    'Cursos',
-    'Clases',
     'Calificaciones',
+    'Clases',
+    'Cursos',
     'Materias',
     'MesasExamenes',
     'Sanciones'
@@ -46,112 +47,127 @@ export const AppBarComponent = () => {
         setAnchorElPersona(null);
     }
 
-    return (
-        <AppBar position="static">
-            <Container maxWidth="xl">
-                <Toolbar disableGutters>
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="div"
-                        sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
-                    >
-                        LOGO
-                    </Typography>
+    const classes = styles();
 
-                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-                        <IconButton
-                            size="large"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={handleOpenNavMenu}
-                            color="inherit"
+    return (
+        <Box className={ classes.appBar }>
+            <AppBar position="static">
+                <Container maxWidth="xl">
+                    <Toolbar disableGutters>
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            component="div"
+                            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
                         >
-                            <MenuIcon />
-                        </IconButton>
-                        <Menu
-                            id="menu-appbar"
-                            anchorEl={anchorElNav}
-                            anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'left',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'left',
-                            }}
-                            open={Boolean(anchorElNav)}
-                            onClose={handleCloseNavMenu}
-                            sx={{
-                                display: { xs: 'block', md: 'none' },
-                            }}
+                            LOGO
+                        </Typography>
+
+                        <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                            <IconButton
+                                size="large"
+                                aria-label="account of current user"
+                                aria-controls="menu-appbar"
+                                aria-haspopup="true"
+                                onClick={handleOpenNavMenu}
+                                color="inherit"
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                            <Menu
+                                id="menu-appbar"
+                                anchorEl={anchorElNav}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'left',
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'left',
+                                }}
+                                open={Boolean(anchorElNav)}
+                                onClose={handleCloseNavMenu}
+                                sx={{
+                                    display: { xs: 'block', md: 'none' },
+                                }}
+                            >
+                                {pages.map((page) => (
+                                    <Link key={page} to={ page }>
+                                        <MenuItem onClick={handleCloseNavMenu}>
+                                            <Typography textAlign="center">{page}</Typography>
+                                        </MenuItem>
+                                    </Link>
+                                ))}
+                            </Menu>
+                        </Box>
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            component="div"
+                            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
                         >
+                            LOGO
+                        </Typography>
+                        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                            <Button
+                                onClick={ handleOpenPersonaMenu }
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                Personas
+                            </Button>
+                            <Menu
+                                anchorEl={anchorElPersona}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'left',
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'left',
+                                }}
+                                open={Boolean(anchorElPersona)}
+                                onClose={handleClosePersonaMenu}
+                                sx={{
+                                    display: { xs: 'none', md: 'block' },
+                                }}
+                            >
+                                {personas.map((persona) => (
+                                    <Link
+                                        key={persona}
+                                        to={persona}
+                                        style={{ textDecoration: 'none' }}
+                                    >
+                                        <MenuItem onClick={handleCloseNavMenu}>
+                                            <Typography
+                                                textAlign="center"
+                                                sx={{ color: '#009FE3' }}
+                                            >
+                                                {persona}
+                                            </Typography>
+                                        </MenuItem>
+                                    </Link>
+                                ))}
+                            </Menu>
                             {pages.map((page) => (
-                                <Link key={page} to={ page }>
-                                    <MenuItem onClick={handleCloseNavMenu}>
-                                        <Typography textAlign="center">{page}</Typography>
-                                    </MenuItem>
-                                </Link>
-                            ))}
-                        </Menu>
-                    </Box>
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="div"
-                        sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
-                    >
-                        LOGO
-                    </Typography>
-                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        <Button
-                            onClick={ handleOpenPersonaMenu }
-                            sx={{ my: 2, color: 'white', display: 'block' }}
-                        >
-                            Personas
-                        </Button>
-                        <Menu
-                            anchorEl={anchorElPersona}
-                            anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'left',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'left',
-                            }}
-                            open={Boolean(anchorElPersona)}
-                            onClose={handleClosePersonaMenu}
-                            sx={{
-                                display: { xs: 'none', md: 'block' },
-                            }}
-                        >
-                            {personas.map((persona) => (
-                                <Link key={persona} to={persona}>
-                                    <MenuItem onClick={handleCloseNavMenu}>
-                                        <Typography textAlign="center">
-                                            {persona}
-                                        </Typography>
-                                    </MenuItem>
-                                </Link>
-                            ))}
-                        </Menu>
-                        {pages.map((page) => (
-                            <Link key={page} to={ page }>
-                                <Button
-                                    onClick={handleCloseNavMenu}
-                                    sx={{ my: 2, color: 'white', display: 'block' }}
+                                <Link
+                                    key={page}
+                                    to={ page }
+                                    style={{ textDecoration: 'none' }}
                                 >
-                                    {page}
-                                </Button>
-                            </Link>
-                        ))}
-                    </Box>
-                </Toolbar>
-            </Container>
-        </AppBar>
+                                    <Button
+                                        onClick={handleCloseNavMenu}
+                                        sx={{ my: 2, color: 'white', display: 'block' }}
+                                    >
+                                        {page}
+                                    </Button>
+                                </Link>
+                            ))}
+                        </Box>
+                    </Toolbar>
+                </Container>
+            </AppBar>
+        </Box>
     );
 }
