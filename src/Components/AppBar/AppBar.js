@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,6 +11,7 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
 import { styles } from '../GlobalStylesComponents/styles';
+import { AppContext } from '../../Context/BuildContext';
 
 const pages = [
     'Aulas',
@@ -29,6 +30,7 @@ const personas = [
 ];
 
 export const AppBarComponent = () => {
+    const { handleToken } = useContext( AppContext );
     const [ anchorElNav, setAnchorElNav ] = useState(null);
     const [ anchorElPersona, setAnchorElPersona ] = useState(null);
 
@@ -45,6 +47,10 @@ export const AppBarComponent = () => {
 
     const handleClosePersonaMenu = () => {
         setAnchorElPersona(null);
+    }
+
+    const handleLogout = () => {
+        handleToken( '' );
     }
 
     const classes = styles();
@@ -164,6 +170,15 @@ export const AppBarComponent = () => {
                                     </Button>
                                 </Link>
                             ))}
+                        </Box>
+                        <Box>
+                            <Button onClick={handleLogout}
+                                sx={{
+                                    color: 'white'
+                                }}
+                            >
+                                Cerrar Session
+                            </Button>
                         </Box>
                     </Toolbar>
                 </Container>

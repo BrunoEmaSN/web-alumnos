@@ -1,5 +1,6 @@
 import { createContext } from "react";
 
+export const AppContext = createContext();
 export const AlumnosContext = createContext();
 export const AulasContext = createContext();
 export const CalificacionesContext = createContext();
