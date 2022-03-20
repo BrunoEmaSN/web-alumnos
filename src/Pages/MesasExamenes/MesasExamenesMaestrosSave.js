@@ -23,7 +23,7 @@ export const MesasExamenesMaestrosSave = () => {
     const [ isOpenModal, openModal, closeModal ] = useModal( false );
     
     const handleListGetAll = async () => {
-        setPeriodoList( await periodosGetAll() );
+        setPeriodoList( await periodosGetAll('Mesa') );
     }
 
     useEffect(() => {
