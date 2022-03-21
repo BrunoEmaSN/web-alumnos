@@ -1,8 +1,9 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import { Button, ButtonGroup } from "@mui/material";
+import { ButtonGroup } from "@mui/material";
+import { ButtonTable } from "../GlobalStylesComponents/stylesComponents";
 
-export const OpcionesEVButtons = ({
+export const OptionsEVButtons = ({
 	CallBackEdit,
 	CallBackView
 }) => {
@@ -11,21 +12,13 @@ export const OpcionesEVButtons = ({
             orientation="vertical"
             aria-label="vertical outlined button group"
         >
-			<Button
-				onClick={ CallBackEdit }
-			>
-				Editar
-			</Button>
-			<Button
-				onClick={ CallBackView }
-			>
-				Ver
-			</Button>
+			<ButtonTable label="Editar" CallBack={CallBackEdit}/>
+			<ButtonTable label="Ver" CallBack={CallBackView}/>
         </ButtonGroup>
 	);
 }
 
-OpcionesEVButtons.propTypes = {
+OptionsEVButtons.propTypes = {
     CallBackEdit: PropTypes.func.isRequired,
 	CallBackView: PropTypes.func.isRequired
 }

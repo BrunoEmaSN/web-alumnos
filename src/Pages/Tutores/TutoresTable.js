@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
 import { Box } from '@mui/system';
-import { OpcionesERVButtons } from '../../Components/OptionesButtons/OptionesERVButtons';
 import { TableGeneric } from '../../Components/Table/TableGeneric';
 import { TutoresContext } from '../../Context/BuildContext';
+import { OptionsERVButtons } from '../../Components/OptionesButtons/OptionsERVButtons';
 
 const createData = (
 	nombre,
@@ -27,7 +27,7 @@ const createData = (
         profesion,
         ocupacion,
 		opciones: (
-			<OpcionesERVButtons
+			<OptionsERVButtons
 				CallBackEdit={CallBackEdit}
                 CallBackView={CallBackView}
 				CallBackDelete={CallBackDelete}

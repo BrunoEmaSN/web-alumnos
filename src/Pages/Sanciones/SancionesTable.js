@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
+import moment from 'moment';
 import { Box } from '@mui/system';
-import { OpcionesEVButtons } from '../../Components/OptionesButtons/OptionesEVButtons';
 import { TableGeneric } from '../../Components/Table/TableGeneric';
 import { SancionesContext } from '../../Context/BuildContext';
-import moment from 'moment';
+import { OptionsEVButtons } from '../../Components/OptionesButtons/OptionsEVButtons';
 
 const createData = (
     id,
@@ -19,7 +19,7 @@ const createData = (
         tipoSancion,
         fecha,
         opciones: (
-            <OpcionesEVButtons
+            <OptionsEVButtons
 				CallBackEdit={CallBackEdit}
                 CallBackView={CallBackView}
 			/>

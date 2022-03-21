@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { Box } from '@mui/system';
-import { OpcionesERVButtons } from '../../Components/OptionesButtons/OptionesERVButtons';
 import { TableGeneric } from '../../Components/Table/TableGeneric';
 import { ClasesContext } from '../../Context/BuildContext';
+import { OptionsERVButtons } from '../../Components/OptionesButtons/OptionsERVButtons';
 
 const createData = (
     id,
@@ -23,7 +23,7 @@ const createData = (
         horarioFin,
         periodo,
         opciones: (
-            <OpcionesERVButtons
+            <OptionsERVButtons
 				CallBackEdit={CallBackEdit}
                 CallBackView={CallBackView}
 				CallBackDelete={CallBackDelete}
