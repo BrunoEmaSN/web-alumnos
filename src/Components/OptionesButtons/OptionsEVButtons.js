@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import { ButtonGroup } from "@mui/material";
-import { ButtonTable } from "../GlobalStylesComponents/stylesComponents";
+import { ButtonGeneric } from "../GlobalStylesComponents/stylesComponents";
 
 export const OptionsEVButtons = ({
 	CallBackEdit,
@@ -12,8 +12,8 @@ export const OptionsEVButtons = ({
             orientation="vertical"
             aria-label="vertical outlined button group"
         >
-			<ButtonTable label="Editar" CallBack={CallBackEdit}/>
-			<ButtonTable label="Ver" CallBack={CallBackView}/>
+			<ButtonGeneric label="Editar" CallBack={CallBackEdit}/>
+			<ButtonGeneric label="Ver" CallBack={CallBackView}/>
         </ButtonGroup>
 	);
 }

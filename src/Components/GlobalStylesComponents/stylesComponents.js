@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from "@mui/material";
 
-export const ButtonTable = ({ label, CallBack }) => {
+export const ButtonGeneric = ({ label, CallBack }) => {
     return (
         <Button
             onClick={ CallBack }
@@ -17,7 +17,7 @@ export const ButtonTable = ({ label, CallBack }) => {
     );
 }
 
-ButtonTable.propTypes = {
+ButtonGeneric.propTypes = {
     label: PropTypes.string.isRequired,
     CallBack: PropTypes.func.isRequired
 }
