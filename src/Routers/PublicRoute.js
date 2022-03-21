@@ -2,21 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Navigate, Outlet } from 'react-router-dom';
-import { AppBarComponent } from '../Components/AppBar/AppBar';
 
 export const PublicRoute = ({
     auth
 }) => {
-    return (
-        !auth ? (
-            <Outlet />
-        ) : (
-            <>
-                <AppBarComponent />
-                <Navigate to ="/" />
-            </>
-        )
-    )
+    return !auth ? <Outlet /> : <Navigate to ="/" />
 }
 
 PublicRoute.propTypes = {
