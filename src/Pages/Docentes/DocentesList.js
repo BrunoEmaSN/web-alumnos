@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { DocentesContext } from '../../Context/BuildContext';
 import { DocentesTable } from './DocentesTable';
 import { ViewGeneric } from '../../Components/View/ViewGeneric';
+import { ButtonCreate } from '../../Components/GlobalStylesComponents/stylesComponents';
 
 export const DocentesList = () => {
     const {
@@ -22,13 +23,7 @@ export const DocentesList = () => {
 				>
 					Docentes
 				</Typography>
-				<Button
-					onClick={handleCreate}
-					variant="outlined"
-					sx={{ padding: '0 2%', height: 50 }}
-				>
-					Crear Nuevo
-				</Button>
+				<ButtonCreate CallBack={handleCreate} label="Crear Nuevo"/>
 			</Stack>
 			<DocentesTable />
 			{

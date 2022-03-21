@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { MateriasContext } from '../../Context/BuildContext';
 import { MateriasTable } from './MateriasTable';
 import { ViewGeneric } from '../../Components/View/ViewGeneric';
+import { ButtonCreate } from '../../Components/GlobalStylesComponents/stylesComponents';
 
 export const MateriasList = () => {
     const {
@@ -22,13 +23,7 @@ export const MateriasList = () => {
 				>
 					Materias
 				</Typography>
-				<Button
-					onClick={handleCreate}
-					sx={{ padding: '0 2%', height: 50 }}
-					variant="outlined"
-				>
-					Crear Nuevo
-				</Button>
+				<ButtonCreate CallBack={handleCreate} label="Crear Nueva"/>
 			</Stack>
             <MateriasTable />
 			{

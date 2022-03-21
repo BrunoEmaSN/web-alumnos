@@ -1,5 +1,6 @@
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import React, { useContext } from 'react';
+import { ButtonCreate } from '../../Components/GlobalStylesComponents/stylesComponents';
 import { MesasExamenesContext } from '../../Context/BuildContext';
 import { ViewMesaExamen } from './Components/ViewMesaExamen';
 import { MesasExamenesTable } from './MesasExamenesTable';
@@ -22,13 +23,7 @@ export const MesasExamenesList = () => {
 				>
 					Mesas Examenes
 				</Typography>
-				<Button
-					onClick={handleCreate}
-					sx={{ padding: '0 2%', height: 50 }}
-					variant="outlined"
-				>
-					Crear Nuevo
-				</Button>
+				<ButtonCreate CallBack={handleCreate} label="Crear Nueva"/>
 			</Stack>
             <MesasExamenesTable />
 			{
