@@ -1,9 +1,12 @@
 import React, { useContext } from 'react';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { MateriasContext } from '../../Context/BuildContext';
 import { MateriasTable } from './MateriasTable';
 import { ViewGeneric } from '../../Components/View/ViewGeneric';
-import { ButtonCreate } from '../../Components/GlobalStylesComponents/stylesComponents';
+import {
+	ButtonCreate,
+	TypographyH3
+} from '../../Components/GlobalStylesComponents/stylesComponents';
 
 export const MateriasList = () => {
     const {
@@ -16,13 +19,9 @@ export const MateriasList = () => {
     return (
         <Box>
 			<Stack direction="row" spacing={2} margin={1}>
-				<Typography
-					variant="h3"
-					component="div"
-					gutterBottom
-				>
-					Materias
-				</Typography>
+				<TypographyH3
+					label="Materias"
+				/>
 				<ButtonCreate CallBack={handleCreate} label="Crear Nueva"/>
 			</Stack>
             <MateriasTable />

@@ -6,5 +6,7 @@ export const customStyles = {
         bottom: 'auto',
         marginRight: '-50%',
         transform: 'translate(-50%, -50%)',
+        maxWidth: '360px',
+        maxHeight: '740px'
     },
 };

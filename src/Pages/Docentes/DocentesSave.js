@@ -5,7 +5,11 @@ import { DatosPersonales } from '../../Template/DatosPersonales';
 import { DatosDocenteMateria } from '../../Template/DatosDocenteMateria';
 import { docenteModel } from '../../Utils/Model/docenteModel';
 import { DocentesContext } from '../../Context/BuildContext';
-import { Box, Grid, Button } from '@mui/material';
+import { Box, Grid} from '@mui/material';
+import {
+    ButtonContained,
+    ButtonOutlined
+} from '../../Components/GlobalStylesComponents/stylesComponents';
 
 export const DocentesSave = () => {
     const {
@@ -51,37 +55,28 @@ export const DocentesSave = () => {
                         {
                             active === docenteModel
                             ? (
-                                <Button
-                                    fullWidth
-                                    onClick={
+                                <ButtonContained
+                                    CallBack={
                                         () => handleAddDocente(formValues)
                                     }
-                                    variant="contained"
-                                >
-                                    Guardar
-                                </Button>
+                                    label="Guardar"
+                                />
                             )
                             : (
-                                <Button
-                                    fullWidth
-                                    onClick={
+                                <ButtonContained
+                                    CallBack={
                                         () => handleEditDocente(formValues)
                                     }
-                                    variant="contained"
-                                >
-                                    Editar
-                                </Button>
+                                    label="Editar"
+                                />
                             )
                         }
                     </Grid>
                     <Grid item xs={6}>
-                        <Button
-                            fullWidth
-                            onClick={ handleBack }
-                            variant="outlined"
-                        >
-                            Volver
-                        </Button>
+                        <ButtonOutlined
+                            CallBack={ handleBack }
+                            label="Volver"
+                        />
                     </Grid>
                 </Grid>
             </Box>

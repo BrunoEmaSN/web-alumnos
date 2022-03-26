@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import { Box } from '@material-ui/core';
 import { CalificacionesContext } from '../../Context/BuildContext';
 import { CalificacionesState } from '../../Context/CalificacionesState';
 import { CalificacionesList } from './CalificacionesList';
@@ -10,13 +11,13 @@ const Calificaciones = () => {
     } = useContext(CalificacionesContext);
 
     return (
-        <div>
+        <Box sx={{ p:3 }}>
             {
                 Object.entries(active).length
                 ? <CalificacionesSave />
                 : <CalificacionesList />
             }
-        </div>
+        </Box>
     )
 }
 

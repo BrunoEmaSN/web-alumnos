@@ -4,6 +4,7 @@ import { Box } from '@mui/system';
 import { Header } from '../Components/Header/Header';
 
 export const LayoutPage = ({ children }) => {
+    
     return (
         <Box
             sx={{
@@ -16,7 +17,7 @@ export const LayoutPage = ({ children }) => {
             <Header />
             <Box
                 component="main"
-                sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${240}px)` } }}
+                sx={{ flexGrow: 1, width: { sm: `calc(100% - ${240}px)` } }}
             >
                 { children }
             </Box>

@@ -1,11 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material';
+import { Grid, MenuItem, Paper, TextField } from '@mui/material';
 import { CalificacionesContext } from '../../Context/BuildContext';
 import { useForm } from '../../Hooks/useForm';
 import { alumnosGetAll } from '../../Services/restCallAlumnos';
 import { docentesGetAll } from '../../Services/restCallDocentes';
 import { materiasGetAll } from '../../Services/restCallMaterias';
 import { regimenes } from '../../Utils/Model/materiaModel';
+import {
+    ButtonContained,
+    ButtonOutlined,
+    TypographyH4
+} from '../../Components/GlobalStylesComponents/stylesComponents';
 
 export const CalificacionesSave = () => {
     const {
@@ -43,10 +48,8 @@ export const CalificacionesSave = () => {
     } = formValues;
     
     return (
-        <Paper sx={{ width: '60%', margin: '0 20% 2%', padding: '1%' }}>
-            <Typography variant="h6" gutterBottom component="div">
-                Editar Calificacion
-            </Typography>
+        <Paper sx={{ width: '58%', margin: '0 20% 2%', padding: '1%' }} variant="outlined">
+            <TypographyH4 label="Editar Calificacion" />
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <TextField
@@ -200,24 +203,18 @@ export const CalificacionesSave = () => {
                     </TextField>
                 </Grid>
                 <Grid item xs={12}>
-                    <Button
-                        fullWidth
-                        onClick={
+                    <ButtonContained
+                        CallBack={
                             () => handleEditCalificacion(formValues)
                         }
-                        variant="contained"
-                    >
-                        Editar
-                    </Button>
+                        label="Editar"
+                    />
                 </Grid>
                 <Grid item xs={12}>
-                    <Button
-                        fullWidth
-                        onClick={ handleBack }
-                        variant="outlined"
-                    >
-                        Volver
-                    </Button>
+                    <ButtonOutlined
+                        CallBack={ handleBack }
+                        label="Volver"
+                    />
                 </Grid>
             </Grid>
         </Paper>

@@ -6,6 +6,7 @@ import { customStyles } from '../Utils/modalStyles';
 import { Button, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { CardGeneric } from '../Components/Card/CardGeneric';
+import { TypographyH4 } from '../Components/GlobalStylesComponents/stylesComponents';
 
 export const DatosAlumnoMateria = ({ materias, handleInputChange }) => {
 
@@ -73,13 +74,7 @@ export const DatosAlumnoMateria = ({ materias, handleInputChange }) => {
 
     return (
         <Box>
-            <Paper
-                sx={{
-                    width: '60%',
-                    margin: '0 20% 2%',
-                    padding: '1%'
-                }}
-            >
+            <Paper sx={{ width: '98%', padding: '1%', marginBottom:'2%' }} variant="outlined">
                 <Box
                     sx={{
                         display: 'flex',
@@ -88,9 +83,9 @@ export const DatosAlumnoMateria = ({ materias, handleInputChange }) => {
                         },
                     }}
                 >
-                    <Typography variant="h4" gutterBottom component="div">
-                        Materias
-                    </Typography>
+                    <TypographyH4
+                        label="Materias"
+                    />
                     <Button onClick={ openModalMateria }>
                         Agregar Materia
                     </Button>

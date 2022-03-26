@@ -1,6 +1,9 @@
-import { Box, Stack, Typography } from '@mui/material';
 import React, { useContext } from 'react';
-import { ButtonCreate } from '../../Components/GlobalStylesComponents/stylesComponents';
+import { Box, Stack } from '@mui/material';
+import {
+    ButtonCreate,
+    TypographyH3
+} from '../../Components/GlobalStylesComponents/stylesComponents';
 import { ViewGeneric } from '../../Components/View/ViewGeneric';
 import { AulasState } from '../../Context/AulasState';
 import { AulasContext } from '../../Context/BuildContext';
@@ -19,15 +22,11 @@ const Aulas = () => {
     } = useContext(AulasContext);
 
     return (
-        <Box>
+        <Box sx={{ p:3 }}>
 			<Stack direction="row" spacing={2} margin={1}>
-                <Typography
-                    variant="h3"
-                    component="div"
-                    gutterBottom
-                >
-                    Aulas
-                </Typography>
+                <TypographyH3
+                    label="Aulas"
+                />
                 <ButtonCreate CallBack={handleCreate} label="Crear Nueva"/>
             </Stack>
             <AulasTable />

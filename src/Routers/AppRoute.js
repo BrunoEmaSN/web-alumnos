@@ -1,4 +1,8 @@
 import React, { useContext } from 'react';
+import { usePromiseTracker } from "react-promise-tracker";
+
+import { Backdrop } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import {
     BrowserRouter as Router,
     Route,
@@ -30,6 +34,7 @@ import { LoginPage } from '../Pages/LoginPage';
 import { Box } from '@mui/material';
 
 export const AppRoute = () => {
+    const { promiseInProgress } = usePromiseTracker();
     const { token } = useContext( AppContext );
     let auth = false;
     if( token ){
@@ -84,6 +89,15 @@ export const AppRoute = () => {
                     
                     <Route path="*" element={ <Navigate to ="/" /> }/>
                 </Routes>
+                <Backdrop
+                    sx={{
+                        color: '#fff',
+                        zIndex: (theme) => theme.zIndex.drawer + 1
+                    }}
+                    open={promiseInProgress}
+                >
+                    <CircularProgress color="inherit" />
+                </Backdrop>
             </Box>
         </Router>
     )

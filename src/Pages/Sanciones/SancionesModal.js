@@ -7,7 +7,12 @@ import { useForm } from '../../Hooks/useForm';
 import { customStyles } from '../../Utils/modalStyles';
 import { tiposSanciones } from '../../Utils/Model/sancionModel';
 import { SancionesContext } from '../../Context/BuildContext';
-import { Button, Grid, MenuItem, TextField, Typography } from '@mui/material';
+import { Grid, MenuItem, TextField } from '@mui/material';
+import {
+    ButtonContained,
+    ButtonOutlined,
+    TypographyH6
+} from '../../Components/GlobalStylesComponents/stylesComponents';
 
 export const SancionModal = ({ isOpenModal, closeModal }) => {
     const {
@@ -46,9 +51,9 @@ export const SancionModal = ({ isOpenModal, closeModal }) => {
             onRequestClose={ closeModal }
             ariaHideApp={false}
         >
-            <Typography variant="h6" gutterBottom component="div">
-                Editar Sancion
-            </Typography>
+            <TypographyH6
+                label="Editar Sancion"
+            />
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <TextField
@@ -63,6 +68,7 @@ export const SancionModal = ({ isOpenModal, closeModal }) => {
                         label="Alumno"
                         error={Boolean(errors?.alumno)}
                         helperText={errors?.alumno}
+                        size="small"
                     >
                         <MenuItem value="" disabled>Seleccione un alumno</MenuItem>
                         { alumnosList.map((a) => (
@@ -85,6 +91,7 @@ export const SancionModal = ({ isOpenModal, closeModal }) => {
                         label="Docente"
                         error={Boolean(errors?.docente)}
                         helperText={errors?.docente}
+                        size="small"
                     >
                         <MenuItem value="" disabled>Seleccione un docente</MenuItem>
                         { docentesList.map((d) => (
@@ -107,6 +114,7 @@ export const SancionModal = ({ isOpenModal, closeModal }) => {
                         label="Tipo de Sancion"
                         error={Boolean(errors?.tipoSancion)}
                         helperText={errors?.tipoSancion}
+                        size="small"
                     >
                         <MenuItem value="" disabled>Seleccione un alumno</MenuItem>
                         { tiposSanciones.map((ts) => (
@@ -128,6 +136,7 @@ export const SancionModal = ({ isOpenModal, closeModal }) => {
                         label="Descripcion"
                         error={Boolean(errors?.descripcion)}
                         helperText={errors?.descripcion}
+                        size="small"
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -143,30 +152,27 @@ export const SancionModal = ({ isOpenModal, closeModal }) => {
                         label="Fecha"
                         error={Boolean(errors?.fecha)}
                         helperText={errors?.fecha}
+                        size="small"
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <Button
-                        fullWidth
-                        onClick={
+                    <ButtonContained
+                        CallBack={
                             () => handleEditSancion(formValues)
                         }
-                        variant="contained"
-                    >
-                        Editar
-                    </Button>
+                        label="Editar"
+                    />
                 </Grid>
                 <Grid item xs={12}>
-                    <Button
-                        fullWidth
-                        onClick={ () => {
-                            resetErrors();
-                            closeModal();
-                        } }
-                        variant="outlined"
-                    >
-                       Cerrar
-                    </Button>
+                    <ButtonOutlined
+                        CallBack={
+                            () => {
+                                resetErrors();
+                                closeModal();
+                            }
+                        }
+                        label="Cerrar"
+                    />
                 </Grid>
             </Grid>
         </Modal>

@@ -8,7 +8,7 @@ import { AlumnosSave } from './AlumnosSave';
 const Alumnos = () => {
     const { active } = useContext( AlumnosContext )
     return (
-        <Box>
+        <Box sx={{ p:3 }}>
             {
                 Object.entries( active ).length
                 ? <AlumnosSave />

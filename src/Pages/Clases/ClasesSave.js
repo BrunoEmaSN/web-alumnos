@@ -1,5 +1,10 @@
-import { Button, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
+import { Grid, MenuItem, Paper, TextField } from '@mui/material';
+import {
+    ButtonContained,
+    ButtonOutlined,
+    TypographyH4
+} from '../../Components/GlobalStylesComponents/stylesComponents';
 import { ClasesContext } from '../../Context/BuildContext';
 import { useForm } from '../../Hooks/useForm';
 import { useModal } from '../../Hooks/useModal';
@@ -55,10 +60,8 @@ export const ClasesSave = () => {
     } = formValues;
     
     return (
-        <Paper sx={{ width: '60%', margin: '0 20% 2%', padding: '1%' }}>
-            <Typography variant="h3" gutterBottom component="div">
-                Clase
-            </Typography>
+        <Paper sx={{ width: '78%', padding: '1%', margin:'0 11% 2%' }} variant="outlined">
+            <TypographyH4 label="Clase" />
             <Grid
                 container
                 direction="row"
@@ -163,7 +166,7 @@ export const ClasesSave = () => {
                 justifyContent="center"
                 alignItems="center"
             >
-                <Grid item xs={4}>
+                <Grid item xs={6}>
                     <TextField
                         fullWidth
                         id="curso"
@@ -187,31 +190,7 @@ export const ClasesSave = () => {
                         )) }
                     </TextField>
                 </Grid>
-                <Grid item xs={4}>
-                    <TextField
-                        fullWidth
-                        id="docentes"
-                        name="docente"
-                        value={ docente }
-                        onChange={ handleObjectChange }
-                        InputLabelProps={!isOpenModal && { shrink: true, required: true }}
-                        select
-                        margin="normal"
-                        label={!isOpenModal && "Docente" }
-                        error={Boolean(errors?.docente)}
-                        helperText={errors?.docente}
-                    >
-                        <MenuItem value="" disabled>
-                            Seleccione un periodo
-                        </MenuItem>
-                        { docentesList.map((d) => (
-                            <MenuItem key={ d.documento } value={ d.documento }>
-                                { `${ d.nombre } ${ d.apellido }` }
-                            </MenuItem>
-                        )) }
-                    </TextField>
-                </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={6}>
                     <TextField
                         fullWidth
                         id="materias"
@@ -235,41 +214,56 @@ export const ClasesSave = () => {
                         )) }
                     </TextField>
                 </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        id="docentes"
+                        name="docente"
+                        value={ docente }
+                        onChange={ handleObjectChange }
+                        InputLabelProps={!isOpenModal && { shrink: true, required: true }}
+                        select
+                        margin="normal"
+                        label={!isOpenModal && "Docente" }
+                        error={Boolean(errors?.docente)}
+                        helperText={errors?.docente}
+                    >
+                        <MenuItem value="" disabled>
+                            Seleccione un docente
+                        </MenuItem>
+                        { docentesList.map((d) => (
+                            <MenuItem key={ d.documento } value={ d.documento }>
+                                { `${ d.nombre } ${ d.apellido }` }
+                            </MenuItem>
+                        )) }
+                    </TextField>
+                </Grid>
                 <Grid item xs={6}>
                     {
                         active === claseModel
                         ? (
-                            <Button
-                                fullWidth
-                                onClick={
+                            <ButtonContained
+                                CallBack={
                                     () => handleAddclase(formValues)
                                 }
-                                variant="contained"
-                            >
-                                Guardar
-                            </Button>
+                                label="Guardar"
+                            />
                         )
                         : (
-                            <Button
-                                fullWidth
-                                onClick={
+                            <ButtonContained
+                                CallBack={
                                     () => handleEditclase(formValues)
                                 }
-                                variant="contained"
-                            >
-                                Editar
-                            </Button>
+                                label="Editar"
+                            />
                         )
                     }
                 </Grid>
                 <Grid item xs={6}>
-                    <Button
-                        fullWidth
-                        onClick={ handleBack }
-                        variant="outlined"
-                    >
-                        Volver
-                    </Button>
+                    <ButtonOutlined
+                        CallBack={ handleBack }
+                        label="Volver"
+                    />
                 </Grid>
             </Grid>
         </Paper>

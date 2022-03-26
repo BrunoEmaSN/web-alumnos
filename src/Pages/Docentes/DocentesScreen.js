@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { Box } from '@material-ui/core';
 import { DocentesContext } from '../../Context/BuildContext';
 import { DocentesState } from '../../Context/DocentesState';
 import { DocentesList } from './DocentesList';
@@ -8,13 +9,13 @@ const Docentes = () => {
     const { active } = useContext(DocentesContext);
 
     return (
-        <div>
+        <Box sx={{ p:3 }}>
             {
                 Object.entries(active).length
                 ? <DocentesSave />
                 : <DocentesList />
             }
-        </div>
+        </Box>
     );
 };
 

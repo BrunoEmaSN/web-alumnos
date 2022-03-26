@@ -7,7 +7,11 @@ import { DatosAlumnoMateria } from '../../Template/DatosAlumnoMateria';
 import { DatosAlumnoTutores } from '../../Template/DatosAlumnoTutores';
 import { cursosGetAll } from '../../Services/restCallCursos';
 import { useForm } from '../../Hooks/useForm';
-import { Box, Button, Grid } from '@mui/material';
+import { Box, Grid } from '@mui/material';
+import {
+    ButtonContained,
+    ButtonOutlined
+} from '../../Components/GlobalStylesComponents/stylesComponents';
 
 export const AlumnosSave = () => {
     const {
@@ -69,37 +73,28 @@ export const AlumnosSave = () => {
                         {
                             active === alumnoModel
                             ? (
-                                <Button
-                                    fullWidth
-                                    onClick={
+                                <ButtonContained
+                                    CallBack={
                                         () => handleAddAlumno(formValues)
                                     }
-                                    variant="contained"
-                                >
-                                    Guardar
-                                </Button>
+                                    label="Guardar"
+                                />
                             )
                             :  (
-                                <Button
-                                    fullWidth
-                                    onClick={
+                                <ButtonContained
+                                    CallBack={
                                         () => handleEditAlumno(formValues)
                                     }
-                                    variant="contained"
-                                >
-                                    Editar
-                                </Button>
+                                    label="Editar"
+                                />
                             )
                         }
                     </Grid>
                     <Grid item xs={6}>
-                        <Button
-                            fullWidth
-                            onClick={ handleBack }
-                            variant="outlined"
-                        >
-                            Volver
-                        </Button>
+                        <ButtonOutlined
+                            CallBack={ handleBack }
+                            label="Volver"
+                        />
                     </Grid>
                 </Grid>
             </Box>

@@ -19,12 +19,15 @@ const Cursos = () => {
     } = useContext(CursosContext)
     
     return (
-        <Box>
+        <Box sx={{ p:3 }}>
 			<Stack direction="row" spacing={2} margin={1}>
                 <Typography
                     variant="h3"
                     component="div"
                     gutterBottom
+                    sx={{
+						color: '#222F3E'
+					}}
                 >
                     Cursos
                 </Typography>

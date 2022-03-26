@@ -28,7 +28,7 @@ export const AulasTable = () => {
 
     const columns = [
         {id: 'id', label: 'Id'},
-        {id: 'descripcion', label: 'Descripcion'},
+        {id: 'descripcion', label: 'Descripcion', minWidth: '360px'},
         {id: 'opciones', label: 'Opciones'}
     ];
 

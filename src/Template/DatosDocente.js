@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Checkbox, FormControlLabel, FormGroup, Grid, Paper, TextField, Typography } from '@mui/material';
+import { TypographyH4 } from '../Components/GlobalStylesComponents/stylesComponents';
 
 export const DatosDocente = ({
     cuit,
@@ -15,10 +16,10 @@ export const DatosDocente = ({
     errors
 }) => {
     return (
-        <Paper sx={{ width: '60%', margin: '0 20% 2%', padding: '1%' }}>
-            <Typography variant="h4" gutterBottom component="div">
-                Datos Profecionales
-            </Typography>
+        <Paper sx={{ width: '98%', padding: '1%', marginBottom:'2%' }} variant="outlined">
+            <TypographyH4
+                label="Datos Profecionales"
+            />
             <Grid container spacing={2}>
                 <Grid item xs={6}>
                     <Grid container spacing={2}>

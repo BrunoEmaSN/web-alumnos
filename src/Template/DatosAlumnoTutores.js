@@ -7,6 +7,7 @@ import { tutorFormatter } from '../Utils/Model/tutorModel';
 import { CardGeneric } from '../Components/Card/CardGeneric';
 import { Box } from '@mui/system';
 import { Button, Grid, Paper, TextField, Typography } from '@mui/material';
+import { TypographyH4 } from '../Components/GlobalStylesComponents/stylesComponents';
 
 export const DatosAlumnoTutores = ({ tutores, handleInputChange }) => {
 
@@ -71,13 +72,7 @@ export const DatosAlumnoTutores = ({ tutores, handleInputChange }) => {
 
     return (
         <Box>
-            <Paper
-                sx={{
-                    width: '60%',
-                    margin: '0 20% 2%',
-                    padding: '1%'
-                }}
-            >
+            <Paper sx={{ width: '98%', padding: '1%', marginBottom:'2%' }} variant="outlined">
                 <Box
                     sx={{
                         display: 'flex',
@@ -86,9 +81,9 @@ export const DatosAlumnoTutores = ({ tutores, handleInputChange }) => {
                         },
                     }}
                 >
-                    <Typography variant="h4" gutterBottom component="div">
-                        Tutores
-                    </Typography>
+                    <TypographyH4
+                        label="Tutores"
+                    />
                     <Button onClick={ openModalTutor }>
                         Agregar Tutor
                     </Button>

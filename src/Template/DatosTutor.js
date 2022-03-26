@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid, MenuItem, Paper, TextField, Typography } from '@mui/material';
+import { Grid, MenuItem, Paper, TextField } from '@mui/material';
+import { TypographyH4 } from '../Components/GlobalStylesComponents/stylesComponents';
 
 export const DatosTutor = ({
     nivelAcademico,
@@ -11,10 +12,10 @@ export const DatosTutor = ({
     handleInputChange
 }) => {
     return (
-        <Paper sx={{ width: '60%', margin: '0 20% 2%', padding: '1%' }}>
-            <Typography variant="h4" gutterBottom component="div">
-                Datos Profesionales
-            </Typography>
+        <Paper sx={{ width: '98%', padding: '1%', marginBottom:'2%' }} variant="outlined">
+            <TypographyH4
+                label="Datos Profesionales"
+            />
             <Grid container spacing={2}>
                 <Grid item xs={3}>
                     <TextField

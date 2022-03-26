@@ -58,7 +58,7 @@ export const Header = () => {
                     >
                         <ListItemText
                             primary="Inicio"
-                            sx={{ color: '#00C6B7' }}
+                            sx={{ color: '#fff' }}
                         />
                     </ListItem>
                     <Accordion
@@ -105,17 +105,31 @@ export const Header = () => {
                         >
                             <ListItemText
                                 primary={page}
-                                sx={{ color: '#00C6B7' }}
+                                sx={{ color: '#fff' }}
                             />
                         </ListItem>
                     )) }
-                    <Button
-                        fullWidth
-                        onClick={handleLogout}
-                        sx={{ bgcolor: '#00C6B7', color: '#222F3E' }}
+                    <Box
+                        sx={{
+                            height: '34%',
+                            display: 'flex',
+                            alignItems: 'flex-end'
+                        }}
                     >
-                        Cerrar Session
-                    </Button>
+                        <Button
+                            fullWidth
+                            onClick={handleLogout}
+                            sx={{
+                                bgcolor: '#00C6B7',
+                                color: '#222F3E',
+                                '&:hover': {
+                                    color: '#00C6B7',
+                                }
+                            }}
+                        >
+                            Cerrar Session
+                        </Button>
+                    </Box>
                 </List>
             </Drawer>
         </Box>

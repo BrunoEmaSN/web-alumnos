@@ -10,11 +10,12 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import moment from 'moment';
 import { Button, ButtonGroup } from '@mui/material';
+import { Box } from '@mui/system';
 
 export const MesasExamenesNovedadTable = ({ novedad, handleFormValues, handleDeleteRow }) => {
     return (
-        <div>
-            <TableContainer component={Paper}>
+        <Box>
+            <TableContainer component={Paper} variant="outlined">
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
@@ -65,7 +66,7 @@ export const MesasExamenesNovedadTable = ({ novedad, handleFormValues, handleDel
                     </TableBody>
                 </Table>
             </TableContainer>
-        </div>
+        </Box>
     )
 }
 

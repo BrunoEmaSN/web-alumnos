@@ -4,6 +4,7 @@ import { Box } from '@mui/system';
 import { TableGeneric } from '../../Components/Table/TableGeneric';
 import { DocentesContext } from '../../Context/BuildContext';
 import { OptionsERVButtons } from '../../Components/OptionesButtons/OptionsERVButtons';
+import { ContratosList } from './Components/ContratosList';
 
 const createData = (
     fechaAgregado,
@@ -13,7 +14,6 @@ const createData = (
 	documento,
     sede,
     titulo,
-    cuit,
     subencionado,
     contratado,
     monotributista,
@@ -29,10 +29,13 @@ const createData = (
         id: documento,
         sede,
         titulo,
-        cuit,
-        subencionado,
-        contratado,
-        monotributista,
+        contratos: (
+            <ContratosList
+                subencionado={subencionado}
+                contratado={contratado}
+                monotributista={monotributista}
+            />
+        ),
         opciones: (
             <OptionsERVButtons
 				CallBackEdit={CallBackEdit}
@@ -59,10 +62,7 @@ export const DocentesTable = () => {
         { id: 'id', label: 'Documento'},
         { id: 'sede', label: 'Sede'},
         { id: 'titulo', label: 'Titulo'},
-        { id: 'cuit', label: 'CUIT'},
-        { id: 'subencionado', label: 'Subencionado'},
-        { id: 'contratado', label: 'Contratado'},
-        { id: 'monotributista', label: 'Monotributista'},
+        { id: 'contratos', label: 'Contratos'},
         { id: 'opciones', label: 'Opciones'}
     ];
 
@@ -75,7 +75,6 @@ export const DocentesTable = () => {
             d.documento,
             d.sede,
             d.titulo,
-            d.cuit,
             d.subencionado,
             d.contratado,
             d.monotributista,

@@ -5,7 +5,12 @@ import { useSelector } from 'react-redux';
 import { useForm } from '../../Hooks/useForm';
 import { customStyles } from '../../Utils/modalStyles';
 import { AulasContext } from '../../Context/BuildContext';
-import { Button, Grid, TextField, Typography } from '@mui/material';
+import { Grid, TextField } from '@mui/material';
+import {
+    ButtonContained,
+    ButtonOutlined,
+    TypographyH6
+} from '../../Components/GlobalStylesComponents/stylesComponents';
 
 export const AulasModal = ({ isOpenModal, closeModal, action }) => {
     const {
@@ -31,9 +36,13 @@ export const AulasModal = ({ isOpenModal, closeModal, action }) => {
             onRequestClose={ closeModal }
             ariaHideApp={false}
         >
-            <Typography variant="h6" gutterBottom component="div">
-                { action === actions.create ? 'Crear Nueva Aula' : 'Editar Aula' }
-            </Typography>
+            <TypographyH6
+                label={
+                    action === actions.create
+                    ? 'Crear Nueva Aula'
+                    : 'Editar Aula'
+                }
+            />
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <TextField
@@ -68,40 +77,33 @@ export const AulasModal = ({ isOpenModal, closeModal, action }) => {
                     {
                         action === actions.create
                         ? (
-                            <Button
-                                fullWidth
-                                onClick={
+                            <ButtonContained
+                                CallBack={
                                     () => handleAddAula(formValues)
                                 }
-                                variant="contained"
-                            >
-                                Guardar
-                            </Button>
+                                label="Guardar"
+                            />
                         )
                         :  (
-                            <Button
-                                fullWidth
-                                onClick={
+                            <ButtonContained
+                                CallBack={
                                     () => handleEditAula(formValues)
                                 }
-                                variant="contained"
-                            >
-                                Editar
-                            </Button>
+                                label="Editar"
+                            />
                         )
                     }
                 </Grid>
                 <Grid item xs={12}>
-                    <Button
-                        fullWidth
-                        onClick={ () => {
-                            resetErrors();
-                            closeModal(); 
-                        } }
-                        variant="outlined"
-                    >
-                       Cerrar
-                    </Button>
+                    <ButtonOutlined
+                        CallBack={
+                            () => {
+                                resetErrors();
+                                closeModal(); 
+                            }
+                        }
+                        label="Cerrar"
+                    />
                 </Grid>
             </Grid>
         </Modal>
