@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
-import Modal from 'react-modal/lib/components/Modal';
+import Modal from '@mui/material/Modal';
 import { useForm } from '../../Hooks/useForm';
 import { aulasGetAll } from '../../Services/restCallAulas';
 import { CursosContext } from '../../Context/BuildContext';
 import { customStyles } from '../../Utils/modalStyles';
-import { Grid, MenuItem, TextField } from '@mui/material';
+import { Grid, MenuItem, TextField, Box } from '@mui/material';
 import {
     ButtonContained,
     ButtonOutlined,
@@ -45,155 +45,159 @@ export const CursoModal = ({ isOpenModal, closeModal, action }) => {
     
     return (
         <Modal
-            isOpen={ isOpenModal }
-            style={ customStyles }
-            onRequestClose={ closeModal }
-            ariaHideApp={false}
+            open={isOpenModal}
+            onClose={closeModal}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
         >
-            <TypographyH6
-                label={
-                    action === actions.create
-                    ? 'Crear Nuevo Curso'
-                    : 'Editar Curso'
-                }
-            />
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <TextField
-                        fullWidth
-                        id="nivel"
-                        name="nivel"
-                        value={ nivel }
-                        onChange={ handleInputChange }
-                        InputLabelProps={{ shrink: true, required: true }}
-                        select
-                        margin="normal"
-                        label="Nivel"
-                        error={Boolean(errors?.nivel)}
-                        helperText={errors?.nivel}
-                        size="small"
-                    >
-                        <MenuItem value="" disabled>
-                            Seleccione un nivel
-                        </MenuItem>
-                        <MenuItem value="P">Primaria</MenuItem>
-                        <MenuItem value="S">Secundaria</MenuItem>
-                        <MenuItem value="T">Terciaria</MenuItem>
-                        <MenuItem value="U">Universidad</MenuItem>
-                    </TextField>
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        fullWidth
-                        id="turno"
-                        name="turno"
-                        value={ turno }
-                        onChange={ handleInputChange }
-                        InputLabelProps={{ shrink: true, required: true }}
-                        select
-                        margin="normal"
-                        label="Turno"
-                        error={Boolean(errors?.turno)}
-                        helperText={errors?.turno}
-                        size="small"
-                    >
-                        <MenuItem value="" disabled>
-                            Seleccione un turno
-                        </MenuItem>
-                        <MenuItem value="Mañana">Mañana</MenuItem>
-                        <MenuItem value="Tarde">Tarde</MenuItem>
-                        <MenuItem value="Noche">Noche</MenuItem>
-                    </TextField>
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        fullWidth
-                        id="division"
-                        name="division"
-                        value={ division }
-                        onChange={ handleInputChange }
-                        InputLabelProps={{ shrink: true, required: true}}
-                        margin="normal"
-                        label="Division"
-                        error={Boolean(errors?.division)}
-                        helperText={errors?.division}
-                        size="small"
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        fullWidth
-                        id="gradoAno"
-                        name="gradoAno"
-                        value={ gradoAno }
-                        type="number"
-                        onChange={ handleInputChange }
-                        InputLabelProps={{ shrink: true, required: true}}
-                        margin="normal"
-                        label="Grado/Año"
-                        error={Boolean(errors?.gradoAno)}
-                        helperText={errors?.gradoAno}
-                        size="small"
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        fullWidth
-                        id="aulas"
-                        name="aula"
-                        value={ aula }
-                        onChange={ handleInputChange }
-                        InputLabelProps={{ shrink: true, required: true }}
-                        select
-                        margin="normal"
-                        label="Aula"
-                        error={Boolean(errors?.aula)}
-                        helperText={errors?.aula}
-                        size="small"
-                    >
-                        <MenuItem value="" disabled>
-                            Seleccione un aula
-                        </MenuItem>
-                        { aulas.map((a) => (
-                            <MenuItem key={ a.id } value={ a.id }>
-                                { a.descripcion }
-                            </MenuItem>
-                        )) }  
-                    </TextField>
-                </Grid>
-                <Grid item xs={12}>
-                    {
+            <Box
+                sx={customStyles}
+            >
+                <TypographyH6
+                    label={
                         action === actions.create
-                        ? (
-                            <ButtonContained
-                                CallBack={
-                                    () => handleAddCurso(formValues)
-                                }
-                                label="Guardar"
-                            />
-                        )
-                        :  (
-                            <ButtonContained
-                                CallBack={
-                                    () => handleEditCurso(formValues)
-                                }
-                                label="Editar"
-                            />
-                        )
+                        ? 'Crear Nuevo Curso'
+                        : 'Editar Curso'
                     }
-                </Grid>
-                <Grid item xs={12}>
-                    <ButtonOutlined
-                        CallBack={
-                            () => {
-                                resetErrors();
-                                closeModal();
-                            }
+                />
+                <Grid container>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            id="nivel"
+                            name="nivel"
+                            value={ nivel }
+                            onChange={ handleInputChange }
+                            InputLabelProps={{ shrink: true, required: true }}
+                            select
+                            margin="normal"
+                            label="Nivel"
+                            error={Boolean(errors?.nivel)}
+                            helperText={errors?.nivel}
+                            size="small"
+                        >
+                            <MenuItem value="" disabled>
+                                Seleccione un nivel
+                            </MenuItem>
+                            <MenuItem value="P">Primaria</MenuItem>
+                            <MenuItem value="S">Secundaria</MenuItem>
+                            <MenuItem value="T">Terciaria</MenuItem>
+                            <MenuItem value="U">Universidad</MenuItem>
+                        </TextField>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            id="turno"
+                            name="turno"
+                            value={ turno }
+                            onChange={ handleInputChange }
+                            InputLabelProps={{ shrink: true, required: true }}
+                            select
+                            margin="normal"
+                            label="Turno"
+                            error={Boolean(errors?.turno)}
+                            helperText={errors?.turno}
+                            size="small"
+                        >
+                            <MenuItem value="" disabled>
+                                Seleccione un turno
+                            </MenuItem>
+                            <MenuItem value="Mañana">Mañana</MenuItem>
+                            <MenuItem value="Tarde">Tarde</MenuItem>
+                            <MenuItem value="Noche">Noche</MenuItem>
+                        </TextField>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            id="division"
+                            name="division"
+                            value={ division }
+                            onChange={ handleInputChange }
+                            InputLabelProps={{ shrink: true, required: true}}
+                            margin="normal"
+                            label="Division"
+                            error={Boolean(errors?.division)}
+                            helperText={errors?.division}
+                            size="small"
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            id="gradoAno"
+                            name="gradoAno"
+                            value={ gradoAno }
+                            type="number"
+                            onChange={ handleInputChange }
+                            InputLabelProps={{ shrink: true, required: true}}
+                            margin="normal"
+                            label="Grado/Año"
+                            error={Boolean(errors?.gradoAno)}
+                            helperText={errors?.gradoAno}
+                            size="small"
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            id="aulas"
+                            name="aula"
+                            value={ aula }
+                            onChange={ handleInputChange }
+                            InputLabelProps={{ shrink: true, required: true }}
+                            select
+                            margin="normal"
+                            label="Aula"
+                            error={Boolean(errors?.aula)}
+                            helperText={errors?.aula}
+                            size="small"
+                        >
+                            <MenuItem value="" disabled>
+                                Seleccione un aula
+                            </MenuItem>
+                            { aulas.map((a) => (
+                                <MenuItem key={ a.id } value={ a.id }>
+                                    { a.descripcion }
+                                </MenuItem>
+                            )) }  
+                        </TextField>
+                    </Grid>
+                    <Grid item xs={12}>
+                        {
+                            action === actions.create
+                            ? (
+                                <ButtonContained
+                                    CallBack={
+                                        () => handleAddCurso(formValues)
+                                    }
+                                    label="Guardar"
+                                />
+                            )
+                            :  (
+                                <ButtonContained
+                                    CallBack={
+                                        () => handleEditCurso(formValues)
+                                    }
+                                    label="Editar"
+                                />
+                            )
                         }
-                        label="Cerrar"
-                    />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <ButtonOutlined
+                            CallBack={
+                                () => {
+                                    resetErrors();
+                                    closeModal();
+                                }
+                            }
+                            label="Cerrar"
+                        />
+                    </Grid>
                 </Grid>
-            </Grid>
+            </Box>
         </Modal>
     );
 };

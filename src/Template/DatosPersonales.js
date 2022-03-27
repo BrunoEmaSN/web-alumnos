@@ -173,7 +173,7 @@ export const DatosPersonales = ({
                     />
                 </Grid>
             </Grid>
-            <Grid contaienr>
+            <Grid container>
                 <Grid item xs={12}>
                     <TextField
                         fullWidth

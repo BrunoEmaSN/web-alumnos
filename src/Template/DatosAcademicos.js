@@ -116,7 +116,7 @@ export const DatosAcademicos = ({
                             name="partidaNacimiento"
                             checked={ partidaNacimiento }
                             onChange={ handleCheckboxChange }
-                            control={<Checkbox defaultChecked />}
+                            control={<Checkbox checked={partidaNacimiento} />}
                             size="small"
                             label="Partida de Nacimiento"
                         />
@@ -125,7 +125,7 @@ export const DatosAcademicos = ({
                             name="fotocopiaDNI"
                             checked={ fotocopiaDNI }
                             onChange={ handleCheckboxChange }
-                            control={<Checkbox defaultChecked />}
+                            control={<Checkbox checked={ fotocopiaDNI } />}
                             size="small"
                             label="Fotocopia del DNI"
                         />
@@ -134,7 +134,7 @@ export const DatosAcademicos = ({
                             name="fotocopiaCUIL"
                             checked={ fotocopiaCUIL }
                             onChange={ handleCheckboxChange }
-                            control={<Checkbox defaultChecked />}
+                            control={<Checkbox checked={ fotocopiaCUIL } />}
                             size="small"
                             label="Fotocopia del CUIL"
                         />
@@ -143,7 +143,7 @@ export const DatosAcademicos = ({
                             name="foto4x4"
                             checked={ foto4x4 }
                             onChange={ handleCheckboxChange }
-                            control={<Checkbox defaultChecked />}
+                            control={<Checkbox checked={ foto4x4 } />}
                             size="small"
                             label="Foto 4x4"
                         />
@@ -152,7 +152,7 @@ export const DatosAcademicos = ({
                             name="contrato"
                             checked={ contrato }
                             onChange={ handleCheckboxChange }
-                            control={<Checkbox defaultChecked />}
+                            control={<Checkbox checked={ contrato } />}
                             size="small"
                             label="Contrato"
                         />

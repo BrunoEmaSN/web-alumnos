@@ -9,7 +9,7 @@ const Docentes = () => {
     const { active } = useContext(DocentesContext);
 
     return (
-        <Box sx={{ p:3, marginTop: 5 }}>
+        <Box sx={{ p:3, marginTop: 35 }}>
             {
                 Object.entries(active).length
                 ? <DocentesSave />

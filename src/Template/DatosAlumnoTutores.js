@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Modal from 'react-modal/lib/components/Modal';
+//import Modal from 'react-modal/lib/components/Modal';
+import Modal from '@mui/material/Modal';
 import { tutoresGetOne } from '../Services/restCallTutores';
 import { customStyles } from '../Utils/modalStyles';
 import { tutorFormatter } from '../Utils/Model/tutorModel';
 import { CardGeneric } from '../Components/Card/CardGeneric';
 import { Box } from '@mui/system';
 import { Button, Grid, Paper, TextField, Typography } from '@mui/material';
-import { TypographyH4 } from '../Components/GlobalStylesComponents/stylesComponents';
+import { TypographyH4, ButtonContained, ButtonOutlined } from '../Components/GlobalStylesComponents/stylesComponents';
 
 export const DatosAlumnoTutores = ({ tutores, handleInputChange }) => {
 
@@ -115,84 +116,82 @@ export const DatosAlumnoTutores = ({ tutores, handleInputChange }) => {
                 </Box>
             </Paper>
             <Modal
-                isOpen={ modalTutorIsOpen }
-                style={ customStyles }
-                onRequestClose={ closeModalTutor }
-                ariaHideApp={false}
+                open={modalTutorIsOpen}
+                onClose={closeModalTutor}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
             >
-                <Typography variant="h6" gutterBottom component="div">
-                    Tutores
-                </Typography>
-                <Grid
-                    container
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="center"
+                <Box
+                    sx={customStyles}
                 >
-                    <Grid item xs={10}>
-                        <TextField
-                            //error
-                            fullWidth
-                            type="number"
-                            name="documentoTutor"
-                            value={ documentoTutor }
-                            onChange={ handleDocumentoTutor }
-                            InputLabelProps={{ shrink: true, required: true }}
-                            margin="normal"
-                            label="Documento"
-                            //helperText="Incorrect entry."
-                        />
+                
+                    <Typography variant="h6" gutterBottom component="div">
+                        Tutores
+                    </Typography>
+                    <Grid
+                        container
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                        <Grid item xs={8}>
+                            <TextField
+                                //error
+                                fullWidth
+                                type="number"
+                                name="documentoTutor"
+                                value={ documentoTutor }
+                                onChange={ handleDocumentoTutor }
+                                InputLabelProps={{ shrink: true, required: true }}
+                                margin="normal"
+                                label="Documento"
+                                size="small"
+                                //helperText="Incorrect entry."
+                            />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <ButtonContained
+                                CallBack={ findTutor }
+                                label="Buscar"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            {
+                                tutor && (
+                                    <Typography variant="h6">
+                                        {`${ tutor.nombre } ${ tutor.apellido }`}
+                                    </Typography>
+                                )
+                            }
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                //error
+                                fullWidth
+                                name="parentesco"
+                                value={ parentesco }
+                                onChange={ handleParentesco }
+                                InputLabelProps={{ shrink: true, required: true }}
+                                margin="normal"
+                                label="Parentesco"
+                                size="small"
+                                //helperText="Incorrect entry."
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <ButtonContained
+                                CallBack={ handleAddTutor }
+                                label="Agregar"
+                            />
+                        </Grid>
+                        <Grid item xs={12} sx={{ marginTop: '2%' }}>
+                            <ButtonOutlined
+                                CallBack={ closeModalTutor }
+                                label="Cerrar"
+                            />
+                        </Grid>
                     </Grid>
-                    <Grid item xs={2}>
-                        <Button
-                            variant="contained"
-                            onClick={ findTutor }
-                            size="large"
-                        >
-                            Buscar
-                        </Button>
-                    </Grid>
-                    <Grid item xs={12}>
-                        {
-                            tutor && (
-                                <Typography variant="h6">
-                                    {`${ tutor.nombre } ${ tutor.apellido }`}
-                                </Typography>
-                            )
-                        }
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            //error
-                            fullWidth
-                            name="parentesco"
-                            value={ parentesco }
-                            onChange={ handleParentesco }
-                            InputLabelProps={{ shrink: true, required: true }}
-                            margin="normal"
-                            label="Parentesco"
-                            //helperText="Incorrect entry."
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Button
-                            fullWidth
-                            onClick={ handleAddTutor }
-                            variant="contained"
-                        >
-                            Agregar
-                        </Button>
-                    </Grid>
-                    <Grid item xs={12} sx={{ marginTop: '2%' }}>
-                        <Button
-                            fullWidth
-                            onClick={ closeModalTutor }
-                            variant="outlined"
-                        >
-                            Close
-                        </Button>
-                    </Grid>
-                </Grid>
+                </Box>
             </Modal>
         </Box>
     );

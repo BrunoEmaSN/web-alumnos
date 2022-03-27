@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import Modal from 'react-modal/lib/components/Modal';
+import Modal from '@mui/material/Modal';
 import { materiasGetAll } from '../Services/restCallMaterias';
 import { CardGeneric } from '../Components/Card/CardGeneric';
 import { Box } from '@mui/system';
 import { Button, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material';
 import { customStyles } from '../Utils/modalStyles';
-import { TypographyH4 } from '../Components/GlobalStylesComponents/stylesComponents';
+import { TypographyH4, ButtonContained, ButtonOutlined } from '../Components/GlobalStylesComponents/stylesComponents';
+
 
 export const DatosDocenteMateria = ({ materias, handleInputChange }) => {
     const [ materiasList, setMateriasList ] = useState([]);
@@ -106,66 +107,64 @@ export const DatosDocenteMateria = ({ materias, handleInputChange }) => {
                 </Box>
             </Paper>
             <Modal
-                isOpen={ modalMateriaIsOpen }
-                style={ customStyles }
-                onRequestClose={ closeModalMateria }
-                ariaHideApp={false}
+                open={modalMateriaIsOpen}
+                onClose={closeModalMateria}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
             >
-                <Typography variant="h6" gutterBottom component="div">
-                    Materias
-                </Typography>
-                <Grid
-                    container
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="center"
+                <Box
+                    sx={customStyles}
                 >
-                    <Grid item xs={12}>
-                        <TextField
-                            //error
-                            fullWidth
-                            id="materias"
-                            name="materia"
-                            value={ materia !== '' ? JSON.stringify(materia) : '' }
-                            onChange={ handleChageMateria }
-                            InputLabelProps={{ shrink: true, required: true }}
-                            select
-                            margin="normal"
-                            label="Materia"
-                            //helperText="Please select your currency"
-                            >
-                                <MenuItem value="" disabled>Seleccione una opcion</MenuItem>
-                                {
-                                    materiasList.map( m => (
-                                        <MenuItem
-                                            key={ m.id }
-                                            value={ JSON.stringify( m ) }
-                                        >
-                                            { m.descripcion }
-                                        </MenuItem>
-                                    ))
-                                }
-                        </TextField>
+                    <Typography variant="h6" gutterBottom component="div">
+                        Materias
+                    </Typography>
+                    <Grid
+                        container
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                        <Grid item xs={12}>
+                            <TextField
+                                //error
+                                fullWidth
+                                id="materias"
+                                name="materia"
+                                value={ materia !== '' ? JSON.stringify(materia) : '' }
+                                onChange={ handleChageMateria }
+                                InputLabelProps={{ shrink: true, required: true }}
+                                select
+                                margin="normal"
+                                label="Materia"
+                                //helperText="Please select your currency"
+                                >
+                                    <MenuItem value="" disabled>Seleccione una opcion</MenuItem>
+                                    {
+                                        materiasList.map( m => (
+                                            <MenuItem
+                                                key={ m.id }
+                                                value={ JSON.stringify( m ) }
+                                            >
+                                                { m.descripcion }
+                                            </MenuItem>
+                                        ))
+                                    }
+                            </TextField>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <ButtonContained
+                                CallBack={ handleAddMateria }
+                                label="Agregar"
+                            />
+                        </Grid>
+                        <Grid item xs={12} sx={{ marginTop: '2%' }}>
+                            <ButtonOutlined
+                                CallBack={ closeModalMateria }
+                                label="Close"
+                            />
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12}>
-                        <Button
-                            fullWidth
-                            onClick={ handleAddMateria }
-                            variant="contained"
-                        >
-                            Agregar
-                        </Button>
-                    </Grid>
-                    <Grid item xs={12} sx={{ marginTop: '2%' }}>
-                        <Button
-                            fullWidth
-                            onClick={ closeModalMateria }
-                            variant="outlined"
-                        >
-                            Close
-                        </Button>
-                    </Grid>
-                </Grid>
+                </Box>
             </Modal>
         </Box>
     );
