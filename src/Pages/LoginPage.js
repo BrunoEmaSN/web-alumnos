@@ -74,8 +74,6 @@ export const LoginPage = () => {
                 password: 'no ingreso su contraseña'
             }
         }
-        console.log(errors);
-        console.log(newState);
 
         setErrors(newState);
         return isValid;

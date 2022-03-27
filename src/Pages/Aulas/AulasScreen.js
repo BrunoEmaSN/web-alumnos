@@ -22,7 +22,7 @@ const Aulas = () => {
     } = useContext(AulasContext);
 
     return (
-        <Box sx={{ p:3 }}>
+        <Box sx={{ p:3, marginTop: 5 }}>
 			<Stack direction="row" spacing={2} margin={1}>
                 <TypographyH3
                     label="Aulas"

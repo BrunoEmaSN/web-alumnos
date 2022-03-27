@@ -64,7 +64,7 @@ export const HomeImg = ({ title, description, link, linkText, image, imageText }
 
 HomeImg.propTypes = {
     description: PropTypes.string.isRequired,
-    image: PropTypes.element.isRequired,
+    image: PropTypes.any.isRequired,
     imageText: PropTypes.string.isRequired,
     link: PropTypes.string.isRequired,
     linkText: PropTypes.string.isRequired,

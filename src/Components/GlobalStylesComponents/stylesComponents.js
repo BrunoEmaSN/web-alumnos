@@ -33,15 +33,17 @@ export const ButtonCreate = ({ label, CallBack }) => {
             onClick={ CallBack }
             variant="outlined"
             sx={{
-                border: '1px solid #00C6B7',
-                color: '#00C6B7',
+                bgcolor: '#00C6B7',
+                color: '#222F3E',
+                border: '1px solid #fff',
                 height: 50,
                 padding: '0 2%',
                 '&:hover': {
-                    backgroundColor: '#00C6B7',
-                    color: '#222F3E',
+                    backgroundColor: '#fff',
                     border: '1px solid #00C6B7',
+                    color: '#00C6B7',
                 }
+                
             }}
         >
             { label }

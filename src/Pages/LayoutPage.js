@@ -17,7 +17,10 @@ export const LayoutPage = ({ children }) => {
             <Header />
             <Box
                 component="main"
-                sx={{ flexGrow: 1, width: { sm: `calc(100% - ${240}px)` } }}
+                sx={{
+                    flexGrow: 1,
+                    width: { md: '100%', lg: `calc(100% - ${240}px)` },
+                }}
             >
                 { children }
             </Box>

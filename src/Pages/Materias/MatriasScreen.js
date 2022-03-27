@@ -9,7 +9,7 @@ const Materias = () => {
     const { active } = useContext(MateriasContext);
 
     return (
-        <Box sx={{ p:3 }}>
+        <Box sx={{ p:3, marginTop: 35 }}>
             {
                 Object.entries(active).length
                 ? <MateriasSave />

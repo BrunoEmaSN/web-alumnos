@@ -135,7 +135,8 @@ export const CalificacionesSave = () => {
                         fullWidth
                         id="alumno_id"
                         name="alumno_id"
-                        value={ alumno_id }
+                        defaultValue=""
+                        value={ parseInt(alumno_id) }
                         onChange={handleInputChange}
                         InputLabelProps={{ shrink: true, required: true }}
                         select
@@ -148,7 +149,7 @@ export const CalificacionesSave = () => {
                             Seleccione un alumno
                         </MenuItem>
                         { alumnosList.map((a) => (
-                            <MenuItem key={a.documento} value={ a.documento }>
+                            <MenuItem key={a.documento} value={ parseInt(a.documento) }>
                                 { `${ a.nombre } ${ a.apellido }` }
                             </MenuItem>
                         )) }
