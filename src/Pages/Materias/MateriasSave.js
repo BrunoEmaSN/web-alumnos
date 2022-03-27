@@ -1,4 +1,6 @@
 import React, { useContext } from 'react';
+import { useMediaQuery } from '@material-ui/core';
+import { theme } from '../../Components/GlobalStylesComponents/theme';
 import { MateriasContext } from '../../Context/BuildContext';
 import { useForm } from '../../Hooks/useForm';
 import { regimenes } from '../../Utils/Model/materiaModel';
@@ -22,6 +24,8 @@ export const MateriasSave = () => {
 
     const [ formValues, handleInputChange ] = useForm( active );
 
+    const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+
     const {
         descripcion,
         planEstudio,
@@ -29,7 +33,14 @@ export const MateriasSave = () => {
     } = formValues;
 
     return (
-        <Paper sx={{ width: '58%', margin: '0 20% 2%', padding: '1%' }} variant="outlined">
+        <Paper
+            sx={{
+                width: isMdUp ? '58%' : '100%',
+                margin: isMdUp ? '0 20% 2%' : 0,
+                padding: '1%'
+            }} 
+            variant="outlined"
+        >
             <TypographyH4
                 label={
                     action === actions.create

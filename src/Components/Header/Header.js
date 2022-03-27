@@ -18,11 +18,12 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import { useLocation, useNavigate } from "react-router-dom";
-import { AppContext } from '../../Context/BuildContext';
 import { useMediaQuery } from '@material-ui/core';
 import { theme } from '../GlobalStylesComponents/theme';
 import { styled } from '@material-ui/styles';
+
+import { useLocation, useNavigate } from "react-router-dom";
+import { AppContext } from '../../Context/BuildContext';
 
 const pages = [
     'Aulas',
@@ -130,7 +131,10 @@ export const Header = () => {
                 }}
                 open={open}
             >
-                <DrawerHeader theme={theme} style={{ display: isMdUp ? 'none' : 'flex' }}>
+                <DrawerHeader
+                    theme={theme}
+                    style={{ display: isMdUp ? 'none' : 'flex' }}
+                >
                     <IconButton
                         onClick={toggleDrawer}
                         sx={{

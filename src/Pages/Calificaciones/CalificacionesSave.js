@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Grid, MenuItem, Paper, TextField } from '@mui/material';
+import { useMediaQuery } from '@material-ui/core';
+import { theme } from '../../Components/GlobalStylesComponents/theme';
 import { CalificacionesContext } from '../../Context/BuildContext';
 import { useForm } from '../../Hooks/useForm';
 import { alumnosGetAll } from '../../Services/restCallAlumnos';
@@ -19,6 +21,8 @@ export const CalificacionesSave = () => {
         handleBack,
         errors
     } = useContext(CalificacionesContext);
+
+    const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
 
     const [ alumnosList, setAlumnosList ] = useState([]);
     const [ materiasList, setMateriasList ] = useState([]);
@@ -48,7 +52,14 @@ export const CalificacionesSave = () => {
     } = formValues;
     
     return (
-        <Paper sx={{ width: '58%', margin: '0 20% 2%', padding: '1%' }} variant="outlined">
+        <Paper 
+            sx={{
+                width: isMdUp ? '58%' : '100%',
+                margin: isMdUp ? '0 20% 2%' : 0,
+                padding: '1%'
+            }}
+            variant="outlined"
+        >
             <TypographyH4 label="Editar Calificacion" />
             <Grid container spacing={2}>
                 <Grid item xs={12}>

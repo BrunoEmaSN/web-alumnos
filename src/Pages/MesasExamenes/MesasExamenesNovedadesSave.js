@@ -5,7 +5,9 @@ import moment from 'moment';
 import Swal from 'sweetalert2';
 import { Box } from '@mui/system';
 import { Grid, MenuItem, Paper, TextField } from '@mui/material';
+import { useMediaQuery } from '@material-ui/core';
 
+import { theme } from '../../Components/GlobalStylesComponents/theme';
 import { useForm } from "../../Hooks/useForm";
 import { materiasGetAll } from '../../Services/restCallMaterias';
 import { MesasExamenesNovedadTable } from './MesasExamenesNovedadTable';
@@ -35,6 +37,8 @@ const actionsList = { create: 'create', edit: 'edit' };
 
 export const MesasExamenesNovedadesSave = ({ novedad, setNovedad }) => {
     const {handleErrorsNovedad, errorNovedad: errors} = useContext(MesasExamenesContext);
+    const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+
     const [ materiasList, setMateriasList ] = useState([]);
     const [ materia_descripcion, setMateriaDescripcion ] = useState('');
     const [ action, setAction ] = useState(actionsList.create);
@@ -143,7 +147,14 @@ export const MesasExamenesNovedadesSave = ({ novedad, setNovedad }) => {
   
     return (
         <Box>
-            <Paper sx={{ width: '60%', padding: '1%', margin:'0 20% 2%' }} variant="outlined">
+            <Paper
+                sx={{
+                    width: isMdUp ? '60%' : '100%',
+                    padding: '1%',
+                    margin: isMdUp ? '0 20% 2%' : '0 0 2%'
+                }}
+                variant="outlined"
+            >
                 <TypographyH4
                     label="Datos Mesa Examen Novedad"
                 />
@@ -282,9 +293,9 @@ export const MesasExamenesNovedadesSave = ({ novedad, setNovedad }) => {
             </Paper>
             <Paper
                 sx={{
-                    width: '80%',
+                    width: isMdUp ? '80%' : '100%',
                     minHeight: '140px',
-                    margin: '0 10% 2%',
+                    margin: isMdUp ? '0 10% 2%' : '0 0 2%',
                     padding: '1%'
                 }}
                 variant="outlined"

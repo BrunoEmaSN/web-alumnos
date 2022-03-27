@@ -1,11 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react';
+import { Box, Grid, MenuItem, Paper, TextField } from '@mui/material';
+import { useMediaQuery } from '@material-ui/core';
+
+import { theme } from '../../Components/GlobalStylesComponents/theme';
 import { useForm } from '../../Hooks/useForm';
 import { MesasExamenesNovedadesSave } from './MesasExamenesNovedadesSave';
 import { periodosGetAll } from '../../Services/restCallPeriodos';
 import { mesaExamenModel } from '../../Utils/Model/mesaExamenModel';
 import { AgregarPeriodos } from '../../Template/AgregarPeriodos';
 import { MesasExamenesContext } from '../../Context/BuildContext';
-import { Box, Grid, MenuItem, Paper, TextField } from '@mui/material';
 import { useModal } from '../../Hooks/useModal';
 import {
     ButtonContained,
@@ -21,6 +24,8 @@ export const MesasExamenesMaestrosSave = () => {
         handleBack,
         errorMaestro: errors
     } = useContext(MesasExamenesContext);
+
+    const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
 
     const [ formValues, handleInputChange ] = useForm( active.maestro );
     const [ novedad, setNovedad ] = useState( active.novedad );
@@ -43,7 +48,14 @@ export const MesasExamenesMaestrosSave = () => {
 
     return (
         <Box>
-            <Paper sx={{ width: '60%', margin: '0 20% 2%', padding: '1%' }} variant="outlined">
+            <Paper
+                sx={{
+                    width: isMdUp ? '60%' : '100%',
+                    margin: isMdUp ? '0 20% 2%' : '0 0 2%',
+                    padding: '1%'
+                }}
+                variant="outlined"
+            >
                 <TypographyH4
                     label="Datos Mesa Examen Maestro"
                 />
@@ -104,7 +116,7 @@ export const MesasExamenesMaestrosSave = () => {
                 novedad={ novedad }
                 setNovedad={ setNovedad }
             />
-            <Paper sx={{ width: '60%', margin: '0 20% 2%', padding: '1%' }}>
+            <Box sx={{ width: '60%', margin: '0 20% 2%', padding: '1%' }}>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         {
@@ -135,7 +147,7 @@ export const MesasExamenesMaestrosSave = () => {
                     </Grid>
 
                 </Grid>
-            </Paper>
+            </Box>
         </Box>
     )
 }

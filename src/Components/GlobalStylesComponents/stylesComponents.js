@@ -81,8 +81,7 @@ export const ButtonContained = ({ label, CallBack }) => {
 
 ButtonContained.propTypes = {
     label: PropTypes.string.isRequired,
-    CallBack: PropTypes.func.isRequired,
-    variant: PropTypes.string.isRequired
+    CallBack: PropTypes.func.isRequired
 }
 
 export const ButtonOutlined = ({ label, CallBack }) => {
@@ -109,8 +108,7 @@ export const ButtonOutlined = ({ label, CallBack }) => {
 
 ButtonOutlined.propTypes = {
     label: PropTypes.string.isRequired,
-    CallBack: PropTypes.func.isRequired,
-    variant: PropTypes.string.isRequired
+    CallBack: PropTypes.func.isRequired
 }
 
 export const TypographyH3 = ({ label }) => {

@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Grid, MenuItem, Paper, TextField } from '@mui/material';
+import { useMediaQuery } from '@material-ui/core';
+import { theme } from '../../Components/GlobalStylesComponents/theme';
 import {
     ButtonContained,
     ButtonOutlined,
@@ -29,6 +31,8 @@ export const ClasesSave = () => {
         handleInputChange, ,
         handleObjectChange
     ] = useForm( active );
+
+    const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
 
     const [ cursosList, setCursosList ] = useState([]);
     const [ docentesList, setDocentesList ] = useState([]);
@@ -60,7 +64,14 @@ export const ClasesSave = () => {
     } = formValues;
     
     return (
-        <Paper sx={{ width: '78%', padding: '1%', margin:'0 11% 2%' }} variant="outlined">
+        <Paper
+            sx={{
+                width: isMdUp ? '78%' : '100%',
+                padding: '1%',
+                margin: isMdUp ? '0 11% 2%' : 0
+            }}
+            variant="outlined"
+        >
             <TypographyH4 label="Clase" />
             <Grid
                 container
