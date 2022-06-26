@@ -1,38 +1,45 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { activeMesaExamen, startDeletingMesaExamen } from '../../Store/MesaExamen/Actions/MesaExamen';
-import { mesaExamenModel } from '../../Utils/mesaExamenModel';
+import { Box, Button, Stack, Typography } from '@mui/material';
+import React, { useContext } from 'react';
+import { MesasExamenesContext } from '../../Context/BuildContext';
+import { ViewMesaExamen } from './Components/ViewMesaExamen';
+import { MesasExamenesTable } from './MesasExamenesTable';
+
 export const MesasExamenesList = () => {
-    const dispatch = useDispatch();
-
-    const { mesasExamenes } = useSelector( state => state.mesaExamen );
-
-    const handleCreate = () => {
-        const lastIndex = mesasExamenes.length - 1;
-        const lastId = mesasExamenes.length > 0 ? mesasExamenes[lastIndex].maestro.id : 0;
-        mesaExamenModel.maestro.id = lastId + 1;
-        dispatch( activeMesaExamen( mesaExamenModel ) );
-    }
-
-    const handleEdit = ( a ) => {
-        dispatch( activeMesaExamen( a ) );
-    }
-
-    const handleDelete = ( id) => {
-        dispatch( startDeletingMesaExamen( id) );
-    }
+    const {
+        handleCreate,
+		isOpenModalView,
+		closeModalView,
+		data
+    } = useContext(MesasExamenesContext);
 
     return (
-        <div>
-            <h1>mesasExamenesList</h1>
-            <button onClick={ handleCreate }>Save</button>
-            {
-                mesasExamenes.map( (mesaExamen) => <div key={ mesaExamen.maestro.id}>
-                    { `${ mesaExamen.maestro.id } ${ mesaExamen.maestro.descripcion }` }
-                    <button onClick={  () => { handleEdit( mesaExamen ) }  }>Edit</button>
-                    <button onClick={  () => { handleDelete( mesaExamen.maestro.id) }  }>Delete</button>
-                </div>)
+        <Box>
+			<Stack direction="row" spacing={2} margin={1}>
+				<Typography
+					variant="h3"
+					component="div"
+					gutterBottom
+				>
+					Mesas Examenes
+				</Typography>
+				<Button
+					onClick={handleCreate}
+					sx={{ padding: '0 2%', height: 50 }}
+					variant="outlined"
+				>
+					Crear Nuevo
+				</Button>
+			</Stack>
+            <MesasExamenesTable />
+			{
+                isOpenModalView && (
+					<ViewMesaExamen
+						data={data}
+						isOpen={isOpenModalView}
+						handleClose={closeModalView}
+					/>
+				)
             }
-        </div>
+		</Box>
     );
 };

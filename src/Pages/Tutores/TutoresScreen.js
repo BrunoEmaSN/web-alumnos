@@ -1,22 +1,29 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getTutores } from '../../Store/Tutor/Actions/Tutor';
-import { Tutor1 } from '../../Utils/tutorModel';
+import React, { useContext } from 'react';
+import { TutoresContext } from '../../Context/BuildContext';
+import { TutoresState } from '../../Context/TutoresState';
 import { TutoresList } from './TutoresList';
 import { TutoresSave } from './TutoresSave';
 
-export const TutoresScreen = () => {
-    const dispatch = useDispatch();
-
-    const { active } = useSelector( state => state.tutor );
-
-    useEffect(() => {
-        dispatch( getTutores( Tutor1 ) );
-    }, []);
+const Tutores = () => {
+    const {
+        active
+    } = useContext(TutoresContext);
 
     return (
         <div>
-            { Object.entries(active).length ? <TutoresSave /> : <TutoresList /> }
+            {
+                Object.entries(active).length
+                ? <TutoresSave />
+                : <TutoresList />
+            }
         </div>
     );
 };
+
+export const TutoresScreen = () => {
+    return (
+        <TutoresState>
+            <Tutores />
+        </TutoresState>
+    );
+}

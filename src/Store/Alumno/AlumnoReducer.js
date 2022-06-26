@@ -10,10 +10,10 @@ export const AlumnoReducer = ( state = initialState, actions ) => {
         case types.alumnos + types.getAll:
             return {
                 ...state,
-                alumnos: [ { ...actions.payload } ]
+                alumnos: [ ...actions.payload ]
             };
         
-        case types.alumnos + types.getOne:
+        case types.alumnos + types.active:
             return {
                 ...state,
                 active: actions.payload
@@ -35,8 +35,8 @@ export const AlumnoReducer = ( state = initialState, actions ) => {
             return {
                 ...state,
                 alumnos: state.alumnos.map(
-                    a => a.documento === actions.payload.alumno.documento
-                    ? actions.payload.alumno
+                    a => a.documento === actions.payload.documento
+                    ? actions.payload
                     : a
                 )
             };

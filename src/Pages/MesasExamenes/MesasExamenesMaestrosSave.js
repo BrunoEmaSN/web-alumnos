@@ -1,59 +1,145 @@
-import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from '../../Hooks/useForm';
-import { cleanActiveMesaExamen, startNewMesaExamen, startUpdateMesaExamen } from '../../Store/MesaExamen/Actions/MesaExamen';
 import { MesasExamenesNovedadesSave } from './MesasExamenesNovedadesSave';
-import { mesaExamenModel } from '../../Utils/mesaExamenModel';
+import { periodosGetAll } from '../../Services/restCallPeriodos';
+import { mesaExamenModel } from '../../Utils/Model/mesaExamenModel';
+import { AgregarPeriodos } from '../../Template/AgregarPeriodos';
+import { MesasExamenesContext } from '../../Context/BuildContext';
+import { Box, Button, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material';
+import { useModal } from '../../Hooks/useModal';
 
 export const MesasExamenesMaestrosSave = () => {
-    const dispatch = useDispatch();
-
-    const { active } = useSelector( state => state.mesaExamen );
+    const {
+        active,
+        handleAddMesaExamen,
+        handleEditMesaExamen,
+        handleBack,
+        errorMaestro: errors
+    } = useContext(MesasExamenesContext);
 
     const [ formValues, handleInputChange ] = useForm( active.maestro );
     const [ novedad, setNovedad ] = useState( active.novedad );
+    const [ periodoList, setPeriodoList ] = useState([]);
+    const [ isOpenModal, openModal, closeModal ] = useModal( false );
+    
+    const handleListGetAll = async () => {
+        setPeriodoList( await periodosGetAll() );
+    }
 
+    useEffect(() => {
+        handleListGetAll()
+    }, [])
+    
+    
     const {
         descripcion,
+        periodo_id
     } = formValues;
 
-    const handleAddMesaExamen = ( e ) => {
-        e.preventDefault();
-        dispatch( startNewMesaExamen( { maestro: formValues, novedad } ) );
-        dispatch( cleanActiveMesaExamen() );
-    }
-
-    const handleEditMesaExamen = ( e ) => {
-        e.preventDefault();
-        dispatch( startUpdateMesaExamen( { maestro: formValues, novedad } ) );
-        dispatch( cleanActiveMesaExamen() );
-    }
-
-    const back = ( e ) => {
-        e.preventDefault();
-        dispatch( cleanActiveMesaExamen() );
-    }
-
     return (
-        <div>
-            <div>
-                <label htmlFor="descripcion">Descripcion</label>
-                <input type="text" id="descripcion" name="descripcion" value={descripcion} onChange={handleInputChange}/>
-            </div>
+        <Box>
+            <Paper sx={{ width: '60%', margin: '0 20% 2%', padding: '1%' }}>
+                <Typography variant="h4" gutterBottom component="div">
+                    Datos Mesa Examen Maestro
+                </Typography>
+                <Grid
+                    container
+                    direction="row"
+                    alignItems="center"
+                    spacing={2}
+                >
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            id="descripcion"
+                            name="descripcion"
+                            value={descripcion}
+                            onChange={handleInputChange}
+                            InputLabelProps={{ shrink: true, required: true }}
+                            margin="normal"
+                            label="Descripcion"
+                            error={Boolean(errors?.descripcion)}
+                            helperText={errors?.descripcion}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            fullWidth
+                            id="periodo_id"
+                            name="periodo_id"
+                            value={ periodo_id }
+                            onChange={ handleInputChange }
+                            InputLabelProps={{ shrink: true, required: true }}
+                            select
+                            margin="normal"
+                            label="Periodo"
+                            error={Boolean(errors?.periodo_id)}
+                            helperText={errors?.periodo_id}
+                        >
+                            <MenuItem value="" disabled>
+                                Seleccione un periodo
+                            </MenuItem>
+                            { periodoList.map((p) => (
+                                <MenuItem key={ p.id } value={ p.id }>
+                                    { `${ p.descripcion }` }
+                                </MenuItem>
+                            )) }
+                        </TextField>
+                    </Grid>
+                    <Grid item xs={3}>
+                        <AgregarPeriodos
+                            isOpenModal={isOpenModal}
+                            openModal={openModal}
+                            closeModal={closeModal}
+                        />
+                    </Grid>
+                </Grid>
+            </Paper>
             <MesasExamenesNovedadesSave
                 novedad={ novedad }
                 setNovedad={ setNovedad }
             />
-            <div>
-                <button onClick={ active === mesaExamenModel ? handleAddMesaExamen : handleEditMesaExamen } >
-                    Save
-                </button>
-            </div>
-            <div>
-                <button onClick={ back }>
-                    Volver
-                </button>
-            </div>
-        </div>
+            <Paper sx={{ width: '60%', margin: '0 20% 2%', padding: '1%' }}>
+                <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                        {
+                            active === mesaExamenModel
+                            ? (
+                                <Button
+                                    fullWidth
+                                    onClick={
+                                        () => handleAddMesaExamen(formValues, novedad)
+                                    }
+                                    variant="contained"
+                                >
+                                    Guardar
+                                </Button>
+                            )
+                            : (
+                                <Button
+                                    fullWidth
+                                    onClick={
+                                        () => handleEditMesaExamen(formValues, novedad)
+                                    }
+                                    variant="contained"
+                                >
+                                    Editar
+                                </Button>
+                            )
+                        }
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Button
+                            fullWidth
+                            onClick={ handleBack }
+                            variant="outlined"
+                        >
+                            Volver
+                        </Button>
+                    </Grid>
+
+                </Grid>
+            </Paper>
+        </Box>
     )
 }

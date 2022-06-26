@@ -1,16 +1,34 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useContext, useEffect, useState } from 'react';
+import { Button, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material';
+import { CalificacionesContext } from '../../Context/BuildContext';
 import { useForm } from '../../Hooks/useForm';
-import { cleanActiveCalificacion, startNewCalificacion, startUpdateCalificacion } from '../../Store/Calificacion/Actions/Calificacion';
-import { Alumno2 } from '../../Utils/alumnoModel';
-import { calificacionModel } from '../../Utils/calificacionModel';
-import { Docente2 } from '../../Utils/docenteModel';
-import { Materia2, regimenes } from '../../Utils/materiaModel';
+import { alumnosGetAll } from '../../Services/restCallAlumnos';
+import { docentesGetAll } from '../../Services/restCallDocentes';
+import { materiasGetAll } from '../../Services/restCallMaterias';
+import { regimenes } from '../../Utils/Model/materiaModel';
 
 export const CalificacionesSave = () => {
-    const dispatch = useDispatch();
+    const {
+        active,
+        handleEditCalificacion,
+        handleBack,
+        errors
+    } = useContext(CalificacionesContext);
 
-    const { active } = useSelector( state => state.calificacion );
+    const [ alumnosList, setAlumnosList ] = useState([]);
+    const [ materiasList, setMateriasList ] = useState([]);
+    const [ docentesList, setDocentesList ] = useState([]);
+
+    const handleListGetAll = async () => {
+        setAlumnosList(await alumnosGetAll());
+        setMateriasList(await materiasGetAll());
+        setDocentesList(await docentesGetAll());
+    }
+
+    useEffect(() => {
+        handleListGetAll();
+    }, [])
+    
 
     const [ formValues, handleInputChange ] = useForm( active );
 
@@ -19,92 +37,189 @@ export const CalificacionesSave = () => {
         etapa,
         nota,
         descripcion,
-        alumno,
-        docente,
-        materia,
+        alumno_id,
+        docente_id,
+        materia_id,
     } = formValues;
-
-    const handleAddCalificacion = ( e ) => {
-        e.preventDefault();
-        dispatch( startNewCalificacion( formValues ) );
-        dispatch( cleanActiveCalificacion() );
-    }
-
-    const handleEditCalificacion = ( e ) => {
-        e.preventDefault();
-        dispatch( startUpdateCalificacion( formValues ) );
-        dispatch( cleanActiveCalificacion() );
-    }
-
-    const back = ( e ) => {
-        e.preventDefault();
-        dispatch( cleanActiveCalificacion() );
-    }
     
     return (
-        <div>
-            <div>
-                <label htmlFor="regimen">Regimen</label>
-                <select id="regimen" name="regimen" value={regimen} onChange={handleInputChange}>
-                    <option value="" disabled>selecione un aula</option>
-                    {regimenes.map((r) => (
-                        <option key={r} value={r}>{r}</option>
-                    ))}
-                </select>
-            </div>
-            <div>
-                <label htmlFor="etapa">Etapa</label>
-                <select id="etapa" name="etapa" value={etapa} onChange={handleInputChange}>
-                    <option value="" disabled>selecione una etapa</option>
-                    <option value="1er">Primer Etapa</option>
-                    <option value="2da">Segunda Etapa</option>
-                    <option value="3ra">Tercera Etapa</option>
-                    <option value="4ta">Cuarta Etapa</option>
-                </select>
-            </div>
-            <div>
-                <label htmlFor="nota">Nota</label>
-                <input type="number" min="1" max="10" step="1" id="nota" name="nota" value={nota} onChange={handleInputChange} />
-            </div>
-            <div>
-                <label htmlFor="descripcion">Descripcion</label>
-                <input type="text" id="descripcion" name="descripcion" value={descripcion} onChange={handleInputChange}/>
-            </div>
-            <div>
-                <label htmlFor="alumnos">Alumnos</label>
-                <select id="alumnos" name="alumno" value={ alumno } onChange={handleInputChange}>
-                    <option value="" disabled>selecione un alumno</option>
-                    {Alumno2.map((a) => (
-                        <option key={a.documento} value={ a }>{ `${ a.nombre } ${ a.apellido }` }</option>
-                    ))}
-                </select>
-            </div>
-            <div>
-                <label htmlFor="docentes">Docente</label>
-                <select id="docentes" name="docente" value={ docente } onChange={handleInputChange}>
-                    <option value="" disabled>selecione un docente</option>
-                    {Docente2.map((d) => (
-                        <option key={d.documento} value={ d }>{ `${ d.nombre } ${ d.apellido }` }</option>
-                    ))}
-                </select>
-            </div>
-            <div>
-                <label htmlFor="materias">Materias</label>
-                <select id="materias" name="materia" value={ materia } onChange={handleInputChange}>
-                    <option value="" disabled>selecione una materia</option>
-                    {Materia2.map((m) => (
-                        <option key={m.id} value={ m }>{ `${ m.descripcion }` }</option>
-                    ))}
-                </select>
-            </div>
-            <div>
-                <button onClick={ active === calificacionModel ? handleAddCalificacion :  handleEditCalificacion }>
-                    Guardar
-                </button>
-            </div>
-            <div>
-                <button onClick={ back }>Volver</button>
-            </div>
-        </div>
+        <Paper sx={{ width: '60%', margin: '0 20% 2%', padding: '1%' }}>
+            <Typography variant="h6" gutterBottom component="div">
+                Editar Calificacion
+            </Typography>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        id="regimen"
+                        name="regimen"
+                        value={regimen}
+                        onChange={handleInputChange}
+                        InputLabelProps={{ shrink: true, required: true }}
+                        select
+                        margin="normal"
+                        label="Regimen"
+                        error={Boolean(errors?.regimen)}
+                        helperText={errors?.regimen}
+                    >
+                        <MenuItem value="" disabled>
+                            Seleccione un regimen
+                        </MenuItem>
+                        { regimenes.map((r) => (
+                            <MenuItem key={r} value={r}>{r}</MenuItem>
+                        )) }
+                    </TextField>
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        id="etapa"
+                        name="etapa"
+                        value={etapa}
+                        onChange={handleInputChange}
+                        InputLabelProps={{ shrink: true, required: true }}
+                        select
+                        margin="normal"
+                        label="Etapa"
+                        error={Boolean(errors?.etapa)}
+                        helperText={errors?.etapa}
+                    >
+                        <MenuItem value="" disabled>
+                            Seleccione una etapa
+                        </MenuItem>
+                        <MenuItem value="1">Primer Etapa</MenuItem>
+                        <MenuItem value="2">Segunda Etapa</MenuItem>
+                        <MenuItem value="3">Tercera Etapa</MenuItem>
+                        <MenuItem value="4">Cuarta Etapa</MenuItem>
+                    </TextField>
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        id="nota"
+                        name="nota"
+                        value={nota}
+                        type="number"
+                        onChange={handleInputChange}
+                        InputLabelProps={{ shrink: true, required: true}}
+                        InputProps={{ 
+                            inputProps: {
+                                min: 1, max: 10, step: 1
+                            }
+                        }}
+                        margin="normal"
+                        label="Nota"
+                        error={Boolean(errors?.nota)}
+                        helperText={errors?.nota}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        id="descripcion"
+                        name="descripcion"
+                        value={ descripcion }
+                        onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        margin="normal"
+                        label="Descripcion"
+                        error={Boolean(errors?.descripcion)}
+                        helperText={errors?.descripcion}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        id="alumno_id"
+                        name="alumno_id"
+                        value={ alumno_id }
+                        onChange={handleInputChange}
+                        InputLabelProps={{ shrink: true, required: true }}
+                        select
+                        margin="normal"
+                        label="Alumno"
+                        error={Boolean(errors?.alumno_id)}
+                        helperText={errors?.alumno_id}
+                    >
+                        <MenuItem value="" disabled>
+                            Seleccione un alumno
+                        </MenuItem>
+                        { alumnosList.map((a) => (
+                            <MenuItem key={a.documento} value={ a.documento }>
+                                { `${ a.nombre } ${ a.apellido }` }
+                            </MenuItem>
+                        )) }
+                    </TextField>
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        id="docente_id"
+                        name="docente_id"
+                        value={ docente_id }
+                        onChange={handleInputChange}
+                        InputLabelProps={{ shrink: true, required: true }}
+                        select
+                        margin="normal"
+                        label="Docente"
+                        error={Boolean(errors?.docente_id)}
+                        helperText={errors?.docente_id}
+                    >
+                        <MenuItem value="" disabled>
+                            Seleccione un docente
+                        </MenuItem>
+                        { docentesList.map((d) => (
+                            <MenuItem key={d.documento} value={ d.documento }>
+                                { `${ d.nombre } ${ d.apellido }` }
+                            </MenuItem>
+                        )) }
+                    </TextField>
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        id="materia_id"
+                        name="materia_id"
+                        value={ materia_id }
+                        onChange={handleInputChange}
+                        InputLabelProps={{ shrink: true, required: true }}
+                        select
+                        margin="normal"
+                        label="Materia"
+                        error={Boolean(errors?.materia_id)}
+                        helperText={errors?.materia_id}
+                    >
+                        <MenuItem value="" disabled>
+                            Seleccione un docente
+                        </MenuItem>
+                        { materiasList.map((m) => (
+                            <MenuItem key={m.id} value={ m.id }>
+                                { `${ m.descripcion }` }
+                            </MenuItem>
+                        )) }
+                    </TextField>
+                </Grid>
+                <Grid item xs={12}>
+                    <Button
+                        fullWidth
+                        onClick={
+                            () => handleEditCalificacion(formValues)
+                        }
+                        variant="contained"
+                    >
+                        Editar
+                    </Button>
+                </Grid>
+                <Grid item xs={12}>
+                    <Button
+                        fullWidth
+                        onClick={ handleBack }
+                        variant="outlined"
+                    >
+                        Volver
+                    </Button>
+                </Grid>
+            </Grid>
+        </Paper>
     )
 }

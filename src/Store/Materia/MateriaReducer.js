@@ -10,10 +10,10 @@ export const MateriaReducer = ( state = initialState, actions ) => {
         case types.materias + types.getAll:
             return {
                 ...state,
-                materias: [ { ...actions.payload } ]
+                materias: [ ...actions.payload ]
             };
         
-        case types.materias + types.getOne:
+        case types.materias + types.active:
             return {
                 ...state,
                 active: actions.payload
@@ -35,8 +35,8 @@ export const MateriaReducer = ( state = initialState, actions ) => {
             return {
                 ...state,
                 materias: state.materias.map(
-                    m => m.id === actions.payload.materia.id
-                    ? actions.payload.materia
+                    m => m.id === actions.payload.id
+                    ? actions.payload
                     : m
                 )
             };

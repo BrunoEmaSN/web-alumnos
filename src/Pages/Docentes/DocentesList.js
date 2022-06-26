@@ -1,35 +1,45 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { activeDocente, startDeletingDocente } from '../../Store/Docente/Actions/Docente';
-import { docenteModel } from '../../Utils/docenteModel';
+import React, { useContext } from 'react';
+import { Box, Button, Stack, Typography } from '@mui/material';
+import { DocentesContext } from '../../Context/BuildContext';
+import { DocentesTable } from './DocentesTable';
+import { ViewGeneric } from '../../Components/View/ViewGeneric';
 
 export const DocentesList = () => {
-    const dispatch = useDispatch();
+    const {
+        handleCreate,
+		isOpenModalView,
+		closeModalView,
+		data
+    } = useContext(DocentesContext);
 
-    const { docentes } = useSelector( state => state.docente );
-
-    const handleCreate = () => {
-        dispatch( activeDocente( docenteModel ) );
-    }
-
-    const handleEdit = ( d ) => {
-        dispatch( activeDocente( d ) );
-    }
-
-    const handleDelete = ( documento ) => {
-        dispatch( startDeletingDocente( documento ) );
-    }
     return (
-        <div>
-            <h1>Docente List</h1>
-            <button onClick={ handleCreate }>Save</button>
-            {
-                docentes.map( d => <div key={ d.documento }>
-                    { `${ d.nombre } ${ d.apellido }` }
-                    <button onClick={  () => { handleEdit( d ) }  }>Edit</button>
-                    <button onClick={  () => { handleDelete( d.documento ) }  }>Delete</button>
-                </div>)
+        <Box>
+			<Stack direction="row" spacing={2} margin={1}>
+				<Typography
+					variant="h3"
+					component="div"
+					gutterBottom
+				>
+					Docentes
+				</Typography>
+				<Button
+					onClick={handleCreate}
+					variant="outlined"
+					sx={{ padding: '0 2%', height: 50 }}
+				>
+					Crear Nuevo
+				</Button>
+			</Stack>
+			<DocentesTable />
+			{
+                isOpenModalView && (
+					<ViewGeneric
+						data={data}
+						isOpen={isOpenModalView}
+						handleClose={closeModalView}
+					/>
+				)
             }
-        </div>
+		</Box>
     );
 };

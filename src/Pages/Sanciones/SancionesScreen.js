@@ -1,54 +1,55 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { useModal } from '../../Hooks/useModal';
+import React, { useContext } from 'react';
 import { SancionModal } from './SancionesModal';
-import { activeSancion, getSanciones, startDeletingSancion } from '../../Store/Sancion/Actions/Sancion';
-import { Sancion1 } from '../../Utils/sancionModel';
+import { SancionesContext } from '../../Context/BuildContext';
+import { SancionesState } from '../../Context/SancionesState';
+import { Box, Stack, Typography } from '@mui/material';
+import { SancionesTable } from './SancionesTable';
+import { ViewGeneric } from '../../Components/View/ViewGeneric';
 
-const actions = {
-    create: 'Create',
-    edit: 'Edit'
-};
-
-export const SancionesScreen = () => {
-    const dispatch = useDispatch();
-
-    const { sanciones } = useSelector( state => state.sancion );
-    const [ isOpenModal, openModal, closeModal ] = useModal( false );
-    const [ action, setAction ] = useState('');
-
-    const handleUpdate = ( a ) => {
-        setAction( actions.edit );
-        dispatch( activeSancion( a ) );
-        openModal();
-    }
-
-    const handleDelete = ( id ) => {
-        dispatch( startDeletingSancion( id ) );
-    }
-
-    useEffect(() => {
-        dispatch( getSanciones( Sancion1 ) );
-    }, [dispatch]);
+const Sanciones = () => {
+    const {
+        isOpenModal,
+        closeModal,
+        isOpenModalView,
+		closeModalView,
+		data
+    } = useContext(SancionesContext);
     
     return (
-        <div>
-            <h1>sancionesList</h1>
-            {
-                sanciones.map( s => <div key={ s.id }>
-                    { `${ s.id } ${ s.descripcion } : ${ s.fecha }` }
-                    <button onClick={  () => { handleUpdate( s ) }  }>Edit</button>
-                    <button onClick={  () => { handleDelete( s.id ) }  }>Delete</button>
-                </div>)
-            }
+        <Box>
+			<Stack direction="row" spacing={2} margin={1}>
+                <Typography
+                    variant="h3"
+                    component="div"
+                    gutterBottom
+                >
+                    Sanciones
+                </Typography>
+            </Stack>
+            <SancionesTable />
             {
                 isOpenModal && <SancionModal
                     isOpenModal={ isOpenModal }
                     closeModal={ closeModal }
-                    action={ action }
                 />
             }
-        </div>
+            {
+                isOpenModalView && (
+					<ViewGeneric
+						data={data}
+						isOpen={isOpenModalView}
+						handleClose={closeModalView}
+					/>
+				)
+            }
+        </Box>
     )
 };
+
+export const SancionesScreen = () => {
+    return (
+        <SancionesState>
+            <Sanciones />
+        </SancionesState>
+    );
+}

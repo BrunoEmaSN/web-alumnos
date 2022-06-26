@@ -1,14 +1,35 @@
-/* eslint-disable no-useless-catch */
+import {
+    tutoresAdd,
+    tutoresDelete,
+    tutoresGetAll,
+    tutoresGetOneWithPareja,
+    tutoresUpdate
+} from "../../../Services/restCallTutores";
 import { types } from "../../../Types";
+import { tutorFormatter } from "../../../Utils/Model/tutorModel";
 
-export const startNewTutor = ( tutor ) => {
+export const startLoadingTutores = () => {
     return async ( dispatch ) => {
-        dispatch( addNewTutor( tutor ) );
+        const tutores = await tutoresGetAll();
+        dispatch( loadingTutores( tutores ) );
     };
 };
 
+export const loadingTutores = ( tutores ) => ({
+    type: types.tutores + types.getAll,
+    payload: tutores
+});
+
+export const startSetActive = ( documento ) => {
+    return async ( dispatch ) => {
+        const datosTutor = await tutoresGetOneWithPareja( documento );
+        const tutor = tutorFormatter( datosTutor );
+        dispatch( activeTutor( tutor ) );
+    }
+}
+
 export const activeTutor = ( tutor ) => ({
-    type: types.tutores + types.getOne,
+    type: types.tutores + types.active,
     payload: tutor
 });
 
@@ -16,51 +37,50 @@ export const cleanActiveTutor = () => ({
     type: types.tutores + types.cleanActive
 });
 
+export const startNewTutor = ( tutor ) => {
+    return async ( dispatch ) => {
+        await tutoresAdd( tutor );
+        dispatch( addNewTutor( tutor ) );
+    };
+};
+
 export const addNewTutor = ( tutor ) => ({
     type: types.tutores + types.add,
     payload: tutor
 });
 
-export const startLoadingTutores = () => {
-    /*return async ( dispatch ) => {
-        //dispatch( getAlumnos(  ) );
-    };*/
-};
-
-export const getTutores = ( tutores ) => ({
-    type: types.tutores + types.getAll,
-    payload: tutores
-});
-
 export const startUpdateTutor = ( tutor ) => {
     return async ( dispatch ) => {
-        try{
-            if( !tutor.tienePareja ){
-                tutor.pareja = {};
-            }
-            dispatch( refreshTutor( tutor ) );
+        const { documento } = tutor;
+        await tutoresUpdate( documento, tutor );
+        if( !tutor.tienePareja ){
+            tutor.pareja = {
+                nombrePareja: '',
+                apellidoPareja: '',
+                dniPareja: '',
+                telefonoFijoPareja: '',
+                telefonoMovilPareja: ''
+            };
         }
-        catch( e ) {
-            throw e;
-        }
+        const datosTutor = {
+            ...tutor,
+            tipo_documento: tutor.tipoDocumento,
+            nivel_academico: tutor.nivelAcademico,
+            situacion_academica: tutor.situacionAcademica,
+    }
+        dispatch( refreshTutor( datosTutor ) );
     };
 };
 
 export const refreshTutor = ( tutor ) => ({
     type: types.tutores + types.update,
-    payload: {
-        tutor
-    }
+    payload: tutor
 });
 
 export const startDeletingTutor = ( documento ) => {
     return async ( dispatch ) => {
-        try{
-            dispatch( deleteTutor( documento ) );
-        }
-        catch( e ){
-            throw e;
-        }
+        await tutoresDelete( documento );
+        dispatch( deleteTutor( documento ) );
     };
 };
 

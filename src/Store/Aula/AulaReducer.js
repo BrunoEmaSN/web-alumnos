@@ -10,10 +10,10 @@ export const AulaReducer = ( state = initialState, actions ) => {
         case types.aulas + types.getAll:
             return {
                 ...state,
-                aulas: [ { ...actions.payload } ]
+                aulas: [ ...actions.payload ]
             };
         
-        case types.aulas + types.getOne:
+        case types.aulas + types.active:
             return {
                 ...state,
                 active: actions.payload
@@ -35,8 +35,8 @@ export const AulaReducer = ( state = initialState, actions ) => {
             return {
                 ...state,
                 aulas: state.aulas.map(
-                    a => a.id === actions.payload.aula.id
-                    ? actions.payload.aula
+                    a => a.id === actions.payload.id
+                    ? actions.payload
                     : a
                 )
             };

@@ -1,51 +1,45 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { activeClase, startDeletingClase } from '../../Store/Clase/Actions/Clase';
-import { claseModel } from '../../Utils/claseModel';
+import { Box, Button, Stack, Typography } from '@mui/material';
+import React, { useContext } from 'react';
+import { ViewGeneric } from '../../Components/View/ViewGeneric';
+import { ClasesContext } from '../../Context/BuildContext';
+import { ClasesTable } from './ClasesTable';
 
 export const ClasesList = () => {
-	const dispatch = useDispatch();
-
-	const { clases } = useSelector((state) => state.clase);
-
-	const handleCreate = () => {
-		const lastIndex = clases.length - 1;
-        const lastId = clases[lastIndex].id;
-        claseModel.id = lastId + 1;
-		dispatch(activeClase(claseModel));
-	};
-
-	const handleEdit = (c) => {
-		dispatch(activeClase(c));
-	};
-
-	const handleDelete = (id) => {
-		dispatch(startDeletingClase(id));
-	};
+	const {
+		handleCreate,
+		isOpenModalView,
+		closeModalView,
+		data
+	} = useContext(ClasesContext);
 
 	return (
-		<div>
-			<h1>clasesList</h1>
-			<button onClick={handleCreate}>Save</button>
-			{clases.map((c) => (
-				<div key={c.id}>
-					{`${c.id} ${c.materia.descripcion} ${c.dias} ${c.horarioInicio} ${c.horarioFin}`}
-					<button
-						onClick={() => {
-							handleEdit(c);
-						}}
-					>
-						Edit
-					</button>
-					<button
-						onClick={() => {
-							handleDelete(c.id);
-						}}
-					>
-						Delete
-					</button>
-				</div>
-			))}
-		</div>
+		<Box>
+			<Stack direction="row" spacing={2} margin={1}>
+				<Typography
+					variant="h3"
+					component="div"
+					gutterBottom
+				>
+					Clases
+				</Typography>
+				<Button
+					onClick={handleCreate}
+					sx={{ padding: '0 2%', height: 50 }}
+					variant="outlined"
+				>
+					Crear Nuevo
+				</Button>
+			</Stack>
+			<ClasesTable />
+			{
+                isOpenModalView && (
+					<ViewGeneric
+						data={data}
+						isOpen={isOpenModalView}
+						handleClose={closeModalView}
+					/>
+				)
+            }
+		</Box>
 	);
 };

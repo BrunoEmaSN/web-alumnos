@@ -1,59 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAulas } from '../../Store/Aula/Actions/Aula';
-import { Aula1 } from '../../Utils/aulaModel';
-
-import { activeAula, startDeletingAula } from '../../Store/Aula/Actions/Aula';
-import { aulaModel } from '../../Utils/aulaModel';
-import { useModal } from '../../Hooks/useModal';
+import { Box, Button, Stack, Typography } from '@mui/material';
+import React, { useContext } from 'react';
+import { ViewGeneric } from '../../Components/View/ViewGeneric';
+import { AulasState } from '../../Context/AulasState';
+import { AulasContext } from '../../Context/BuildContext';
 import { AulasModal } from './AulasModal';
+import { AulasTable } from './AulasTable';
 
-const actions = {
-    create: 'Create',
-    edit: 'Edit'
-};
+const Aulas = () => {
+    const {
+        isOpenModal,
+        closeModal,
+        action,
+        handleCreate,
+        isOpenModalView,
+		closeModalView,
+		data
+    } = useContext(AulasContext);
 
-export const AulasScreen = () => {
-    const dispatch = useDispatch();
-
-    const { aulas } = useSelector( state => state.aula );
-    const [ isOpenModal, openModal, closeModal ] = useModal( false );
-    const [ action, setAction ] = useState('');
-
-    const handleCreate = () => {
-        const lastIndex = aulas.length - 1;
-        const lastId = aulas[lastIndex].id;
-        aulaModel.id = lastId + 1;
-        setAction( actions.create );
-        dispatch( activeAula( aulaModel ) );
-        openModal();
-    }
-
-    const handleUpdate = ( a ) => {
-        setAction( actions.edit );
-        dispatch( activeAula( a ) );
-        openModal();
-    }
-
-    const handleDelete = ( id ) => {
-        dispatch( startDeletingAula( id ) );
-    }
-
-    useEffect(() => {
-        dispatch( getAulas( Aula1 ) );
-    }, [dispatch]);
-    
     return (
-        <div>
-            <h1>AulasList</h1>
-            <button onClick={ handleCreate }>Save</button>
-            {
-                aulas.map( a => <div key={ a.id }>
-                    { `${ a.id } ${ a.descripcion }` }
-                    <button onClick={  () => { handleUpdate( a ) }  }>Edit</button>
-                    <button onClick={  () => { handleDelete( a.id ) }  }>Delete</button>
-                </div>)
-            }
+        <Box>
+			<Stack direction="row" spacing={2} margin={1}>
+                <Typography
+                    variant="h3"
+                    component="div"
+                    gutterBottom
+                >
+                    Aulas
+                </Typography>
+                <Button
+                    onClick={handleCreate}
+                    sx={{ padding: '0 2%', height: 50 }}
+                    variant="outlined"
+                >
+                    Crear Nuevo
+                </Button>
+            </Stack>
+            <AulasTable />
             {
                 isOpenModal && <AulasModal
                     isOpenModal={ isOpenModal }
@@ -61,6 +43,23 @@ export const AulasScreen = () => {
                     action={ action }
                 />
             }
-        </div>
+            {
+                isOpenModalView && (
+					<ViewGeneric
+						data={data}
+						isOpen={isOpenModalView}
+						handleClose={closeModalView}
+					/>
+				)
+            }
+        </Box>
     )
 };
+
+export const AulasScreen = () => {
+    return (
+        <AulasState>
+            <Aulas/>
+        </AulasState>
+    );
+}

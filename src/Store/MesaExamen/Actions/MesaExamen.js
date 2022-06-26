@@ -1,14 +1,29 @@
 /* eslint-disable no-useless-catch */
+import { mesasExamenesAdd, mesasExamenesDelete, mesasExamenesGetAll, mesasExamenesGetOne, mesasExamenesUpdate } from "../../../Services/restCallMesasExamenes";
 import { types } from "../../../Types";
 
-export const startNewMesaExamen = ( mesaExamen ) => {
+export const startLoadingMesasExamenes = () => {
     return async ( dispatch ) => {
-        dispatch( addNewMesaExamen( mesaExamen ) );
+        const mesasExamenes = await mesasExamenesGetAll();
+        dispatch( loadingMesasExamenes( mesasExamenes ) );
     };
 };
 
+export const loadingMesasExamenes = ( mesasExamenes ) => ({
+    type: types.mesasExamenes + types.getAll,
+    payload: mesasExamenes
+});
+
+export const startSetActive = ( maestro ) => {
+    return async ( dispatch ) => {
+        const novedad = await mesasExamenesGetOne( maestro.id );
+        const mesaExamen = { maestro, novedad };
+        dispatch( activeMesaExamen( mesaExamen ) );
+    }
+}
+
 export const activeMesaExamen = ( mesaExamen ) => ({
-    type: types.mesasExamenes + types.getOne,
+    type: types.mesasExamenes + types.active,
     payload: mesaExamen
 });
 
@@ -16,48 +31,35 @@ export const cleanActiveMesaExamen = () => ({
     type: types.mesasExamenes + types.cleanActive
 });
 
+export const startNewMesaExamen = ( mesaExamen ) => {
+    return async ( dispatch ) => {
+        const { last_id } = await mesasExamenesAdd( mesaExamen );
+        dispatch( addNewMesaExamen( { id: last_id, ...mesaExamen.maestro } ) );
+    };
+};
+
 export const addNewMesaExamen = ( mesaExamen ) => ({
     type: types.mesasExamenes + types.add,
     payload: mesaExamen
 });
 
-export const startLoadingMesasExamenes = () => {
-    /*return async ( dispatch ) => {
-        //dispatch( getAlumnos(  ) );
-    };*/
-};
-
-export const getMesasExamenes = ( mesasExamenes ) => ({
-    type: types.mesasExamenes + types.getAll,
-    payload: mesasExamenes
-});
-
 export const startUpdateMesaExamen = ( mesaExamen ) => {
     return async ( dispatch ) => {
-        try{
-            dispatch( refreshMesaExamen( mesaExamen ) );
-        }
-        catch( e ) {
-            throw e;
-        }
+        const { id } = mesaExamen.maestro;
+        await mesasExamenesUpdate( id, mesaExamen );
+        dispatch( refreshMesaExamen( mesaExamen.maestro ) );
     };
 };
 
 export const refreshMesaExamen = ( mesaExamen ) => ({
     type: types.mesasExamenes + types.update,
-    payload: {
-        mesaExamen
-    }
+    payload: mesaExamen
 });
 
 export const startDeletingMesaExamen = ( id ) => {
     return async ( dispatch ) => {
-        try{
-            dispatch( deleteMesaExamen( id ) );
-        }
-        catch( e ){
-            throw e;
-        }
+        await mesasExamenesDelete( id );
+        dispatch( deleteMesaExamen( id ) );
     };
 };
 

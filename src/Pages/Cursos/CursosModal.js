@@ -1,98 +1,198 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import Modal from 'react-modal/lib/components/Modal';
-import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from '../../Hooks/useForm';
-import { cleanActiveCurso, startNewCurso, startUpdateCurso } from '../../Store/Curso/Actions/Curso';
-import { Aula2 } from '../../Utils/aulaModel';
-
-const customStyles = {
-    content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
-    },
-};
-
-const actions = {
-    create: 'Create',
-    edit: 'Edit'
-};
+import { aulasGetAll } from '../../Services/restCallAulas';
+import { CursosContext } from '../../Context/BuildContext';
+import { customStyles } from '../../Utils/modalStyles';
+import { Button, Grid, MenuItem, TextField, Typography } from '@mui/material';
 
 export const CursoModal = ({ isOpenModal, closeModal, action }) => {
-    const dispatch = useDispatch();
-
-    const { active } = useSelector( state => state.curso );
+    const {
+        active,
+        actions,
+        handleAddCurso,
+        handleEditCurso,
+        errors,
+        resetErrors
+    } = useContext(CursosContext);
 
     const [ formValues, handleInputChange ] = useForm( active );
 
     const {
-        descripcion,
+        nivel,
+        turno,
+        division,
+        gradoAno,
         aula
     } = formValues;
 
-    const handleAddAula = () => {
-        dispatch( startNewCurso( formValues ) );
-        dispatch( cleanActiveCurso() );
-        closeModal()
+    const [ aulas, setAulas ] = useState([]);
+
+    const handleAulasGetAll = async () => {
+        setAulas( await aulasGetAll() );
     }
 
-    const handleEditAula = () => {
-        dispatch( startUpdateCurso( formValues ) );
-        dispatch( cleanActiveCurso() );
-        closeModal();
-    }
+    useEffect(() => {
+        handleAulasGetAll();
+    }, []);
+    
     
     return (
-        <div>
-            <Modal
-                isOpen={ isOpenModal }
-                style={ customStyles }
-                onRequestClose={ closeModal }
-                ariaHideApp={false}
-            >
-                <h2>{ action === actions.create ? 'Crear Nuevo Curso' : 'Editar Curso' }</h2>
-                
-                <div>
-                    <label htmlFor="descripcion">Descripcion</label>
-                    <input
-                        type="text"
-                        name="descripcion"
-                        value={ descripcion }
+        <Modal
+            isOpen={ isOpenModal }
+            style={ customStyles }
+            onRequestClose={ closeModal }
+            ariaHideApp={false}
+        >
+            <Typography variant="h6" gutterBottom component="div">
+                { action === actions.create ? 'Crear Nuevo Curso' : 'Editar Curso' }
+            </Typography>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        id="nivel"
+                        name="nivel"
+                        value={ nivel }
                         onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        select
+                        margin="normal"
+                        label="Nivel"
+                        error={Boolean(errors?.nivel)}
+                        helperText={errors?.nivel}
+                        size="small"
+                    >
+                        <MenuItem value="" disabled>
+                            Seleccione un nivel
+                        </MenuItem>
+                        <MenuItem value="P">Primaria</MenuItem>
+                        <MenuItem value="S">Secundaria</MenuItem>
+                        <MenuItem value="T">Terciaria</MenuItem>
+                        <MenuItem value="U">Universidad</MenuItem>
+                    </TextField>
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        id="turno"
+                        name="turno"
+                        value={ turno }
+                        onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        select
+                        margin="normal"
+                        label="Turno"
+                        error={Boolean(errors?.turno)}
+                        helperText={errors?.turno}
+                        size="small"
+                    >
+                        <MenuItem value="" disabled>
+                            Seleccione un turno
+                        </MenuItem>
+                        <MenuItem value="Mañana">Mañana</MenuItem>
+                        <MenuItem value="Tarde">Tarde</MenuItem>
+                        <MenuItem value="Noche">Noche</MenuItem>
+                    </TextField>
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        id="division"
+                        name="division"
+                        value={ division }
+                        onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true}}
+                        margin="normal"
+                        label="Division"
+                        error={Boolean(errors?.division)}
+                        helperText={errors?.division}
+                        size="small"
                     />
-                </div>
-                <div>
-                    <label htmlFor="aulas">Aulas</label>
-                    <select
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        id="gradoAno"
+                        name="gradoAno"
+                        value={ gradoAno }
+                        type="number"
+                        onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true}}
+                        margin="normal"
+                        label="Grado/Año"
+                        error={Boolean(errors?.gradoAno)}
+                        helperText={errors?.gradoAno}
+                        size="small"
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
                         id="aulas"
-                        name="aulas"
+                        name="aula"
                         value={ aula }
                         onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        select
+                        margin="normal"
+                        label="Aula"
+                        error={Boolean(errors?.aula)}
+                        helperText={errors?.aula}
+                        size="small"
                     >
-                        <option value="" disabled>selecione un aula</option>
-                        { Aula2.map((a) => (
-                            <option key={ a.id } value={ a }>
+                        <MenuItem value="" disabled>
+                            Seleccione un aula
+                        </MenuItem>
+                        { aulas.map((a) => (
+                            <MenuItem key={ a.id } value={ a.id }>
                                 { a.descripcion }
-                            </option>
-                        )) }                        
-                    </select>
-                </div>
-                <div>
-                    <button onClick={ action === actions.create ? handleAddAula : handleEditAula } >
-                        Save
-                    </button>
-                </div>
-                <div>
-                    <button onClick={ closeModal }>
-                        Cerrar
-                    </button>
-                </div>
-            </Modal>
-        </div>
+                            </MenuItem>
+                        )) }  
+                    </TextField>
+                </Grid>
+                <Grid item xs={12}>
+                    {
+                        action === actions.create
+                        ? (
+                            <Button
+                                fullWidth
+                                onClick={
+                                    () => handleAddCurso(formValues)
+                                }
+                                variant="contained"
+                            >
+                                Guardar
+                            </Button>
+                        )
+                        :  (
+                            <Button
+                                fullWidth
+                                onClick={
+                                    () => handleEditCurso(formValues)
+                                }
+                                variant="contained"
+                            >
+                                Editar
+                            </Button>
+                        )
+                    }
+                </Grid>
+                <Grid item xs={12}>
+                    <Button
+                        fullWidth
+                        onClick={ () => {
+                            resetErrors();
+                            closeModal();
+                        } }
+                        variant="outlined"
+                    >
+                       Cerrar
+                    </Button>
+                </Grid>
+            </Grid>
+        </Modal>
     );
 };
 

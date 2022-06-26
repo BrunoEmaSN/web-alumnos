@@ -1,35 +1,45 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { activeTutor, startDeletingTutor } from '../../Store/Tutor/Actions/Tutor';
-import { tutorModel } from '../../Utils/tutorModel';
+import { Box, Button, Stack, Typography } from '@mui/material';
+import React, { useContext } from 'react';
+import { ViewGeneric } from '../../Components/View/ViewGeneric';
+import { TutoresContext } from '../../Context/BuildContext';
+import { TutoresTable } from './TutoresTable';
 
 export const TutoresList = () => {
-    const dispatch = useDispatch();
+    const {
+        handleCreate,
+		isOpenModalView,
+		closeModalView,
+		data
+    } = useContext(TutoresContext);
 
-    const { tutores } = useSelector( state => state.tutor );
-
-    const handleCreate = () => {
-        dispatch( activeTutor( tutorModel ) );
-    }
-
-    const handleEdit = ( t ) => {
-        dispatch( activeTutor( t ) );
-    }
-
-    const handleDelete = ( documento ) => {
-        dispatch( startDeletingTutor( documento ) );
-    }
     return (
-        <div>
-            <h1>Tutor List</h1>
-            <button onClick={ handleCreate }>Save</button>
-            {
-                tutores.map( t => <div key={ t.documento }>
-                    { `${ t.nombre } ${ t.apellido }` }
-                    <button onClick={  () => { handleEdit( t ) }  }>Edit</button>
-                    <button onClick={  () => { handleDelete( t.documento ) }  }>Delete</button>
-                </div>)
+        <Box>
+			<Stack direction="row" spacing={2} margin={1}>
+				<Typography
+					variant="h3"
+					component="div"
+					gutterBottom
+				>
+					Tutores
+				</Typography>
+				<Button
+					onClick={handleCreate}
+					sx={{ padding: '0 2%', height: 50 }}
+					variant="outlined"
+				>
+					Crear Nuevo
+				</Button>
+			</Stack>
+            <TutoresTable />
+			{
+                isOpenModalView && (
+					<ViewGeneric
+						data={data}
+						isOpen={isOpenModalView}
+						handleClose={closeModalView}
+					/>
+				)
             }
-        </div>
+		</Box>
     );
 };

@@ -10,10 +10,10 @@ export const SancionReducer = ( state = initialState, actions ) => {
         case types.sanciones + types.getAll:
             return {
                 ...state,
-                sanciones: [ { ...actions.payload } ]
+                sanciones: [ ...actions.payload ]
             };
         
-        case types.sanciones + types.getOne:
+        case types.sanciones + types.active:
             return {
                 ...state,
                 active: actions.payload
@@ -24,27 +24,15 @@ export const SancionReducer = ( state = initialState, actions ) => {
                 ...state,
                 active: initialState.active
             };
-
-        case types.sanciones + types.add:
-            return {
-                ...state,
-                sanciones: [ ...state.sanciones, actions.payload ]
-            };
         
         case types.sanciones + types.update:
             return {
                 ...state,
                 sanciones: state.sanciones.map(
-                    s => s.documento === actions.payload.sancion.documento
-                    ? actions.payload.sancion
+                    s => s.id === actions.payload.id
+                    ? actions.payload
                     : s
                 )
-            };
-        
-        case types.sanciones + types.remove:
-            return {
-                ...state,
-                sanciones: state.sanciones.filter( s => s.id !== actions.payload )
             };
 
         default:

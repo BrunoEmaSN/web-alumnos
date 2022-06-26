@@ -1,7 +1,7 @@
-/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Switch from '@mui/material/Switch';
+import { Grid, Paper, TextField, Typography } from '@mui/material';
 
 export const DatosPareja = ({
     tienePareja,
@@ -29,72 +29,110 @@ export const DatosPareja = ({
         setchecked( !checked );
     }
 
+    const handleParejaChange = ({ target }) => {
+        handleInputChange({
+            target: {
+                name: 'pareja',
+                value: {
+                    ...pareja,
+                    [target.name]: target.value
+                }
+            } 
+        });
+    }
+
     return (
         <div>
-            <fieldset>
-                <legend>Datos Pareja</legend>
+            <Paper sx={{ width: '60%', margin: '0 20% 2%', padding: '1%' }}>
+                <Typography variant="h4" gutterBottom component="div">
+                    Datos Pareja
+                </Typography>
                 <div>
-                    <Switch checked={ checked } onChange={ handleChange } />
+                    <Switch checked={ checked } onChange={ handleChange }/>
                     <label htmlFor="tienePareja">tiene pareja?</label>
                 </div>
-                <div style={ checked ? { display: 'block' } : { display: 'none' }}>
-                    <div>
-                        <label htmlFor="nombrePareja">Nombre Pareja</label>
-                        <input
-                            type="text"
+                <Grid container spacing={2} sx={ checked ? { display: 'flex' } : { display: 'none' }}>
+                    <Grid item xs={6}>
+                        <TextField
+                            //error
+                            fullWidth
                             id="nombrePareja"
                             name="nombrePareja"
                             value={ nombrePareja }
-                            onChange={ handleInputChange }
+                            onChange={ handleParejaChange }
+                            InputLabelProps={{ shrink: true, required: true }}
+                            margin="normal"
+                            label="Nombre Pareja"
+                            //helperText="Incorrect entry."
                         />
-                    </div>
-                    <div>
-                        <label htmlFor="apellidoPareja">Apellido Pareja</label>
-                        <input
-                            type="text"
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            //error
+                            fullWidth
                             id="apellidoPareja"
                             name="apellidoPareja"
                             value={ apellidoPareja }
-                            onChange={ handleInputChange }
+                            onChange={ handleParejaChange }
+                            InputLabelProps={{ shrink: true, required: true }}
+                            margin="normal"
+                            label="Apellido Pareja"
+                            //helperText="Incorrect entry."
                         />
-                    </div>
-                    <div>
-                        <label htmlFor="dniPareja">DNI Pareja</label>
-                        <input
+                    </Grid>
+                    <Grid item xs={4}>
+                        <TextField
+                            //error
+                            fullWidth
                             type="number"
                             id="dniPareja"
                             name="dniPareja"
                             value={ dniPareja }
-                            onChange={ handleInputChange }
+                            onChange={ handleParejaChange }
+                            InputLabelProps={{ shrink: true, required: true }}
+                            margin="normal"
+                            label="DNI Pareja"
+                            //helperText="Incorrect entry."
                         />
-                    </div>
-                    <div>
-                        <label htmlFor="telefonoFijoPareja">Telefono Fijo Pareja</label>
-                        <input
+                    </Grid>
+                    <Grid item xs={4}>
+                        <TextField
+                            //error
+                            fullWidth
                             type="number"
+                            id="telefonoFijoPareja"
                             name="telefonoFijoPareja"
                             value={ telefonoFijoPareja }
-                            onChange={ handleInputChange }
+                            onChange={ handleParejaChange }
+                            InputLabelProps={{ shrink: true, required: true }}
+                            margin="normal"
+                            label="Telefono Fijo Pareja"
+                            //helperText="Incorrect entry."
                         />
-                    </div>
-                    <div>
-                        <label htmlFor="telefonoMovilPareja">Telefono Movil Pareja</label>
-                        <input
+                    </Grid>
+                    <Grid item xs={4}>
+                        <TextField
+                            //error
+                            fullWidth
                             type="number"
                             id="telefonoMovilPareja"
                             name="telefonoMovilPareja"
                             value={ telefonoMovilPareja }
-                            onChange={ handleInputChange }
+                            onChange={ handleParejaChange }
+                            InputLabelProps={{ shrink: true, required: true }}
+                            margin="normal"
+                            label="Telefono Movil Pareja"
+                            //helperText="Incorrect entry."
                         />
-                    </div>
-                </div>
-            </fieldset>
+                    </Grid>
+                </Grid>
+            </Paper>
         </div>
     );
 };
 
-DatosPareja.propType = {
+DatosPareja.propTypes = {
     tienePareja: PropTypes.bool.isRequired,
-    pareja: PropTypes.object.isRequired,
+    pareja: PropTypes.any.isRequired,
     handleInputChange: PropTypes.func.isRequired,
 }

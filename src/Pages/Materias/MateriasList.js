@@ -1,38 +1,45 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { activeMateria, startDeletingMateria } from '../../Store/Materia/Actions/Materia';
-import { materiaModel } from '../../Utils/materiaModel';
+import React, { useContext } from 'react';
+import { Box, Button, Stack, Typography } from '@mui/material';
+import { MateriasContext } from '../../Context/BuildContext';
+import { MateriasTable } from './MateriasTable';
+import { ViewGeneric } from '../../Components/View/ViewGeneric';
+
 export const MateriasList = () => {
-    const dispatch = useDispatch();
-
-    const { materias } = useSelector( state => state.materia );
-
-    const handleCreate = () => {
-        const lastIndex = materias.length - 1;
-        const lastId = materias[lastIndex].id;
-        materiaModel.id = lastId + 1;
-        dispatch( activeMateria( materiaModel ) );
-    }
-
-    const handleEdit = ( a ) => {
-        dispatch( activeMateria( a ) );
-    }
-
-    const handleDelete = ( id) => {
-        dispatch( startDeletingMateria( id) );
-    }
+    const {
+        handleCreate,
+		isOpenModalView,
+		closeModalView,
+		data
+    } = useContext(MateriasContext);
 
     return (
-        <div>
-            <h1>materiasList</h1>
-            <button onClick={ handleCreate }>Save</button>
-            {
-                materias.map( m => <div key={ m.id}>
-                    { `${ m.id } ${ m.descripcion } ${ m.planEstudio } ${ m.regimen }` }
-                    <button onClick={  () => { handleEdit( m ) }  }>Edit</button>
-                    <button onClick={  () => { handleDelete( m.id) }  }>Delete</button>
-                </div>)
+        <Box>
+			<Stack direction="row" spacing={2} margin={1}>
+				<Typography
+					variant="h3"
+					component="div"
+					gutterBottom
+				>
+					Materias
+				</Typography>
+				<Button
+					onClick={handleCreate}
+					sx={{ padding: '0 2%', height: 50 }}
+					variant="outlined"
+				>
+					Crear Nuevo
+				</Button>
+			</Stack>
+            <MateriasTable />
+			{
+                isOpenModalView && (
+					<ViewGeneric
+						data={data}
+						isOpen={isOpenModalView}
+						handleClose={closeModalView}
+					/>
+				)
             }
-        </div>
+		</Box>
     );
 };

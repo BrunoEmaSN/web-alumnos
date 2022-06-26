@@ -1,37 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-modal/lib/components/Modal';
-import Card from '../Components/Card';
-
-const materias1 = [
-    {
-        id: 1,
-        descripcion: 'matematica'
-    },
-    {
-        id: 2,
-        descripcion: 'lengua'
-    }
-];
-
-const customStyles = {
-    content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
-    },
-};
+import { materiasGetAll } from '../Services/restCallMaterias';
+import { customStyles } from '../Utils/modalStyles';
+import { Button, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material';
+import { Box } from '@mui/system';
+import { CardGeneric } from '../Components/Card/CardGeneric';
 
 export const DatosAlumnoMateria = ({ materias, handleInputChange }) => {
 
-    const [ materiaId, setMateriaId ] = useState(1);
+    const [ materia, setMateria ] = useState('');
 
-    const [ estado, setEstado ] = useState('regular');
+    const [materiasList, setMateriasList] = useState([]);
+
+    const [ estado, setEstado ] = useState('');
 
     const [ modalMateriaIsOpen, setmodalMateriaIsOpen ] = useState(false);
+
+    const handleMateriasGetAll = async () => {
+        setMateriasList( await materiasGetAll() );
+    }
+
+    useEffect(() => {
+        handleMateriasGetAll();
+    }, []);
 
     const openModalMateria = () => {
         setmodalMateriaIsOpen( true );
@@ -42,7 +34,7 @@ export const DatosAlumnoMateria = ({ materias, handleInputChange }) => {
     }
 
     const handleChageMateria = ({ target }) => {
-        setMateriaId( target.value );
+        setMateria( JSON.parse( target.value ) );
     }
 
     const handleEstado = ({ target }) => {
@@ -50,10 +42,8 @@ export const DatosAlumnoMateria = ({ materias, handleInputChange }) => {
     }
 
     const handleAddMateria = () => {
-        const newMateria = materias1.find( m => m.id === parseInt( materiaId ) );
-        const isExist = materias.find( m => m.id === parseInt( materiaId ) );
-        newMateria.estado = estado;
-        setMateriaId('');
+        const isExist = materias.find( m => m.id === parseInt( materia.id ) );
+        setMateria('');
         setEstado('');
 
         if( isExist ){
@@ -64,7 +54,7 @@ export const DatosAlumnoMateria = ({ materias, handleInputChange }) => {
         handleInputChange({
             target: {
                 name: 'materias',
-                value: [ ...materias, { ...newMateria } ]
+                value: [ ...materias, { ...materia, estado } ]
             }
         });
 
@@ -82,14 +72,45 @@ export const DatosAlumnoMateria = ({ materias, handleInputChange }) => {
     }
 
     return (
-        <fieldset>
-            <legend>Materias del Alumno</legend>
-            <div>
-                <button onClick={ openModalMateria }>Agregar Materia</button>
-                <div id="materias" name="materias">
+        <Box>
+            <Paper
+                sx={{
+                    width: '60%',
+                    margin: '0 20% 2%',
+                    padding: '1%'
+                }}
+            >
+                <Box
+                    sx={{
+                        display: 'flex',
+                        '& > :not(style)': {
+                            m: 1,
+                        },
+                    }}
+                >
+                    <Typography variant="h4" gutterBottom component="div">
+                        Materias
+                    </Typography>
+                    <Button onClick={ openModalMateria }>
+                        Agregar Materia
+                    </Button>
+                </Box>
+                <Box
+                    id="materias"
+                    name="materias"
+                    sx={{
+                        display: 'flex',
+                        minHeight: '140px',
+                        border: '1px solid black',
+                        borderRadius: '4px',
+                        '& > :not(style)': {
+                            m: 1,
+                        },
+                    }}
+                >
                     {
                         materias && materias.map( m => 
-                            <Card
+                            <CardGeneric
                                 key={ m.id }
                                 titulo={ m.descripcion }
                                 descripcion={ m.estado }
@@ -98,38 +119,95 @@ export const DatosAlumnoMateria = ({ materias, handleInputChange }) => {
                             />
                         )
                     }
-                </div>
-            </div>
+                </Box>
+            </Paper>
             <Modal
                 isOpen={ modalMateriaIsOpen }
                 style={ customStyles }
                 onRequestClose={ closeModalMateria }
                 ariaHideApp={false}
             >
-                <h2>Materias</h2>
-                <div>
-                    <label htmlFor="materias">Selecione una Materia</label>
-                    <select id="materias" onChange={ handleChageMateria }>
-                        {
-                            materias1.map( m => (
-                                <option key={ m.id } value={ m.id } >{ m.descripcion }</option>
-                            ))
-                        }
-                    </select>
-                </div>
-                <div>
-                    <label htmlFor="estado">Estado</label>
-                    <select id="estado" onChange={ handleEstado }>
-                        <option value="regular">Regular</option>
-                        <option value="libre">Libre</option>
-                        <option value="promocional">Promocional</option>
-                    </select>
-                </div>
-                <div>
-                    <button onClick={ handleAddMateria }>Agregar</button>
-                </div>
+                <Typography variant="h6" gutterBottom component="div">
+                    Materias
+                </Typography>
+                <Grid
+                    container
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                >
+                    <Grid item xs={12}>
+                        <TextField
+                            //error
+                            fullWidth
+                            id="materias"
+                            name="materia"
+                            value={ materia !== '' ? JSON.stringify(materia) : '' }
+                            onChange={ handleChageMateria }
+                            InputLabelProps={{ shrink: true, required: true }}
+                            select
+                            margin="normal"
+                            label="Materia"
+                            //helperText="Please select your currency"
+                            >
+                                <MenuItem value="" disabled>Seleccione una opcion</MenuItem>
+                                {
+                                    materiasList.map( m => (
+                                        <MenuItem
+                                            key={ m.id }
+                                            value={ JSON.stringify( m ) }
+                                        >
+                                            { m.descripcion }
+                                        </MenuItem>
+                                    ))
+                                }
+                        </TextField>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            //error
+                            fullWidth
+                            id="estado"
+                            name="estado"
+                            value={ estado }
+                            onChange={ handleEstado }
+                            InputLabelProps={{ shrink: true, required: true }}
+                            select
+                            margin="normal"
+                            label="Estado"
+                            //helperText="Please select your currency"
+                            >
+                                <MenuItem value="" disabled>
+                                    Seleccione una opcion
+                                </MenuItem>
+                                <MenuItem value="regular">Regular</MenuItem>
+                                <MenuItem value="libre">Libre</MenuItem>
+                                <MenuItem value="promocional">
+                                    Promocional
+                                </MenuItem>
+                        </TextField>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button
+                            fullWidth
+                            onClick={ handleAddMateria }
+                            variant="contained"
+                        >
+                            Agregar
+                        </Button>
+                    </Grid>
+                    <Grid item xs={12} sx={{ marginTop: '2%' }}>
+                        <Button
+                            fullWidth
+                            onClick={ closeModalMateria }
+                            variant="outlined"
+                        >
+                            Close
+                        </Button>
+                    </Grid>
+                </Grid>
             </Modal>
-        </fieldset>
+        </Box>
     );
 };
 

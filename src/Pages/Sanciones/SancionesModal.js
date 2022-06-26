@@ -1,33 +1,24 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import Modal from 'react-modal/lib/components/Modal';
-import { useDispatch, useSelector } from 'react-redux';
+import { alumnosGetAll } from '../../Services/restCallAlumnos';
+import { docentesGetAll } from '../../Services/restCallDocentes';
 import { useForm } from '../../Hooks/useForm';
-import { cleanActiveSancion, startNewSancion, startUpdateSancion } from '../../Store/Sancion/Actions/Sancion';
-import { Alumno2 } from '../../Utils/alumnoModel';
-import { Docente2 } from '../../Utils/docenteModel';
-import { tiposSanciones } from '../../Utils/sancionModel';
+import { customStyles } from '../../Utils/modalStyles';
+import { tiposSanciones } from '../../Utils/Model/sancionModel';
+import { SancionesContext } from '../../Context/BuildContext';
+import { Button, Grid, MenuItem, TextField, Typography } from '@mui/material';
 
-const customStyles = {
-    content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
-    },
-};
+export const SancionModal = ({ isOpenModal, closeModal }) => {
+    const {
+        active,
+        handleEditSancion,
+        errors,
+        resetErrors
+    } = useContext(SancionesContext);
 
-const actions = {
-    create: 'Create',
-    edit: 'Edit'
-};
-
-export const SancionModal = ({ isOpenModal, closeModal, action }) => {
-    const dispatch = useDispatch();
-
-    const { active } = useSelector( state => state.sancion );
+    const [ alumnosList, setAlumnosList ] = useState([]);
+    const [ docentesList, setDocentesList ] = useState([]);
 
     const [ formValues, handleInputChange ] = useForm( active );
 
@@ -39,83 +30,150 @@ export const SancionModal = ({ isOpenModal, closeModal, action }) => {
         fecha
     } = formValues;
 
-    const handleAddAula = () => {
-        dispatch( startNewSancion( formValues ) );
-        dispatch( cleanActiveSancion() );
-        closeModal()
+    const handleListGetAll = async () => {
+        setAlumnosList( await alumnosGetAll() );
+        setDocentesList( await docentesGetAll() );
     }
 
-    const handleEditAula = () => {
-        dispatch( startUpdateSancion( formValues ) );
-        dispatch( cleanActiveSancion() );
-        closeModal();
-    }
+    useEffect(() => {
+        handleListGetAll();
+    }, []);
+
     return (
-        <div>
-            <Modal
-                isOpen={ isOpenModal }
-                style={ customStyles }
-                onRequestClose={ closeModal }
-                ariaHideApp={false}
-            >
-                <h2>{ action === actions.create ? 'Crear Nuevo Sancion' : 'Editar Sancion' }</h2>
-                <div>
-                    <label htmlFor="alumno">Alumno</label>
-                    <select id="alumno" name="alumno" value={ alumno } onChange={ handleInputChange }>
-                        <option value="" disabled>Seleccione un Alumno</option>
-                        { Alumno2.map((a) => (
-                            <option key={a.documento} value={ a.documento }>{ `${ a.apellido } ${ a.nombre }` }</option>
+        <Modal
+            isOpen={ isOpenModal }
+            style={ customStyles }
+            onRequestClose={ closeModal }
+            ariaHideApp={false}
+        >
+            <Typography variant="h6" gutterBottom component="div">
+                Editar Sancion
+            </Typography>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        id="alumno"
+                        name="alumno"
+                        value={ alumno }
+                        onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        select
+                        margin="normal"
+                        label="Alumno"
+                        error={Boolean(errors?.alumno)}
+                        helperText={errors?.alumno}
+                    >
+                        <MenuItem value="" disabled>Seleccione un alumno</MenuItem>
+                        { alumnosList.map((a) => (
+                            <MenuItem key={a.documento} value={ a.documento }>
+                                { `${ a.apellido } ${ a.nombre }` }
+                            </MenuItem>
                         )) }
-                    </select>
-                </div>
-                <div>
-                    <label htmlFor="docente">Docente</label>
-                    <select id="docente" name="docente" value={ docente } onChange={ handleInputChange }>
-                        <option value="" disabled>Seleccione un Docente</option>
-                        { Docente2.map((d) => (
-                            <option key={d.documento} value={ d.documento }>{ `${ d.apellido } ${ d.nombre }` }</option>
+                    </TextField>
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        id="docente"
+                        name="docente"
+                        value={ docente }
+                        onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        select
+                        margin="normal"
+                        label="Docente"
+                        error={Boolean(errors?.docente)}
+                        helperText={errors?.docente}
+                    >
+                        <MenuItem value="" disabled>Seleccione un docente</MenuItem>
+                        { docentesList.map((d) => (
+                            <MenuItem key={d.documento} value={ d.documento }>
+                                { `${ d.apellido } ${ d.nombre }` }
+                            </MenuItem>
                         )) }
-                    </select>
-                </div>
-                <div>
-                    <label htmlFor="tipoSancion">Tipo de Sancion</label>
-                    <select id="tipoSancion" name="tipoSancion" value={ tipoSancion } onChange={ handleInputChange }>
-                        <option value="" disabled>Seleccione un Tipo</option>
+                    </TextField>
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        id="tipoSancion"
+                        name="tipoSancion"
+                        value={ tipoSancion }
+                        onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        select
+                        margin="normal"
+                        label="Tipo de Sancion"
+                        error={Boolean(errors?.tipoSancion)}
+                        helperText={errors?.tipoSancion}
+                    >
+                        <MenuItem value="" disabled>Seleccione un alumno</MenuItem>
                         { tiposSanciones.map((ts) => (
-                            <option key={ts} value={ts}>{ ts }</option>
+                            <MenuItem key={ts} value={ts}>
+                                { ts }
+                            </MenuItem>
                         )) }
-                    </select>
-                </div>
-                <div>
-                    <label htmlFor="descripcion">Descripcion</label>
-                    <input
-                        type="text"
+                    </TextField>
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        id="descripcion"
                         name="descripcion"
                         value={ descripcion }
                         onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        margin="normal"
+                        label="Descripcion"
+                        error={Boolean(errors?.descripcion)}
+                        helperText={errors?.descripcion}
                     />
-                </div>
-                <div>
-                    <label htmlFor="fecha">Fecha</label>
-                    <input type="date" name="fecha" value={fecha} onChange={handleInputChange} />
-                </div>
-                <div>
-                    <button onClick={ action === actions.create ? handleAddAula : handleEditAula } >
-                        Save
-                    </button>
-                </div>
-                <div>
-                    <button onClick={ closeModal }>
-                        Cerrar
-                    </button>
-                </div>
-            </Modal>
-        </div>
+                </Grid>
+                <Grid item xs={12}>
+                <TextField
+                        fullWidth
+                        id="fecha"
+                        name="fecha"
+                        value={fecha}
+                        type="date"
+                        onChange={handleInputChange}
+                        InputLabelProps={{ shrink: true, required: true }}
+                        margin="normal"
+                        label="Fecha"
+                        error={Boolean(errors?.fecha)}
+                        helperText={errors?.fecha}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <Button
+                        fullWidth
+                        onClick={
+                            () => handleEditSancion(formValues)
+                        }
+                        variant="contained"
+                    >
+                        Editar
+                    </Button>
+                </Grid>
+                <Grid item xs={12}>
+                    <Button
+                        fullWidth
+                        onClick={ () => {
+                            resetErrors();
+                            closeModal();
+                        } }
+                        variant="outlined"
+                    >
+                       Cerrar
+                    </Button>
+                </Grid>
+            </Grid>
+        </Modal>
     );
 };
 
 SancionModal.propTypes = {
     isOpenModal: PropTypes.bool.isRequired,
-    closeModal: PropTypes.func.isRequired,
-    action: PropTypes.string.isRequired
+    closeModal: PropTypes.func.isRequired
 }

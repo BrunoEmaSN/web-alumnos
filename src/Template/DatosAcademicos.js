@@ -1,35 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-
-const cursos = [
-    {
-        id: 1,
-        descripcion: '1° "A"',
-        aula: {
-            id: 1,
-            descripcion: 'Aula 1'
-        },
-        nivel: 'primaria'
-    },
-    {
-        id: 2,
-        descripcion: '1° "B"',
-        aula: {
-            id: 1,
-            descripcion: 'Aula 1'
-        },
-        nivel: 'primaria'
-    },
-    {
-        id: 3,
-        descripcion: '1° "A"',
-        aula: {
-            id: 1,
-            descripcion: 'Aula 2'
-        },
-        nivel: 'secundaria'
-    }
-];
+import { Checkbox, FormControlLabel, FormGroup, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material';
 
 export const DatosAcademicos = ({
     partidaNacimiento = false,
@@ -39,108 +10,169 @@ export const DatosAcademicos = ({
     contrato = false,
     observaciones = '',
     cursoId = '',
+    cursoNivel = '',
+    condicion = '',
+    cursosList = [],
     handleInputChange,
-    handleCheckboxChange
+    handleCheckboxChange,
+    handleObjectChange,
+    errors
 }) => {
-
-    const [ nivel, setNivel ] = useState('primaria');
-
+    
+    
+    const [ nivel, setNivel ] = useState( cursoNivel );
     const handleNivel = ({ target }) => {
         setNivel( target.value );
+        handleInputChange({
+            target: {
+                name: 'cursoId',
+                value: '' 
+            }
+        });
     }
 
     return (
-        <fieldset>
-            <legend>Datos Academicos</legend>
-            <div>
-                <label htmlFor="requisitos">Requisitos</label>
-                <div id="requisitos">
-                    <div>
-                        <input
-                            type="checkbox"
+        <Paper sx={{ width: '60%', margin: '0 20% 2%', padding: '1%' }}>
+            <Typography variant="h4" gutterBottom component="div">
+                Datos Academicos
+            </Typography>
+            <Grid container spacing={2}>
+                <Grid item xs={ 6 }>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <TextField
+                                fullWidth
+                                id="nivel"
+                                name="nivel"
+                                onChange={ handleNivel }
+                                value={ nivel }
+                                InputLabelProps={{ shrink: true }}
+                                select
+                                margin="normal"
+                                label="Nivel"
+                            >
+                                <MenuItem value="" disabled>Seleccione un nivel</MenuItem>
+                                <MenuItem value="P">Primaria</MenuItem>
+                                <MenuItem value="S">Secundaria</MenuItem>
+                                <MenuItem value="T">Terciaria</MenuItem>
+                                <MenuItem value="U">Universidad</MenuItem>
+                            </TextField>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                fullWidth
+                                id="cursoId"
+                                name="cursoId"
+                                value={ cursoId }
+                                onChange={ handleObjectChange }
+                                InputLabelProps={{ shrink: true, required: true }}
+                                select
+                                margin="normal"
+                                label="Cursos"
+                                error={Boolean(errors?.condicion)}
+                                helperText={errors?.condicion}
+                            >
+                                <MenuItem value="" disabled>Seleccione un curso</MenuItem>
+                                {   cursosList.map( c => (
+                                        c.nivel === nivel && (
+                                            <MenuItem key={ c.id } value={c.id}>
+                                                {`${ c.turno } ${ c.grado_ano } ${ c.division }: ${ c.aula_descripcion }`}
+                                            </MenuItem>
+                                        )
+                                    ))
+                                }
+                            </TextField>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                fullWidth
+                                id="condicion"
+                                name="condicion"
+                                value={ condicion }
+                                onChange={ handleInputChange }
+                                InputLabelProps={{ shrink: true, required: true }}
+                                select
+                                margin="normal"
+                                label="Nivel"
+                                error={Boolean(errors?.condicion)}
+                                helperText={errors?.condicion}
+                            >
+                                <MenuItem value="" disabled>Seleccione un nivel</MenuItem>
+                                <MenuItem value="Regular">Regular</MenuItem>
+                                <MenuItem value="Promocional">Promocional</MenuItem>
+                                <MenuItem value="Libre">Libre</MenuItem>
+                            </TextField>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid item xs={6}>
+                    <Typography variant="h5" gutterBottom component="div">
+                        Requisitos
+                    </Typography>
+                    <FormGroup>
+                        <FormControlLabel
                             id="partidaNacimiento"
                             name="partidaNacimiento"
                             checked={ partidaNacimiento }
                             onChange={ handleCheckboxChange }
+                            control={<Checkbox defaultChecked />}
+                            size="small"
+                            label="Partida de Nacimiento"
                         />
-                        <label htmlFor="partidaNacimiento">tiene Partida Nacimiento?</label>
-                    </div>
-                    <div>
-                        <input
-                            type="checkbox"
+                        <FormControlLabel
                             id="fotocopiaDNI"
                             name="fotocopiaDNI"
                             checked={ fotocopiaDNI }
                             onChange={ handleCheckboxChange }
+                            control={<Checkbox defaultChecked />}
+                            size="small"
+                            label="Fotocopia del DNI"
                         />
-                        <label htmlFor="fotocopiaDNI">tiene Fotocopia DNI?</label>
-                    </div>
-                    <div>
-                        <input
-                            type="checkbox"
+                        <FormControlLabel
                             id="fotocopiaCUIL"
                             name="fotocopiaCUIL"
                             checked={ fotocopiaCUIL }
                             onChange={ handleCheckboxChange }
+                            control={<Checkbox defaultChecked />}
+                            size="small"
+                            label="Fotocopia del CUIL"
                         />
-                        <label htmlFor="fotocopiaCUIL">tiene Fotocopia CUIL?</label>
-                    </div>
-                    <div>
-                        <input
-                            type="checkbox"
+                        <FormControlLabel
                             id="foto4x4"
                             name="foto4x4"
                             checked={ foto4x4 }
                             onChange={ handleCheckboxChange }
+                            control={<Checkbox defaultChecked />}
+                            size="small"
+                            label="Foto 4x4"
                         />
-                        <label htmlFor="foto4x4">tiene Fotocopia 4x4?</label>
-                    </div>
-                    <div>
-                        <input
-                            type="checkbox"
+                        <FormControlLabel
                             id="contrato"
                             name="contrato"
                             checked={ contrato }
                             onChange={ handleCheckboxChange }
+                            control={<Checkbox defaultChecked />}
+                            size="small"
+                            label="Contrato"
                         />
-                        <label htmlFor="contrato">firmaron el Contrato?</label>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <label htmlFor="observaciones">Observaciones</label>
-                <input
-                    type="text"
-                    id="observaciones"
-                    name="observaciones"
-                    value={ observaciones }
-                    onChange={ handleInputChange }
-                />
-            </div>
-            <div>
-                <label htmlFor="nivel">Nivel</label>
-                <select id="nivel" onChange={ handleNivel } value={ nivel }>
-                    <option value="primaria">Primaria</option>
-                    <option value="secundaria">Secundaria</option>
-                    <option value="terciaria">Terciaria</option>
-                    <option value="universidad">Universidad</option>
-                </select>
-            </div>
-            <div>
-                <label htmlFor="cursoId">Cursos</label>
-                <select id="cursoId" name="cursoId" value={ cursoId } onChange={ handleInputChange }>
-                    { cursos.map( c => {
-                        return (
-                            c.nivel === nivel ?
-                            <option key={ c.id } value={c.id}>
-                                {`${ c.aula.descripcion }: ${ c.descripcion }`}
-                            </option>:
-                            ''
-                        );
-                    } ) }
-                </select>
-            </div>
-        </fieldset>
+                    </FormGroup>
+                </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        id="observaciones"
+                        name="observaciones"
+                        value={ observaciones }
+                        onChange={ handleInputChange }
+                        InputLabelProps={{ shrink: true, required: true }}
+                        margin="normal"
+                        label="Observaciones"
+                    />
+                </Grid>
+            </Grid>
+        </Paper>
     );
 };
 
@@ -150,8 +182,13 @@ DatosAcademicos.propTypes = {
     fotocopiaCUIL: PropTypes.bool.isRequired,
     foto4x4: PropTypes.bool.isRequired,
     contrato: PropTypes.bool.isRequired,
-    observaciones: PropTypes.string.isRequired,
-    cursoId: PropTypes.number.isRequired,
+    observaciones: PropTypes.string,
+    cursoId: PropTypes.any.isRequired,
+    cursoNivel: PropTypes.any.isRequired,
+    condicion: PropTypes.any.isRequired,
+    cursosList: PropTypes.array.isRequired,
     handleInputChange: PropTypes.func.isRequired,
     handleCheckboxChange: PropTypes.func.isRequired,
+    handleObjectChange: PropTypes.func.isRequired,
+    errors: PropTypes.any
 }

@@ -1,56 +1,84 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useContext } from 'react';
 import { useForm } from '../../Hooks/useForm';
-import { cleanActiveTutor, startNewTutor, startUpdateTutor } from '../../Store/Tutor/Actions/Tutor';
 import { DatosPersonales } from '../../Template/DatosPersonales';
 import { DatosPareja } from '../../Template/DatosPareja';
-import { tutorModel } from '../../Utils/tutorModel';
+import { DatosTutor } from '../../Template/DatosTutor';
+import { tutorModel } from '../../Utils/Model/tutorModel';
+import { TutoresContext } from '../../Context/BuildContext';
+import { Box, Button, Grid } from '@mui/material';
 
 export const TutoresSave = () => {
-    const dispatch = useDispatch();
-
-    const { active } = useSelector( state => state.tutor );
-
+    const {
+        active,
+        handleAddTutor,
+        handleEditTutor,
+        handleBack,
+        errors
+    } = useContext(TutoresContext);
+    
     const [ formValues, handleInputChange ] = useForm( active );
 
-    const handleAddTutor = ( e ) => {
-        e.preventDefault();
-        dispatch( startNewTutor( formValues ) );
-        dispatch( cleanActiveTutor() );
-    }
-
-    const handleEditTutor = ( e ) => {
-        e.preventDefault();
-        dispatch( startUpdateTutor( formValues ) );
-        dispatch( cleanActiveTutor() );
-    }
-
-    const back = ( e ) => {
-        e.preventDefault();
-        dispatch( cleanActiveTutor() );
-    }
     return (
-        <div>
-            <h1>Tutor Save</h1>
-                <DatosPersonales
-                    { ...formValues }
-                    handleInputChange={ handleInputChange }
-                />
-
-                <DatosPareja
-                    { ...formValues }
-                    handleInputChange={ handleInputChange }
-                />
-                <div>
-                    <button onClick={ active === tutorModel ? handleAddTutor : handleEditTutor } >
-                        Save
-                    </button>
-                </div>
-                <div>
-                    <button onClick={ back }>
-                        Volver
-                    </button>
-                </div>
-        </div>
+        <Box>
+            <DatosPersonales
+                { ...formValues }
+                handleInputChange={ handleInputChange }
+                errors={errors}
+            />
+            <DatosTutor
+                { ...formValues }
+                handleInputChange={ handleInputChange }
+            />
+            <DatosPareja
+                { ...formValues }
+                handleInputChange={ handleInputChange }
+            />
+            <Box sx={{ width: '60%', margin: '0 20% 2%', padding: '1%' }}>
+                <Grid
+                    container
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing={2}
+                >
+                    <Grid item xs={6}>
+                        {
+                            active === tutorModel
+                            ? (
+                                <Button
+                                    fullWidth
+                                    onClick={
+                                        () => handleAddTutor(formValues)
+                                    }
+                                    variant="contained"
+                                >
+                                    Guardar
+                                </Button>
+                            )
+                            :  (
+                                <Button
+                                    fullWidth
+                                    onClick={
+                                        () => handleEditTutor(formValues)
+                                    }
+                                    variant="contained"
+                                >
+                                    Editar
+                                </Button>
+                            )
+                        }
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Button
+                            fullWidth
+                            onClick={ handleBack }
+                            variant="outlined"
+                        >
+                            Volver
+                        </Button>
+                    </Grid>
+                </Grid>
+            </Box>
+        </Box>
     );
 };

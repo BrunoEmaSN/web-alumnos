@@ -1,179 +1,304 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import moment from 'moment';
+import Swal from 'sweetalert2';
+import { Box } from '@mui/system';
+import { Button, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material';
 
 import { useForm } from "../../Hooks/useForm";
-import { Docente2 } from "../../Utils/docenteModel";
-import { Materia2 } from "../../Utils/materiaModel";
-import { Llamado1 } from "../../Utils/mesaExamenModel";
+import { materiasGetAll } from '../../Services/restCallMaterias';
+import { MesasExamenesNovedadTable } from './MesasExamenesNovedadTable';
+import { llamadosList } from '../../Utils/Model/mesaExamenModel';
+import { MesasExamenesContext } from '../../Context/BuildContext';
 
 const initialState = {
-  materias: '',
-  fechas: '',
-  llamados: '',
-  examinador1: '',
-  examinador2: '',
-  examinador3: ''
+    materia_id: '',
+    fecha: '',
+    llamado: '',
+    examinador1: '',
+    examinador2: '',
+    examinador3: ''
 };
 
+const initialOldState = {
+    materia_id: '',
+    fecha: '',
+    llamado: ''
+}
+
+const actionsList = { create: 'create', edit: 'edit' };
+
 export const MesasExamenesNovedadesSave = ({ novedad, setNovedad }) => {
-  const [
-    formValues,
-    handleInputChange, ,
-    handleObjectChange, ,
-    setFormValues
-  ] = useForm( initialState );
-  const [ rowId, setRowId ] = useState('');
-  const {
-    materias,
-    fechas,
-    llamados,
-    examinador1,
-    examinador2,
-    examinador3
-  } = formValues;
+    const {handleErrorsNovedad, errorNovedad: errors} = useContext(MesasExamenesContext);
+    const [ materiasList, setMateriasList ] = useState([]);
+    const [ materia_descripcion, setMateriaDescripcion ] = useState('');
+    const [ action, setAction ] = useState(actionsList.create);
+    const [ oldState, setOldState ] = useState(initialOldState);
 
-  const handleAddOrEditRows = () => {
-    if(rowId === ''){
-      const lastIndex = novedad.length - 1;
-      const lastId = novedad.length > 0 ? novedad[lastIndex].id : 0;
-      setNovedad(
-        (prevState) => (
-          [
-            ...prevState,
-            { id: lastId + 1, ...formValues }
-          ]
-        )
-      );
+    const handleListGetAll = async () => {
+        setMateriasList( await materiasGetAll() );
     }
-    else {
-      setNovedad(
-        (prevState) => (
-          prevState.map((state) => (
-            state.id === rowId
-            ? { id: rowId, ...formValues }
-            : state
-          ))
-        )
-      );
-    }
-    setRowId('');
-    setFormValues(initialState);
-  }
 
-  const handleFormValues = (row) => {
-    setRowId(row.id);
-    setFormValues({
-      materias: row.materias,
-      fechas: row.fechas,
-      llamados: row.llamados,
-      examinador1: row.examinador1,
-      examinador2: row.examinador2,
-      examinador3: row.examinador3
-    });
-  }
+    useEffect(() => {
+        handleListGetAll();
+    }, [])
   
-  return (
-    <div>
-      <div>
-        <label htmlFor="materias">Materias</label>
-        <select id="materias" name="materias" value={ materias !== '' ? JSON.stringify( materias ) : '' } onChange={ handleObjectChange }>
-          <option value="" disabled>Seleccione una Materia</option>
-          {Materia2.map((m) => (
-            <option key={ m.id } value={ JSON.stringify( m ) }>{ m.descripcion }</option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <label htmlFor="fechas">Fechas</label>
-        <input type="date" name="fechas" value={ fechas } onChange={ handleInputChange }/>
-      </div>
-      <div>
-        <label htmlFor="llamados">Llamados</label>
-        <select id="llamados" name="llamados" value={ llamados } onChange={ handleInputChange }>
-          <option value="" disabled>Seleccione un Llamado</option>
-          {Llamado1.map((l) => (
-            <option key={ l } value={ l }>{ l }</option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <label htmlFor="examinador1">Examinador 1</label>
-        <select id="examinador1" name="examinador1" value={ examinador1 !== '' ? JSON.stringify( examinador1 ) : '' } onChange={ handleObjectChange }>
-          <option value="" disabled>Seleccione un Examinador</option>
-          {Docente2.map((d) => (
-            <option key={d.documento} value={JSON.stringify( d )}>{`${d.apellido} ${d.nombre}`}</option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <label htmlFor="examinador2">Examinador 2</label>
-        <select id="examinador2" name="examinador2" value={ examinador2 !== '' ? JSON.stringify( examinador2 ) : ''  } onChange={ handleObjectChange }>
-          <option value="" disabled>Seleccione un Examinador</option>
-          {Docente2.map((d) => (
-            <option key={d.documento} value={JSON.stringify(d)}>{`${d.apellido} ${d.nombre}`}</option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <label htmlFor="examinador3">Examinador 3</label>
-        <select id="examinador3" name="examinador3" value={ examinador3 !== '' ? JSON.stringify( examinador3 ) : ''  } onChange={ handleObjectChange }>
-          <option value="" disabled>Seleccione un Examinador</option>
-          {Docente2.map((d) => (
-            <option key={d.documento} value={JSON.stringify(d)}>{`${d.apellido} ${d.nombre}`}</option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <button onClick={handleAddOrEditRows}>Agregar</button>
-      </div>
-      <div>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Materias</TableCell>
-                <TableCell>Fechas</TableCell>
-                <TableCell>Llamados</TableCell>
-                <TableCell>Examinador 1</TableCell>
-                <TableCell>Examinador 2</TableCell>
-                <TableCell>Examinador 3</TableCell>
-                <TableCell>Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {novedad.map((n) => (
-                <TableRow
-                  key={n.id}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+
+    const [
+        formValues,
+        handleInputChange, , , ,
+        setFormValues
+    ] = useForm( initialState );
+
+    const {
+        materia_id,
+        fecha,
+        llamado,
+        examinador1,
+        examinador2,
+        examinador3
+    } = formValues;
+
+    const handleMateriaChange = ({ target }) => {
+        const materia = materiasList.find( m => m.id === parseInt( target.value ) );
+        handleInputChange({ target });
+        setMateriaDescripcion( materia.descripcion );
+    }
+    
+    const handleAddRow = () => {
+        const isExist = novedad.find( n => (
+            parseInt(n.materia_id) === parseInt(materia_id)
+            && n.llamado === llamado
+        ));
+        if(!isExist){
+            if(handleErrorsNovedad(formValues)){
+                setNovedad(
+                    (prevState) => (
+                    [
+                        ...prevState,
+                        { ...formValues, materia_descripcion }
+                    ]
+                    )
+                );
+                setFormValues(initialState);
+                setMateriaDescripcion('');
+                setAction(actionsList.create);
+                setOldState(initialOldState);
+            }
+        } else{
+            Swal.fire('Ya Existe una Mesa igual', '', 'info');
+        }
+    }
+
+    const handleEditRow = () => {
+        if(handleErrorsNovedad(formValues)){
+            setNovedad(
+                (prevState) => (
+                    prevState.map((state) => (
+                        state.materia_id === oldState.materia_id
+                        && state.llamado === oldState.llamado
+                        && state.fecha === oldState.fecha
+                        ? { ...formValues, materia_descripcion }
+                        : state
+                    ))
+                )
+            );
+            setFormValues(initialState);
+            setMateriaDescripcion('');
+            setAction(actionsList.create);
+            setOldState(initialOldState);
+        }
+    }
+
+    const handleFormValues = (row) => {
+        setFormValues({
+            materia_id: row.materia_id,
+            fecha: moment(row.fecha).format('yyyy-MM-DD'),
+            llamado: row.llamado,
+            examinador1: row.examinador1,
+            examinador2: row.examinador2,
+            examinador3: row.examinador3
+        });
+        setMateriaDescripcion(row.materia_descripcion);
+        setAction(actionsList.edit);
+        setOldState({
+            materia_id: row.materia_id,
+            fecha: row.fecha,
+            llamado: row.llamado
+        });
+    }
+
+    const handleDeleteRow = (row) => {
+        setNovedad(
+            (prevState) => (
+                prevState.filter(s => JSON.stringify( s ) !== JSON.stringify( row ))
+            )
+        );
+    }
+  
+    return (
+        <Box>
+            <Paper sx={{ width: '60%', margin: '0 20% 2%', padding: '1%' }}>
+                <Typography variant="h4" gutterBottom component="div">
+                    Datos Mesa Examen Novedad
+                </Typography>
+                <Grid
+                    container
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing={2}
                 >
-                  <TableCell>{n.materias.descripcion}</TableCell>
-                  <TableCell>{n.fechas}</TableCell>
-                  <TableCell>{n.llamados}</TableCell>
-                  <TableCell>{`${n.examinador1.apellido} ${n.examinador1.nombre}`}</TableCell>
-                  <TableCell>{`${n.examinador2.apellido} ${n.examinador2.nombre}`}</TableCell>
-                  <TableCell>{`${n.examinador3.apellido} ${n.examinador3.nombre}`}</TableCell>
-                  <TableCell>
-                    <button onClick={() => handleFormValues(n)}>Edit</button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </div>
-    </div>
-  );
+                    <Grid item xs={6}>
+                        <TextField
+                            fullWidth
+                            id="materia_id"
+                            name="materia_id"
+                            value={ materia_id }
+                            defaultValue=""
+                            onChange={ handleMateriaChange }
+                            InputLabelProps={{ shrink: true, required: true }}
+                            select
+                            margin="normal"
+                            label="Materia"
+                            required
+                            error={Boolean(errors?.materia_id)}
+                            helperText={errors?.materia_id}
+                        >
+                            <MenuItem value="" disabled>
+                                Seleccione una materia
+                            </MenuItem>
+                            { materiasList.map((m) => (
+                            <MenuItem key={ m.id } value={ m.id }>
+                                { `${ m.descripcion }` }
+                            </MenuItem>
+                            )) }
+                        </TextField>
+                    </Grid>
+                    <Grid item xs={3}>
+                        <TextField
+                            fullWidth
+                            id="fecha"
+                            name="fecha"
+                            value={ fecha }
+                            type="date"
+                            onChange={ handleInputChange }
+                            InputLabelProps={{ shrink: true, required: true }}
+                            margin="normal"
+                            label="Fecha"
+                            error={Boolean(errors?.fecha)}
+                            helperText={errors?.fecha}
+                        />
+                    </Grid>
+                    <Grid item xs={3}>
+                        <TextField
+                            fullWidth
+                            id="llamado"
+                            name="llamado"
+                            value={ llamado }
+                            onChange={ handleInputChange }
+                            InputLabelProps={{ shrink: true, required: true }}
+                            select
+                            margin="normal"
+                            label="Llamado"
+                            error={Boolean(errors?.llamado)}
+                            helperText={errors?.llamado}
+                        >
+                            <MenuItem value="" disabled>
+                            Seleccione un llamado
+                            </MenuItem>
+                            { llamadosList.map((l) => (
+                            <MenuItem key={ l } value={ l }>
+                                { l }
+                            </MenuItem>
+                            )) }
+                        </TextField>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <TextField
+                            fullWidth
+                            id="examinador1"
+                            name="examinador1"
+                            value={ examinador1 }
+                            onChange={ handleInputChange }
+                            InputLabelProps={{ shrink: true, required: true }}
+                            margin="normal"
+                            label="Examinador 1"
+                            error={Boolean(errors?.examinador1)}
+                            helperText={errors?.examinador1}
+                        />
+                    </Grid>
+                    <Grid item xs={4}>
+                        <TextField
+                            fullWidth
+                            id="examinador2"
+                            name="examinador2"
+                            value={ examinador2 }
+                            onChange={ handleInputChange }
+                            InputLabelProps={{ shrink: true, required: true }}
+                            margin="normal"
+                            label="Examinador 2"
+                            error={Boolean(errors?.examinador2)}
+                            helperText={errors?.examinador2}
+                        />
+                    </Grid>
+                    <Grid item xs={4}>
+                        <TextField
+                            fullWidth
+                            id="examinador3"
+                            name="examinador3"
+                            value={ examinador3 }
+                            onChange={ handleInputChange }
+                            InputLabelProps={{ shrink: true, required: true }}
+                            margin="normal"
+                            label="Examinador 3"
+                            error={Boolean(errors?.examinador3)}
+                            helperText={errors?.examinador3}
+                        />
+                    </Grid>
+                    <Grid item xs={8}>
+                        {
+                            action === actionsList.create
+                            ? (
+                            <Button
+                                fullWidth
+                                onClick={ handleAddRow }
+                                variant="contained"
+                            >
+                                Agregar
+                            </Button>
+                            )
+                            : (
+                            <Button
+                                fullWidth
+                                onClick={ handleEditRow }
+                                variant="contained"
+                            >
+                                Editar
+                            </Button>
+                            )
+                        }
+                    </Grid>
+                </Grid>
+            </Paper>
+            <Paper sx={{
+                width: '80%',
+                minHeight: '140px',
+                margin: '0 10% 2%',
+                padding: '1%'
+            }}>
+                <MesasExamenesNovedadTable
+                    novedad={ novedad }
+                    handleFormValues={ handleFormValues }
+                    handleDeleteRow={ handleDeleteRow }
+                />
+            </Paper>
+        </Box>
+    );
 };
 
 MesasExamenesNovedadesSave.propTypes = {
-  novedad: PropTypes.array.isRequired,
-  setNovedad: PropTypes.func.isRequired
+    novedad: PropTypes.array,
+    setNovedad: PropTypes.func
 }
