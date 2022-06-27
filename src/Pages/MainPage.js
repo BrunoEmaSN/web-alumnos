@@ -1,8 +1,8 @@
 import React from 'react';
 import { ThemeProvider } from '@mui/material/styles'
 import { AppRoute } from '../Routers/AppRoute';
+import { AppState } from '../Context/AppState';
 import { theme } from '../Components/GlobalStylesComponents/theme';
-import AppState from '../Context/AppState';
 
 export const MainPage = () => {
     return (

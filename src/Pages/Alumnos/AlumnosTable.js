@@ -1,10 +1,10 @@
 import React, { useContext } from 'react'
 import { Box } from '@mui/system';
 import moment from 'moment';
-import { OpcionesERVButtons } from '../../Components/OptionesButtons/OptionesERVButtons';
 import { TableGeneric } from '../../Components/Table/TableGeneric';
 import { AlumnosContext } from '../../Context/BuildContext';
 import { FaltantesList } from './Components/FaltantesList';
+import { OptionsERVButtons } from '../../Components/OptionesButtons/OptionsERVButtons';
 
 const createData = (
 	fechaAgregado,
@@ -39,7 +39,7 @@ const createData = (
 			/>
 		),
 		opciones: (
-			<OpcionesERVButtons
+			<OptionsERVButtons
 				CallBackEdit={CallBackEdit}
 				CallBackView={CallBackView}
 				CallBackDelete={CallBackDelete}

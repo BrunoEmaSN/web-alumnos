@@ -24,16 +24,19 @@ export const TableGeneric = ({ columns, rows }) => {
     };
 
     return (
-        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+        <Paper sx={{ width: '100%', overflow: 'hidden' }} variant="outlined">
             <TableContainer>
                 <Table aria-label="table generic">
                     <TableHead>
                         <TableRow>
                             {columns.map((column) => (
                                 <TableCell
-                                key={column.id}
-                                align={column.align}
-                                style={{ minWidth: column.minWidth }}
+                                    key={column.id}
+                                    align={column.align}
+                                    sx={{
+                                        color: '#222F3E',
+                                        minWidth: column.minWidth
+                                    }}
                                 >
                                 {column.label}
                                 </TableCell>

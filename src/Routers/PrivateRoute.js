@@ -2,17 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Navigate, Outlet } from 'react-router-dom';
-import { AppBarComponent } from '../Components/AppBar/AppBar';
+import { LayoutPage } from '../Pages/LayoutPage';
 
 export const PrivateRoute = ({
     auth
 }) => {
     return (
         auth ? (
-            <>
-                <AppBarComponent />
+            <LayoutPage>
                 <Outlet />
-            </>
+            </LayoutPage>
         ) : <Navigate to ="/login" />)
 }
 

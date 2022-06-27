@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core';
 
-export const styles = makeStyles((theme) => ({
+export const styles = makeStyles(() => ({
     appBar: {
         width: '100%',
     },
@@ -23,60 +23,49 @@ export const styles = makeStyles((theme) => ({
         color: '#A6A6A6'
     },
     mainTitle: {
-        color: '#FFF',
-        alignItems: 'center',
-        display: 'flex',
+        color: '#fff',
         fontWeight: 600,
         lineHeight: '3%',
         position: 'absolute',
         
-        [theme.breakpoints.up('md')]:{
-            fontSize: '3.75rem',
-            padding: '5% 12%',
-        },
-
-        [theme.breakpoints.down('md')]:{
-            "& .MuiTypography-root": {
-                fontSize: '3rem',
-            },
-            padding: '5% 12%',
-        },
-        
-        [theme.breakpoints.down('sm')]:{
-            fontSize: '2.8rem',
-            padding: '5% 10%',
-        },
-
-        [theme.breakpoints.down('xs')]:{
-            fontSize: '2.6rem',
-            padding: '5% 0',
-        }
+        fontSize: '3.75rem',
+        padding: '0 3% 0 ',
+        zIndex: 1,
     },
-    mainImg: {
-        alignItems: 'center',
-        height: 'auto',
-        objectFit: 'contain',
-        width: '100%',
-        [theme.breakpoints.down('sm')]:{
-            objectFit: 'cover',
-            height: '40%',
-        },
+    mainBody1: {
+        color: '#fff',
+        lineHeight: '3%',
+        position: 'absolute',
+        padding: '0 4% 0 ',
+        zIndex: 1,
     },
     loginCard: {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        right: 'auto',
         bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
-        minHeight: 320,
+        left: '50%',
         maxHeight:500,
         maxWidth: 260,
+        marginRight: '-50%',
+        minHeight: 320,
         padding: '2% 3%',
-        [theme.breakpoints.down('xs')]:{
-            marginLeft: '7%',
-        }
+        position: 'absolute',
+        right: 'auto',
+        top: '50%',
+        transform: 'translate(-50%, -50%)',
+        zIndex: 1,
+    },
+    loginBackground: {
+        backgroundColor: '#00C6B7',
+        backgroundImage: 'linear-gradient(#222F3E, rgba(34, 47, 62, 0.8))',
+        display: 'flex',
+        fontSize: '1.125em',
+        height: '100vh',
+        justifyContent: 'space-between',
+        left: 0,
+        position: 'sticky',
+        top: 0,
+        width: '100vw',
+        visibility: 'visible',
+        zIndex: -1,
     },
     loginBox: {
         alignItems: 'flex-end',
@@ -89,12 +78,27 @@ export const styles = makeStyles((theme) => ({
         my: 0.5
     },
     loginButton: {
+        background: '#222F3E',
+        color: 'white',
         height: 40,
-        width: 240
+        width: 240,
+        '&:hover': {
+            backgroundColor: '#00C6B7',
+            color: '#222F3E',
+        }
     },
     userButton: {
         fontSize: '75%',
         fontWeight: 550,
         letterSpacing: '0.02em',
     },
+    radialGradientBackground: {
+        backgroundImage: 'radial-gradient(rgba(0, 198, 183, 0.4) 1px, rgba(34, 47, 62, 0) 0px)',
+        backgroundSize: '32px 32px',
+        minHeight: '100vh',
+        position: 'absolute',
+        top: 0,
+        width: '100vw',
+        zIndex: -1,
+    }
 }));

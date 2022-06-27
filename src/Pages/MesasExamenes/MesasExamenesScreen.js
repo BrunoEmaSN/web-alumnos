@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { Box } from "@material-ui/core";
 import { MesasExamenesContext } from "../../Context/BuildContext";
 import { MesasExamenesState } from "../../Context/MesasExamenesState";
 import { MesasExamenesList } from "./MesasExamenesList";
@@ -8,13 +9,13 @@ const MesasExamenes = () => {
     const {active} = useContext(MesasExamenesContext);
 
     return (
-        <div>
+        <Box sx={{ p:3, marginTop: 35 }}>
             {
                 Object.entries(active).length
                 ? <MesasExamenesMaestrosSave />
                 : <MesasExamenesList />
             }
-        </div>
+        </Box>
     );
 };
 

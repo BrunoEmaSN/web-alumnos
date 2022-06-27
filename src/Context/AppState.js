@@ -4,7 +4,7 @@ import { AppContext } from './BuildContext';
 import { login } from '../Services/restCallAuth';
 
 
-const AppState = ({ children }) => {
+export const AppState = ({ children }) => {
     const initialState = {
         token: localStorage.getItem('token') || ''
     };
@@ -17,18 +17,22 @@ const AppState = ({ children }) => {
         });
         localStorage.setItem('token', newToken);
     }
+
+    const handleLogout = () => {
+        handleToken( '' );
+    }
     
     return (
         <AppContext.Provider value ={{
             token : state.token,
-            handleToken: handleToken,
-            login: login
+            handleToken,
+            login,
+            handleLogout
         }}>
             { children }
         </AppContext.Provider>
     )
 }
-export default AppState;
 
 AppState.propTypes = {
     children: PropTypes.element

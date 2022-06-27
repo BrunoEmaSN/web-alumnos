@@ -4,13 +4,19 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import Swal from 'sweetalert2';
 import { Box } from '@mui/system';
-import { Button, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material';
+import { Grid, MenuItem, Paper, TextField } from '@mui/material';
+import { useMediaQuery } from '@material-ui/core';
 
+import { theme } from '../../Components/GlobalStylesComponents/theme';
 import { useForm } from "../../Hooks/useForm";
 import { materiasGetAll } from '../../Services/restCallMaterias';
 import { MesasExamenesNovedadTable } from './MesasExamenesNovedadTable';
 import { llamadosList } from '../../Utils/Model/mesaExamenModel';
 import { MesasExamenesContext } from '../../Context/BuildContext';
+import {
+    ButtonContained,
+    TypographyH4
+} from '../../Components/GlobalStylesComponents/stylesComponents';
 
 const initialState = {
     materia_id: '',
@@ -31,6 +37,8 @@ const actionsList = { create: 'create', edit: 'edit' };
 
 export const MesasExamenesNovedadesSave = ({ novedad, setNovedad }) => {
     const {handleErrorsNovedad, errorNovedad: errors} = useContext(MesasExamenesContext);
+    const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+
     const [ materiasList, setMateriasList ] = useState([]);
     const [ materia_descripcion, setMateriaDescripcion ] = useState('');
     const [ action, setAction ] = useState(actionsList.create);
@@ -139,10 +147,17 @@ export const MesasExamenesNovedadesSave = ({ novedad, setNovedad }) => {
   
     return (
         <Box>
-            <Paper sx={{ width: '60%', margin: '0 20% 2%', padding: '1%' }}>
-                <Typography variant="h4" gutterBottom component="div">
-                    Datos Mesa Examen Novedad
-                </Typography>
+            <Paper
+                sx={{
+                    width: isMdUp ? '60%' : '100%',
+                    padding: '1%',
+                    margin: isMdUp ? '0 20% 2%' : '0 0 2%'
+                }}
+                variant="outlined"
+            >
+                <TypographyH4
+                    label="Datos Mesa Examen Novedad"
+                />
                 <Grid
                     container
                     direction="row"
@@ -209,9 +224,9 @@ export const MesasExamenesNovedadesSave = ({ novedad, setNovedad }) => {
                             Seleccione un llamado
                             </MenuItem>
                             { llamadosList.map((l) => (
-                            <MenuItem key={ l } value={ l }>
-                                { l }
-                            </MenuItem>
+                                <MenuItem key={ l } value={ l }>
+                                    { l }
+                                </MenuItem>
                             )) }
                         </TextField>
                     </Grid>
@@ -261,33 +276,30 @@ export const MesasExamenesNovedadesSave = ({ novedad, setNovedad }) => {
                         {
                             action === actionsList.create
                             ? (
-                            <Button
-                                fullWidth
-                                onClick={ handleAddRow }
-                                variant="contained"
-                            >
-                                Agregar
-                            </Button>
+                                <ButtonContained
+                                    CallBack={ handleAddRow }
+                                    label="Agregar"
+                                />
                             )
                             : (
-                            <Button
-                                fullWidth
-                                onClick={ handleEditRow }
-                                variant="contained"
-                            >
-                                Editar
-                            </Button>
+                                <ButtonContained
+                                    CallBack={ handleEditRow }
+                                    label="Editar"
+                                />
                             )
                         }
                     </Grid>
                 </Grid>
             </Paper>
-            <Paper sx={{
-                width: '80%',
-                minHeight: '140px',
-                margin: '0 10% 2%',
-                padding: '1%'
-            }}>
+            <Paper
+                sx={{
+                    width: isMdUp ? '80%' : '100%',
+                    minHeight: '140px',
+                    margin: isMdUp ? '0 10% 2%' : '0 0 2%',
+                    padding: '1%'
+                }}
+                variant="outlined"
+            >
                 <MesasExamenesNovedadTable
                     novedad={ novedad }
                     handleFormValues={ handleFormValues }

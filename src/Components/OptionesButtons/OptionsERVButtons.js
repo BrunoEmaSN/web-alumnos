@@ -1,8 +1,9 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import { Button, ButtonGroup } from "@mui/material";
+import { ButtonGroup } from "@mui/material";
+import { ButtonGeneric } from "../GlobalStylesComponents/stylesComponents";
 
-export const OpcionesERVButtons = ({
+export const OptionsERVButtons = ({
 	CallBackEdit,
 	CallBackView,
 	CallBackDelete
@@ -12,26 +13,14 @@ export const OpcionesERVButtons = ({
             orientation="vertical"
             aria-label="vertical outlined button group"
         >
-			<Button
-				onClick={ CallBackEdit }
-			>
-				Editar
-			</Button>
-			<Button
-				onClick={ CallBackView }
-			>
-				Ver
-			</Button>
-			<Button
-				onClick={ CallBackDelete }
-			>
-				Eliminar
-			</Button>
+			<ButtonGeneric label="Editar" CallBack={CallBackEdit}/>
+			<ButtonGeneric label="Ver" CallBack={CallBackView}/>
+			<ButtonGeneric label="Eliminar" CallBack={CallBackDelete}/>
         </ButtonGroup>
 	);
 }
 
-OpcionesERVButtons.propTypes = {
+OptionsERVButtons.propTypes = {
     CallBackEdit: PropTypes.func.isRequired,
 	CallBackView: PropTypes.func.isRequired,
 	CallBackDelete: PropTypes.func.isRequired

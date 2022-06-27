@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid, MenuItem, Paper, TextField, Typography } from '@mui/material';
+import { Grid, Paper } from '@mui/material';
+import { TypographyH4 } from '../Components/GlobalStylesComponents/stylesComponents';
+import { Input } from '../Components/Input/Input';
+import { Select } from '../Components/Select/Select';
 
 export const DatosPersonales = ({
     nombre = '',
@@ -19,209 +22,197 @@ export const DatosPersonales = ({
     handleInputChange,
     errors
 }) => {
-
+    const sexos = ['Masculino', 'Femenino', 'Otro'];
+    const tiposDocumentos = [
+        {label: 'DNI', value: 'DNI'},
+        {label: 'CUIL', value: 'CUIL'},
+        {label: 'Libreta Enrolamiento', value: 'LE'},
+        {label: 'Libreta Civica', value: 'LC'}
+    ];
+    
     return (
-        <Paper sx={{ width: '60%', margin: '0 20% 2%', padding: '1%' }}>
-            <Typography variant="h4" gutterBottom component="div">
-                Datos Personales
-            </Typography>
+        <Paper sx={{ width: '98%', padding: '1%', marginBottom:'2%' }} variant="outlined">
+            <TypographyH4
+                label="Datos Personales"
+            />
             <Grid container spacing={2}>
                 <Grid item xs={6}>
-                    <TextField
+                    <Input
                         fullWidth
                         id="nombre"
                         name="nombre"
                         value={ nombre }
-                        onChange={ handleInputChange }
+                        trigger={ handleInputChange }
                         InputLabelProps={{ shrink: true, required: true }}
-                        margin="normal"
                         label="Nombre"
-                        error={Boolean(errors?.nombre)}
-                        helperText={errors?.nombre}
+                        margin="normal"
+                        error={errors}
                     />
                 </Grid>
                 <Grid item xs={6}>
-                    <TextField
+                    <Input
                         fullWidth
                         id="apellido"
                         name="apellido"
                         value={ apellido }
-                        onChange={ handleInputChange }
+                        trigger={ handleInputChange }
                         InputLabelProps={{ shrink: true, required: true }}
-                        margin="normal"
                         label="Apellido"
-                        error={Boolean(errors?.apellido)}
-                        helperText={errors?.apellido}
+                        margin="normal"
+                        error={errors}
                     />
                 </Grid>
             </Grid>
             <Grid container spacing={2}>
                 <Grid item xs={3}>
-                    <TextField
+                    <Select
                         fullWidth
                         id="tipoDocumento"
                         name="tipoDocumento"
                         value={ tipoDocumento }
-                        onChange={ handleInputChange }
+                        trigger={ handleInputChange }
                         InputLabelProps={{ shrink: true, required: true }}
-                        select
                         margin="normal"
                         label="Tipo de Documento"
-                        error={Boolean(errors?.tipoDocumento)}
-                        helperText={errors?.tipoDocumento}
-                    >
-                        <MenuItem value="" disabled>Seleccione una opcion</MenuItem>
-                        <MenuItem value="DNI">DNI</MenuItem>
-                        <MenuItem value="CUIL">CUIL</MenuItem>
-                        <MenuItem value="LE">Libreta Enrolamiento</MenuItem>
-                        <MenuItem value="LC">Libreta Civica</MenuItem>
-                    </TextField>
+                        error={errors}
+                        data={tiposDocumentos}
+                    />
                 </Grid>
                 <Grid item xs={3}>
-                    <TextField
+                    <Input
                         fullWidth
                         id="documento"
                         name="documento"
                         type="number"
                         value={ documento }
-                        onChange={ handleInputChange }
+                        trigger={ handleInputChange }
                         InputLabelProps={{ shrink: true, required: true }}
-                        margin="normal"
                         label="Documento"
-                        error={Boolean(errors?.documento)}
-                        helperText={errors?.documento}
+                        margin="normal"
+                        error={errors}
                     />
                 </Grid>
             </Grid>
             <Grid container spacing={2}>
                 <Grid item xs={3}>
-                    <TextField
+                    <Input
                         fullWidth
                         id="fechaNacimiento"
                         name="fechaNacimiento"
                         type="date"
                         value={ fechaNacimiento }
-                        onChange={ handleInputChange }
+                        trigger={ handleInputChange }
                         InputLabelProps={{ shrink: true, required: true }}
-                        margin="normal"
                         label="Fecha Nacimiento"
-                        error={Boolean(errors?.fechaNacimiento)}
-                        helperText={errors?.fechaNacimiento}
+                        margin="normal"
+                        error={errors}
                     />
                 </Grid>
                 <Grid item xs={3}>
-                    <TextField
+                    <Select
                         fullWidth
                         id="sexo"
                         name="sexo"
                         value={ sexo }
-                        onChange={ handleInputChange }
+                        trigger={ handleInputChange }
                         InputLabelProps={{ shrink: true, required: true }}
-                        select
                         margin="normal"
                         label="Sexo"
-                        error={Boolean(errors?.sexo)}
-                        helperText={errors?.sexo}
-                    >
-                        <MenuItem value="" disabled>Seleccione una opcion</MenuItem>
-                        <MenuItem value="Masculino">Masculino</MenuItem>
-                        <MenuItem value="Feminino">Femenino</MenuItem>
-                        <MenuItem value="Otros">Otros</MenuItem>
-                    </TextField>
+                        error={errors}
+                        data={(sexos.map(s => ({label: s, value: s})))}
+                    />
                 </Grid>
                 <Grid item xs={6}>
-                    <TextField
+                    <Input
                         fullWidth
                         id="lugarNacimiento"
                         name="lugarNacimiento"
                         value={ lugarNacimiento }
-                        onChange={ handleInputChange }
+                        trigger={ handleInputChange }
                         InputLabelProps={{ shrink: true, required: true }}
-                        margin="normal"
                         label="Lugar de Nacimiento"
-                        error={Boolean(errors?.lugarNacimiento)}
-                        helperText={errors?.lugarNacimiento}
+                        margin="normal"
+                        error={errors}
                     />
                 </Grid>
             </Grid>
             <Grid container spacing={2}>
                 <Grid item xs={6}>
-                    <TextField
+                    <Input
                         fullWidth
                         id="telefonoFijo"
                         name="telefonoFijo"
                         type="number"
                         value={ telefonoFijo }
-                        onChange={ handleInputChange }
+                        trigger={ handleInputChange }
                         InputLabelProps={{ shrink: true }}
                         margin="normal"
                         label="Telefono Fijo"
                     />
                 </Grid>
                 <Grid item xs={6}>
-                    <TextField
+                    <Input
                         fullWidth
                         id="telefonoMovil"
                         name="telefonoMovil"
                         type="number"
                         value={ telefonoMovil }
-                        onChange={ handleInputChange }
+                        trigger={ handleInputChange }
                         InputLabelProps={{ shrink: true }}
                         margin="normal"
                         label="Telefono Movil"
                     />
                 </Grid>
             </Grid>
-            <Grid contaienr>
+            <Grid container>
                 <Grid item xs={12}>
-                    <TextField
+                    <Input
                         fullWidth
                         id="domicilio"
                         name="domicilio"
                         value={ domicilio }
-                        onChange={ handleInputChange }
+                        trigger={ handleInputChange }
                         InputLabelProps={{ shrink: true, required: true }}
-                        margin="normal"
                         label="Domicilio"
-                        error={Boolean(errors?.domicilio)}
-                        helperText={errors?.domicilio}
+                        margin="normal"
+                        error={errors}
                     />
                 </Grid>
             </Grid>
             <Grid container spacing={2}>
                 <Grid item xs={4}>
-                    <TextField
+                    <Input
                         fullWidth
                         id="numero"
                         name="numero"
                         type="number"
                         value={ numero }
-                        onChange={ handleInputChange }
+                        trigger={ handleInputChange }
                         InputLabelProps={{ shrink: true }}
                         margin="normal"
                         label="Numero"
                     />
                 </Grid>
                 <Grid item xs={4}>
-                    <TextField
+                    <Input
                         fullWidth
                         id="departamento"
                         name="departamento"
                         value={ departamento }
-                        onChange={ handleInputChange }
+                        trigger={ handleInputChange }
                         InputLabelProps={{ shrink: true }}
                         margin="normal"
                         label="Departamento"
                     />
                 </Grid>
                 <Grid item xs={4}>
-                    <TextField
+                    <Input
                         fullWidth
                         id="piso"
                         name="piso"
                         type="number"
                         value={ piso }
-                        onChange={ handleInputChange }
+                        trigger={ handleInputChange }
                         InputLabelProps={{ shrink: true }}
                         margin="normal"
                         label="Piso"

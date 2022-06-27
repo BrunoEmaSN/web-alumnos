@@ -1,11 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material';
+import { Grid, MenuItem, Paper, TextField } from '@mui/material';
+import { useMediaQuery } from '@material-ui/core';
+import { theme } from '../../Components/GlobalStylesComponents/theme';
 import { CalificacionesContext } from '../../Context/BuildContext';
 import { useForm } from '../../Hooks/useForm';
 import { alumnosGetAll } from '../../Services/restCallAlumnos';
 import { docentesGetAll } from '../../Services/restCallDocentes';
 import { materiasGetAll } from '../../Services/restCallMaterias';
 import { regimenes } from '../../Utils/Model/materiaModel';
+import {
+    ButtonContained,
+    ButtonOutlined,
+    TypographyH4
+} from '../../Components/GlobalStylesComponents/stylesComponents';
 
 export const CalificacionesSave = () => {
     const {
@@ -14,6 +21,8 @@ export const CalificacionesSave = () => {
         handleBack,
         errors
     } = useContext(CalificacionesContext);
+
+    const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
 
     const [ alumnosList, setAlumnosList ] = useState([]);
     const [ materiasList, setMateriasList ] = useState([]);
@@ -43,10 +52,15 @@ export const CalificacionesSave = () => {
     } = formValues;
     
     return (
-        <Paper sx={{ width: '60%', margin: '0 20% 2%', padding: '1%' }}>
-            <Typography variant="h6" gutterBottom component="div">
-                Editar Calificacion
-            </Typography>
+        <Paper 
+            sx={{
+                width: isMdUp ? '58%' : '100%',
+                margin: isMdUp ? '0 20% 2%' : 0,
+                padding: '1%'
+            }}
+            variant="outlined"
+        >
+            <TypographyH4 label="Editar Calificacion" />
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <TextField
@@ -132,7 +146,8 @@ export const CalificacionesSave = () => {
                         fullWidth
                         id="alumno_id"
                         name="alumno_id"
-                        value={ alumno_id }
+                        defaultValue=""
+                        value={ parseInt(alumno_id) }
                         onChange={handleInputChange}
                         InputLabelProps={{ shrink: true, required: true }}
                         select
@@ -145,7 +160,7 @@ export const CalificacionesSave = () => {
                             Seleccione un alumno
                         </MenuItem>
                         { alumnosList.map((a) => (
-                            <MenuItem key={a.documento} value={ a.documento }>
+                            <MenuItem key={a.documento} value={ parseInt(a.documento) }>
                                 { `${ a.nombre } ${ a.apellido }` }
                             </MenuItem>
                         )) }
@@ -200,24 +215,18 @@ export const CalificacionesSave = () => {
                     </TextField>
                 </Grid>
                 <Grid item xs={12}>
-                    <Button
-                        fullWidth
-                        onClick={
+                    <ButtonContained
+                        CallBack={
                             () => handleEditCalificacion(formValues)
                         }
-                        variant="contained"
-                    >
-                        Editar
-                    </Button>
+                        label="Editar"
+                    />
                 </Grid>
                 <Grid item xs={12}>
-                    <Button
-                        fullWidth
-                        onClick={ handleBack }
-                        variant="outlined"
-                    >
-                        Volver
-                    </Button>
+                    <ButtonOutlined
+                        CallBack={ handleBack }
+                        label="Volver"
+                    />
                 </Grid>
             </Grid>
         </Paper>

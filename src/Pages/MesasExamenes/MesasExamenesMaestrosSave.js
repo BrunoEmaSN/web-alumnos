@@ -1,12 +1,20 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react';
+import { Box, Grid, MenuItem, Paper, TextField } from '@mui/material';
+import { useMediaQuery } from '@material-ui/core';
+
+import { theme } from '../../Components/GlobalStylesComponents/theme';
 import { useForm } from '../../Hooks/useForm';
 import { MesasExamenesNovedadesSave } from './MesasExamenesNovedadesSave';
 import { periodosGetAll } from '../../Services/restCallPeriodos';
 import { mesaExamenModel } from '../../Utils/Model/mesaExamenModel';
 import { AgregarPeriodos } from '../../Template/AgregarPeriodos';
 import { MesasExamenesContext } from '../../Context/BuildContext';
-import { Box, Button, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material';
 import { useModal } from '../../Hooks/useModal';
+import {
+    ButtonContained,
+    ButtonOutlined,
+    TypographyH4
+} from '../../Components/GlobalStylesComponents/stylesComponents';
 
 export const MesasExamenesMaestrosSave = () => {
     const {
@@ -17,13 +25,15 @@ export const MesasExamenesMaestrosSave = () => {
         errorMaestro: errors
     } = useContext(MesasExamenesContext);
 
+    const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+
     const [ formValues, handleInputChange ] = useForm( active.maestro );
     const [ novedad, setNovedad ] = useState( active.novedad );
     const [ periodoList, setPeriodoList ] = useState([]);
     const [ isOpenModal, openModal, closeModal ] = useModal( false );
     
     const handleListGetAll = async () => {
-        setPeriodoList( await periodosGetAll() );
+        setPeriodoList( await periodosGetAll('Mesa') );
     }
 
     useEffect(() => {
@@ -38,10 +48,17 @@ export const MesasExamenesMaestrosSave = () => {
 
     return (
         <Box>
-            <Paper sx={{ width: '60%', margin: '0 20% 2%', padding: '1%' }}>
-                <Typography variant="h4" gutterBottom component="div">
-                    Datos Mesa Examen Maestro
-                </Typography>
+            <Paper
+                sx={{
+                    width: isMdUp ? '60%' : '100%',
+                    margin: isMdUp ? '0 20% 2%' : '0 0 2%',
+                    padding: '1%'
+                }}
+                variant="outlined"
+            >
+                <TypographyH4
+                    label="Datos Mesa Examen Maestro"
+                />
                 <Grid
                     container
                     direction="row"
@@ -86,7 +103,7 @@ export const MesasExamenesMaestrosSave = () => {
                             )) }
                         </TextField>
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={6}>
                         <AgregarPeriodos
                             isOpenModal={isOpenModal}
                             openModal={openModal}
@@ -99,47 +116,38 @@ export const MesasExamenesMaestrosSave = () => {
                 novedad={ novedad }
                 setNovedad={ setNovedad }
             />
-            <Paper sx={{ width: '60%', margin: '0 20% 2%', padding: '1%' }}>
+            <Box sx={{ width: '60%', margin: '0 20% 2%', padding: '1%' }}>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         {
                             active === mesaExamenModel
                             ? (
-                                <Button
-                                    fullWidth
-                                    onClick={
+                                <ButtonContained
+                                    CallBack={
                                         () => handleAddMesaExamen(formValues, novedad)
                                     }
-                                    variant="contained"
-                                >
-                                    Guardar
-                                </Button>
+                                    label="Guardar"
+                                />
                             )
                             : (
-                                <Button
-                                    fullWidth
-                                    onClick={
+                                <ButtonContained
+                                    CallBack={
                                         () => handleEditMesaExamen(formValues, novedad)
                                     }
-                                    variant="contained"
-                                >
-                                    Editar
-                                </Button>
+                                    label="Editar"
+                                />
                             )
                         }
                     </Grid>
                     <Grid item xs={6}>
-                        <Button
-                            fullWidth
-                            onClick={ handleBack }
-                            variant="outlined"
-                        >
-                            Volver
-                        </Button>
+                        <ButtonOutlined
+                            CallBack={ handleBack }
+                            label="Volver"
+                        />
                     </Grid>
 
                 </Grid>
-            </Paper>
+            </Box>
         </Box>
     )
 }

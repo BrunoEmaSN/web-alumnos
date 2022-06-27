@@ -1,5 +1,6 @@
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import React, { useContext } from 'react';
+import { ButtonCreate, TypographyH3 } from '../../Components/GlobalStylesComponents/stylesComponents';
 import { ViewGeneric } from '../../Components/View/ViewGeneric';
 import { ClasesContext } from '../../Context/BuildContext';
 import { ClasesTable } from './ClasesTable';
@@ -15,20 +16,10 @@ export const ClasesList = () => {
 	return (
 		<Box>
 			<Stack direction="row" spacing={2} margin={1}>
-				<Typography
-					variant="h3"
-					component="div"
-					gutterBottom
-				>
-					Clases
-				</Typography>
-				<Button
-					onClick={handleCreate}
-					sx={{ padding: '0 2%', height: 50 }}
-					variant="outlined"
-				>
-					Crear Nuevo
-				</Button>
+				<TypographyH3
+					label="Clases"
+				/>
+				<ButtonCreate CallBack={handleCreate} label="Crear Nueva"/>
 			</Stack>
 			<ClasesTable />
 			{

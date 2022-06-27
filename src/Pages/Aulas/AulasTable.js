@@ -1,15 +1,15 @@
 import React, { useContext } from 'react';
 import { Box } from '@mui/system';
-import { OpcionesERVButtons } from '../../Components/OptionesButtons/OptionesERVButtons';
 import { TableGeneric } from '../../Components/Table/TableGeneric';
 import { AulasContext } from '../../Context/BuildContext';
+import { OptionsERVButtons } from '../../Components/OptionesButtons/OptionsERVButtons';
 
 const createData = (id, descripcion, CallBackEdit, CallBackView,CallBackDelete) => {
     return {
         id,
         descripcion,
         opciones: (
-            <OpcionesERVButtons
+            <OptionsERVButtons
 				CallBackEdit={CallBackEdit}
                 CallBackView={CallBackView}
 				CallBackDelete={CallBackDelete}
@@ -28,7 +28,7 @@ export const AulasTable = () => {
 
     const columns = [
         {id: 'id', label: 'Id'},
-        {id: 'descripcion', label: 'Descripcion'},
+        {id: 'descripcion', label: 'Descripcion', minWidth: '360px'},
         {id: 'opciones', label: 'Opciones'}
     ];
 

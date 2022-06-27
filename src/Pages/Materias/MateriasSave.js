@@ -1,8 +1,15 @@
 import React, { useContext } from 'react';
+import { useMediaQuery } from '@material-ui/core';
+import { theme } from '../../Components/GlobalStylesComponents/theme';
 import { MateriasContext } from '../../Context/BuildContext';
 import { useForm } from '../../Hooks/useForm';
 import { regimenes } from '../../Utils/Model/materiaModel';
-import { Button, Grid, MenuItem, TextField, Typography, Paper } from '@mui/material';
+import { Grid, MenuItem, TextField, Paper } from '@mui/material';
+import {
+    ButtonContained,
+    ButtonOutlined,
+    TypographyH4
+} from '../../Components/GlobalStylesComponents/stylesComponents';
 
 export const MateriasSave = () => {
     const {
@@ -17,6 +24,8 @@ export const MateriasSave = () => {
 
     const [ formValues, handleInputChange ] = useForm( active );
 
+    const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+
     const {
         descripcion,
         planEstudio,
@@ -24,10 +33,21 @@ export const MateriasSave = () => {
     } = formValues;
 
     return (
-        <Paper sx={{ width: '60%', margin: '0 20% 2%', padding: '1%' }}>
-            <Typography variant="h6" gutterBottom component="div">
-                { action === actions.create ? 'Crear Nueva Materia' : 'Editar Materia' }
-            </Typography>
+        <Paper
+            sx={{
+                width: isMdUp ? '58%' : '100%',
+                margin: isMdUp ? '0 20% 2%' : 0,
+                padding: '1%'
+            }} 
+            variant="outlined"
+        >
+            <TypographyH4
+                label={
+                    action === actions.create
+                    ? 'Crear Nueva Materia'
+                    : 'Editar Materia'
+                }
+            />
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <TextField
@@ -83,37 +103,28 @@ export const MateriasSave = () => {
                     {
                         action === actions.create
                         ? (
-                            <Button
-                                fullWidth
-                                onClick={
+                            <ButtonContained
+                                CallBack={
                                     () => handleAddMateria(formValues)
                                 }
-                                variant="contained"
-                            >
-                                Guardar
-                            </Button>
+                                label="Guardar"
+                            />
                         )
                         :  (
-                            <Button
-                                fullWidth
-                                onClick={
+                            <ButtonContained
+                                CallBack={
                                     () => handleEditMateria(formValues)
                                 }
-                                variant="contained"
-                            >
-                                Editar
-                            </Button>
+                                label="Editar"
+                            />
                         )
                     }
                 </Grid>
                 <Grid item xs={12}>
-                    <Button
-                        fullWidth
-                        onClick={ handleBack }
-                        variant="outlined"
-                    >
-                       Volver
-                    </Button>
+                    <ButtonOutlined
+                        CallBack={ handleBack }
+                        label="Volver"
+                    />
                 </Grid>
             </Grid>
         </Paper>

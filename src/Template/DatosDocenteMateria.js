@@ -1,182 +1,164 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import Modal from 'react-modal/lib/components/Modal';
+import Modal from '@mui/material/Modal';
 import { materiasGetAll } from '../Services/restCallMaterias';
 import { CardGeneric } from '../Components/Card/CardGeneric';
 import { Box } from '@mui/system';
-import { Button, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material';
+import {
+	Button,
+	Grid,
+	Paper,
+	Typography,
+} from '@mui/material';
 import { customStyles } from '../Utils/modalStyles';
+import {
+	TypographyH4,
+	ButtonContained,
+	ButtonOutlined,
+} from '../Components/GlobalStylesComponents/stylesComponents';
+import { Select } from '../Components/Select/Select';
 
 export const DatosDocenteMateria = ({ materias, handleInputChange }) => {
-    const [ materiasList, setMateriasList ] = useState([]);
-    const [ materia, setMateria ] = useState('');
-    const [ modalMateriaIsOpen, setmodalMateriaIsOpen ] = useState(false);
+	const [materiasList, setMateriasList] = useState([]);
+	const [materia, setMateria] = useState('');
+	const [modalMateriaIsOpen, setmodalMateriaIsOpen] = useState(false);
 
-    const handleMateriasGetAll = async () => {
-        setMateriasList( await materiasGetAll() );
-    }
+	const handleMateriasGetAll = async () => {
+		setMateriasList(await materiasGetAll());
+	};
 
-    useEffect(() => {
-        handleMateriasGetAll();
-    }, [])
-    
+	useEffect(() => {
+		handleMateriasGetAll();
+	}, []);
 
-    const openModalMateria = () => {
-        setmodalMateriaIsOpen( true );
-    }
-    const closeModalMateria = () => {
-        setmodalMateriaIsOpen( false );
-    }
+	const openModalMateria = () => {
+		setmodalMateriaIsOpen(true);
+	};
+	const closeModalMateria = () => {
+		setmodalMateriaIsOpen(false);
+	};
 
-    const handleChageMateria = ({ target }) => {
-        setMateria( JSON.parse( target.value ) );
-    }
+	const handleChageMateria = ({ target }) => {
+		setMateria(JSON.parse(target.value));
+	};
 
-    const handleAddMateria = () => {
-        const isExist = materias.find( m => m.id === parseInt( materia.id ) );
-        setMateria('');
+	const handleAddMateria = () => {
+		const isExist = materias.find((m) => m.id === parseInt(materia.id));
+		setMateria('');
 
-        if( isExist ){
-            closeModalMateria();
-            return console.log('materia ya asignada al docente');
-        }
+		if (isExist) {
+			closeModalMateria();
+			return console.log('materia ya asignada al docente');
+		}
 
-        handleInputChange({
-            target: {
-                name: 'materias',
-                value: [ ...materias, materia ]
-            }
-        });
+		handleInputChange({
+			target: {
+				name: 'materias',
+				value: [...materias, materia],
+			},
+		});
 
-        closeModalMateria();
-    }
+		closeModalMateria();
+	};
 
-    const removeMateria = ( idMateria ) => {
-        const filterMaterias = materias.filter( m => m.id !== parseInt( idMateria ) );
-        handleInputChange({
-            target: {
-                name: 'materias',
-                value: [ ...filterMaterias ]
-            }
-        })
-    }
-    return (
-        <Box>
-            <Paper
-                sx={{
-                    width: '60%',
-                    margin: '0 20% 2%',
-                    padding: '1%'
-                }}
-            >
-                <Box
-                    sx={{
-                        display: 'flex',
-                        '& > :not(style)': {
-                            m: 1,
-                        },
-                    }}
-                >
-                    <Typography variant="h4" gutterBottom component="div">
-                        Materias
-                    </Typography>
-                    <Button onClick={ openModalMateria }>
-                        Agregar Materia
-                    </Button>
-                </Box>
-                <Box
-                    id="materias"
-                    name="materias"
-                    sx={{
-                        display: 'flex',
-                        minHeight: '140px',
-                        border: '1px solid black',
-                        borderRadius: '4px',
-                        '& > :not(style)': {
-                            m: 1,
-                        },
-                    }}
-                >
-                    {
-                        materias && materias.map( m => 
-                            <CardGeneric
-                                key={ m.id }
-                                titulo={ m.descripcion }
-                                descripcion={ '' }
-                                id={ m.id }
-                                removeCard={ removeMateria }
+	const removeMateria = (idMateria) => {
+		const filterMaterias = materias.filter((m) => m.id !== parseInt(idMateria));
+		handleInputChange({
+			target: {
+				name: 'materias',
+				value: [...filterMaterias],
+			},
+		});
+	};
+	return (
+		<Box>
+			<Paper
+				sx={{ width: '98%', padding: '1%', marginBottom: '2%' }}
+				variant='outlined'
+			>
+				<Box
+					sx={{
+						display: 'flex',
+						'& > :not(style)': {
+							m: 1,
+						},
+					}}
+				>
+					<TypographyH4 label='Materias' />
+					<Button onClick={openModalMateria}>Agregar Materia</Button>
+				</Box>
+				<Box
+					id='materias'
+					name='materias'
+					sx={{
+						display: 'flex',
+						minHeight: '140px',
+						border: '1px solid black',
+						borderRadius: '4px',
+						'& > :not(style)': {
+							m: 1,
+						},
+					}}
+				>
+					{materias &&
+						materias.map((m) => (
+							<CardGeneric
+								key={m.id}
+								titulo={m.descripcion}
+								descripcion={''}
+								id={m.id}
+								removeCard={removeMateria}
+							/>
+						))}
+				</Box>
+			</Paper>
+			<Modal
+				open={modalMateriaIsOpen}
+				onClose={closeModalMateria}
+				aria-labelledby='modal-modal-title'
+				aria-describedby='modal-modal-description'
+			>
+				<Box sx={customStyles}>
+					<Typography variant='h6' gutterBottom component='div'>
+						Materias
+					</Typography>
+					<Grid
+						container
+						direction='row'
+						justifyContent='center'
+						alignItems='center'
+					>
+						<Grid item xs={12}>
+                            <Select
+                                fullWidth
+								id='materias'
+								name='materia'
+								value={materia !== '' ? JSON.stringify(materia) : ''}
+								trigger={handleChageMateria}
+								InputLabelProps={{ shrink: true, required: true }}
+								select
+								margin='normal'
+								label='Materia'
+                                data={materiasList.map((m) => ({
+                                    label: m.descripcion,
+                                    value: JSON.stringify(m)
+                                }))}
                             />
-                        )
-                    }
-                </Box>
-            </Paper>
-            <Modal
-                isOpen={ modalMateriaIsOpen }
-                style={ customStyles }
-                onRequestClose={ closeModalMateria }
-                ariaHideApp={false}
-            >
-                <Typography variant="h6" gutterBottom component="div">
-                    Materias
-                </Typography>
-                <Grid
-                    container
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="center"
-                >
-                    <Grid item xs={12}>
-                        <TextField
-                            //error
-                            fullWidth
-                            id="materias"
-                            name="materia"
-                            value={ materia !== '' ? JSON.stringify(materia) : '' }
-                            onChange={ handleChageMateria }
-                            InputLabelProps={{ shrink: true, required: true }}
-                            select
-                            margin="normal"
-                            label="Materia"
-                            //helperText="Please select your currency"
-                            >
-                                <MenuItem value="" disabled>Seleccione una opcion</MenuItem>
-                                {
-                                    materiasList.map( m => (
-                                        <MenuItem
-                                            key={ m.id }
-                                            value={ JSON.stringify( m ) }
-                                        >
-                                            { m.descripcion }
-                                        </MenuItem>
-                                    ))
-                                }
-                        </TextField>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Button
-                            fullWidth
-                            onClick={ handleAddMateria }
-                            variant="contained"
-                        >
-                            Agregar
-                        </Button>
-                    </Grid>
-                    <Grid item xs={12} sx={{ marginTop: '2%' }}>
-                        <Button
-                            fullWidth
-                            onClick={ closeModalMateria }
-                            variant="outlined"
-                        >
-                            Close
-                        </Button>
-                    </Grid>
-                </Grid>
-            </Modal>
-        </Box>
-    );
+						</Grid>
+						<Grid item xs={12}>
+							<ButtonContained CallBack={handleAddMateria} label='Agregar' />
+						</Grid>
+						<Grid item xs={12} sx={{ marginTop: '2%' }}>
+							<ButtonOutlined CallBack={closeModalMateria} label='Close' />
+						</Grid>
+					</Grid>
+				</Box>
+			</Modal>
+		</Box>
+	);
 };
 
 DatosDocenteMateria.propTypes = {
-    materias: PropTypes.array.isRequired,
-    handleInputChange: PropTypes.func.isRequired,
-}
+	materias: PropTypes.array.isRequired,
+	handleInputChange: PropTypes.func.isRequired,
+};
